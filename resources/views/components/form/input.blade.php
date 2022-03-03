@@ -6,6 +6,7 @@
     <input class="border border-gray-200 p-2 w-full rounded"
            name="{{ $name }}"
            id="{{ $name }}"
+           value="{{ request()->$name }}"
            {{ $attributes(['value' => old($name)]) }}
     >
 

@@ -2,26 +2,26 @@
     <main class="max-w-6xl mx-auto mt-10 lg:mt-20 space-y-6">
         <article class="max-w-4xl mx-auto lg:grid lg:grid-cols-12 gap-x-10">
             <div class="col-span-4 lg:text-center lg:pt-14 mb-10">
-                <img src="{{ asset('storage/' . $post->thumbnail) }}" alt="" class="rounded-xl">
-
-                <p class="mt-4 block text-gray-400 text-xs">
-                    Published
-                    <time>{{ $post->created_at->diffForHumans() }}</time>
+                <p align="left" class="mt-4 block text-gray-400 text-xs">
+                    Infomations
                 </p>
-
-                <div class="flex items-center lg:justify-center text-sm mt-4">
-                    <img src="/images/lary-avatar.svg" alt="Lary avatar">
-                    <div class="ml-3 text-left">
-                        <h5 class="font-bold">
-                            <a href="/?author={{ $post->name }}">{{ $post->name }}</a>
-                        </h5>
-                    </div>
-                </div>
+                <p align="left" class="mt-4 block text-gray-400 text-xs">
+                    Date created: <time>{{ $category->created_at }}</time>
+                </p>
+                <p align="left" class="mt-4 block text-gray-400 text-xs">
+                    Date modified: <time>{{ $category->updated_at }}</time>
+                </p>
+                <p align="left" class="mt-4 block text-gray-400 text-xs">
+                    Created by: {{ $category->created_by }}
+                </p>
+                <p align="left" class="mt-4 block text-gray-400 text-xs">
+                    Modified by: {{ $category->modified_by }}
+                </p>
             </div>
 
             <div class="col-span-8">
                 <div class="hidden lg:flex justify-between mb-6">
-                    <a href="/"
+                    <a href="/categories"
                        class="transition-colors duration-300 relative inline-flex items-center text-lg hover:text-blue-500">
                         <svg width="22" height="22" viewBox="0 0 22 22" class="mr-2">
                             <g fill="none" fill-rule="evenodd">
@@ -33,28 +33,20 @@
                             </g>
                         </svg>
 
-                        Back to Posts
+                        Back to Categories
                     </a>
-
-                    <div class="space-x-2">
-                        <x-category-button :category="$post->category"/>
-                    </div>
                 </div>
 
-                <h1 class="font-bold text-3xl lg:text-4xl mb-10">
-                    {{ $post->name }}
-                </h1>
+                <h2 class="font-bold text-3xl lg:text-4xl mb-10">
+                    {{ $category->name }}
+                </h2>
 
-                <div class="space-y-4 lg:text-lg leading-loose">{!! $post->description !!}</div>
+                <h3 class="text-1xl lg:text-4xl mb-10">
+                    {{ $category->abbreviation }}
+                </h3>
+
+                <div class="space-y-4 lg:text-lg leading-loose">{!! $category->description !!}</div>
             </div>
-
-            <section class="col-span-8 col-start-5 mt-10 space-y-6">
-                @include ('posts._add-comment-form')
-
-                @foreach ($post->comments as $comment)
-                    <x-post-comment :comment="$comment"/>
-                @endforeach
-            </section>
         </article>
     </main>
 </x-layout>

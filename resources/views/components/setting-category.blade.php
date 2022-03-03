@@ -7,14 +7,14 @@
 
     <div class="flex">
         <aside class="w-48 flex-shrink-0">
-            <h4 class="font-semibold mb-4">Links</h4>
+            <h4 class="font-semibold mb-4">Menu</h4>
             <ul>
                 <li>
-                    <a href="/admin/posts" class="{{ request()->is('admin/posts') ? 'text-blue-500' : '' }}">All Posts</a>
+                    <a href="/categories" class="{{ request()->is('categories') ? 'text-blue-500' : '' }}">All Categories</a>
                 </li>
 
                 <li>
-                    <a href="/admin/posts/create" class="{{ request()->is('admin/posts/create') ? 'text-blue-500' : '' }}">New Post</a>
+                    <a href="/categories/create" class="{{ request()->is('categories/create') ? 'text-blue-500' : '' }}">New Category</a>
                 </li>
             </ul>
         </aside>
