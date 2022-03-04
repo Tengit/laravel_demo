@@ -37,25 +37,12 @@ class CategoriesController extends Controller
     {
         return view('categories.create');
     }
-    /*
-    public function store()
-    {
-        $category = new Categories;
-        
-        $category->name = request('name');
-        $category->abbreviation = request('abbreviation');
-        $category->description = request('description');
-        $category->save();
-        return redirect()->to('/categories/'.$category->name);
-    }
-    */
 
     public function store()
     {
         Categories::create(array_merge($this->validatePost(), [
             'user_id' => request()->user()->id,
         ]));
-
         return redirect()->to('/categories/'.$category->name);
     }
 
@@ -86,7 +73,7 @@ class CategoriesController extends Controller
 
         return request()->validate([
             'name' => 'required',
-            'slug' => ['required', Rule::unique('categories', 'slug')->ignore($category)],
+            'abbreviation' => ['required', Rule::unique('categories', 'abbreviation')->ignore($category)],
             'description' => 'required',
         ]);
     }
