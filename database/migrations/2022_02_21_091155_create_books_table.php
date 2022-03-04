@@ -18,7 +18,7 @@ class CreateBooksTable extends Migration
             $table->string('title');
             $table->string('isbn');
             $table->integer('category_id')->unique();
-            $table->integer('parent_id')->unique();
+            $table->integer('parent_id')->unique()->nullable();
             $table->integer('publisher_id');
             $table->string('condition');
             $table->string('content');
@@ -27,7 +27,7 @@ class CreateBooksTable extends Migration
             $table->integer('quantity');
             $table->integer('edition');
             $table->float('price');
-            $table->date('date_published')->nullable();
+            $table->date('date_published');
             $table->integer('created_by')->nullable();
             $table->integer('modified_by')->nullable();
             $table->timestamps();

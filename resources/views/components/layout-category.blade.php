@@ -52,7 +52,7 @@
                                 href="/categories/create"
                                 :active="request()->is('categories/create')"
                             >
-                                New Post
+                                New Category
                             </x-dropdown-item>
                         @endadmin
 
@@ -88,6 +88,7 @@
             class="bg-gray-100 border border-black border-opacity-5 rounded-xl text-center py-16 px-10 mt-16"
         >
 	        <h2>Copyright © {{ date('Y') }}</h2>
+            <h3>Learn Laravel from Nitro Tech Asia</h3>
         </footer>
     </section>
 

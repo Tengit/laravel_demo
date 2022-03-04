@@ -42,17 +42,17 @@
 
                         @admin
                             <x-dropdown-item
-                                href="/admin/posts"
-                                :active="request()->is('admin/posts')"
+                                href="/publishers" class="{{ request()->is('publishers') ? 'text-blue-500' : '' }}"
+                                :active="request()->is('publishers')"
                             >
                                 Dashboard
                             </x-dropdown-item>
 
                             <x-dropdown-item
-                                href="/admin/posts/create"
-                                :active="request()->is('admin/posts/create')"
+                                href="/publishers/create" class="{{ request()->is('publishers/create') ? 'text-blue-500' : '' }}"
+                                :active="request()->is('publishers/create')"
                             >
-                                New Post
+                                New Category
                             </x-dropdown-item>
                         @endadmin
 
@@ -88,7 +88,6 @@
             class="bg-gray-100 border border-black border-opacity-5 rounded-xl text-center py-16 px-10 mt-16"
         >
 	        <h2>Copyright © {{ date('Y') }}</h2>
-            <h3>Learn Laravel from Nitro Tech Asia</h3>
         </footer>
     </section>
 

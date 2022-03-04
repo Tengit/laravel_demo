@@ -1,43 +1,51 @@
-@extends('commons.layouts.dashboard')
+<x-layout-book>
+    <x-setting-book heading="Add new Book">
+        <form method="POST" action="/admin/posts" enctype="multipart/form-data">
+            @csrf
 
-@section('content')
+            <x-form.input name="parent_id" type="hidden" />
+            <x-form.input name="title" required />
+            <x-form.input name="isbn" required />
 
-    <h2>Add a book</h2>
+            <x-form.field>
+                <x-form.label name="category"/>
 
-    <form method="post" action="/books" enctype="multipart/form-data">
-        {{ csrf_field() }}
-        <div class="form-group row">
-            <label for="titleid" class="col-sm-3 col-form-label">Book Title</label>
-            <div class="col-sm-9">
-                <input name="title" type="text" class="form-control" id="titleid" placeholder="Book Title">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="publisherid" class="col-sm-3 col-form-label">Book Publisher</label>
-            <div class="col-sm-9">
-                <input name="publisher" type="text" class="form-control" id="publisherid"
-                       placeholder="Book Publisher">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="releasedateid" class="col-sm-3 col-form-label">Release Date</label>
-            <div class="col-sm-9">
-                <input name="releasedate" type="text" class="form-control" id="releasedateid"
-                       placeholder="Release Date">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="Bookimageid" class="col-sm-3 col-form-label">Book Image</label>
-            <div class="col-sm-9">
-                <input name="image" type="file" id="Bookimageid" class="custom-file-input">
-                <span style="margin-left: 15px; width: 480px;" class="custom-file-control"></span>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="offset-sm-3 col-sm-9">
-                <button type="submit" class="btn btn-primary">Submit Book</button>
-            </div>
-        </div>
-    </form>
+                <select name="category_id" id="category_id" required>
+                    @foreach (\App\Models\Categories::all() as $category)
+                        <option
+                            value="{{ $category->id }}"
+                            {{ old('category_id') == $category->id ? 'selected' : '' }}
+                        >{{ ucwords($category->name) }}</option>
+                    @endforeach
+                </select>
 
-@endsection
+                <x-form.error name="category"/>
+            </x-form.field>
+
+            <x-form.field>
+                <x-form.label name="publisher"/>
+
+                <select name="publisher_id" id="publisher_id" required>
+                    @foreach (\App\Models\Publishers::all() as $publisher)
+                        <option
+                            value="{{ $publisher->id }}"
+                            {{ old('publisher') == $publisher->id ? 'selected' : '' }}
+                        >{{ ucwords($publisher->name) }}</option>
+                    @endforeach
+                </select>
+
+                <x-form.error name="publisher"/>
+            </x-form.field>
+
+            <x-form.input name="num_pages" required />
+            <x-form.input name="quantity" required />
+            <x-form.input name="price" required />
+            <x-form.textarea name="content" required />
+            <x-form.textarea name="description" required />
+            <x-form.input name="edition" required />
+            <x-form.input name="date_published" type="date" />
+
+            <x-form.button>Save</x-form.button>
+        </form>
+    </x-setting-book>
+</x-layout-book>

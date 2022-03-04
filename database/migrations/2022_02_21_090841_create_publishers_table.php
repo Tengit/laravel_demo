@@ -17,7 +17,7 @@ class CreatePublishersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('address');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('modified_by')->nullable();
             $table->string('email')->unique();

@@ -4,34 +4,76 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Publishers;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+use DB;
 
 class PublishersController extends Controller
 {
     public function index()
     {
-        $publishers = Publishers::all();
-        return view('publishers.index', ['publishers' => $publishers]);
+        return view('publishers.index', [
+            'index'      => 1,
+            'publishers' => Publishers::latest()->paginate(10)
+        ]);
     }
     
-    public function show(Publishers $id)
+    public function show(Publishers $publisher)
     {
-        return view('publishers.show', ['publisher' => $id]);
+        return view('publishers.show', compact('publisher'));
     }
     
-    public function create()
+    public function create(Request $request)
     {
         return view('publishers.create');
     }
-    
-    public function store()
+
+    public function store(Request $request)
     {
-        $publisher = new Publishers;
-        
-        $publisher->name = request('name');
-        $publisher->description = request('description');
-        $publisher->address = request('address');
-        $publisher->email = request('email');
-        $publisher->save();
-        return redirect()->to('/publishers/'.$publisher->id);
+        $publishers = Publishers::create(array_merge($this->validatePost(), [
+            // 'created_by' => request()->user()->id,
+            // 'modified_by' => request()->user()->id
+        ]));
+
+        return redirect()->route('publishers.show', $publishers);
+    }
+
+    public function edit(Publishers $publisher)
+    {
+        return view('publishers.edit', compact('publisher'));
+    }
+
+    public function update(Publishers $publishers)
+    {
+        $attributes = $this->validatePost($publishers);
+
+        $publishers->update($attributes);
+
+        return redirect()->route('publishers.show', $publishers)
+            ->with('success', 'Publisher updated successfully');
+
+        return redirect()->to('/publishers/'.$publishers->abbreviation);
+    }
+
+    public function destroy(Publishers $publishers)
+    {
+        $publishers->delete();
+
+        return redirect()->route('publishers.index')
+            ->with('success', 'Publisher Deleted!');
+
+        return back()->with('success', 'Publisher Deleted!');
+    }
+
+    protected function validatePost(?Publishers $publishers = null): array
+    {
+        $publishers ??= new Publishers();
+
+        return request()->validate([
+            'name' => 'required',
+            'address' => 'required',
+            'email' => ['required', Rule::unique('publishers', 'email')->ignore($publishers)],
+            'description' => '',
+        ]);
     }
 }

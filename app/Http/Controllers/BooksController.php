@@ -4,43 +4,85 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Books;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+use DB;
 
 class BooksController extends Controller
 {
     public function index()
     {
-        $books = Books::all();
-        return view('books.index', ['books' => $books]);
+        return view('books.index', [
+            'index'      => 1,
+            'books' => Books::latest()->paginate(10)
+        ]);
     }
     
     public function show(Books $book)
     {
-        return view('books.show', ['book' => $book]);
+        return view('books.show', compact('book'));
     }
     
-    public function create()
+    public function create(Request $request)
     {
         return view('books.create');
     }
-    
-    public function store()
+
+    public function store(Request $request)
     {
-        $book = new Books;
-        
-        $book->title = request('title');
-        $book->isbn = request('isbn');
-        $book->category_id = request('category_id');
-        $book->parent_id = request('parent_id');
-        $book->publisher_id = request('publisher_id');
-        $book->condition = request('condition');
-        $book->content = request('content');
-        $book->description = request('description');
-        $book->num_pages = request('num_pages');
-        $book->quantity = request('quantity');
-        $book->edition = request('edition');
-        $book->price = request('price');
-        $book->date_published = request('date_published');
-        $book->save();
-        return redirect()->to('/books/'.$book->id);
+        $book = Books::create(array_merge($this->validatePost(), [
+            'created_by' =>  $request->user()->id,
+            'modified_by' =>  $request->user()->id
+        ]));
+
+        return redirect()->route('books.show', $book);
+    }
+
+    public function edit(Books $book)
+    {
+        return view('books.edit', compact('book'));
+    }
+
+    public function update(Books $book)
+    {
+        $attributes = $this->validatePost($book);
+
+        $book->update($attributes);
+
+        return redirect()->route('books.show', $book)
+            ->with('success', 'Book updated successfully');
+
+        return redirect()->to('/books/'.$book->abbreviation);
+    }
+
+    public function destroy(Books $book)
+    {
+        $book->delete();
+
+        return redirect()->route('books.index')
+            ->with('success', 'Book deleted!');
+
+        return back()->with('success', 'Book Deleted!');
+    }
+
+    protected function validatePost(?Books $book = null): array
+    {
+        $book ??= new Books();
+
+        return request()->validate([
+            'title' => 'required',
+            'isbn' => 'required',
+            'parent_id' => '',
+            'category_id' => 'required',
+            'publisher_id' => 'required',
+            'condition' => 'required',
+            'content' => 'required',
+            'num_pages' => 'required',
+            'quantity' => 'required',
+            'edition' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'date_published' => 'required',
+        ]);
     }
 }

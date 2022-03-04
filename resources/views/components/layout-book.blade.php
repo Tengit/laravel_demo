@@ -42,17 +42,17 @@
 
                         @admin
                             <x-dropdown-item
-                                href="/admin/posts"
-                                :active="request()->is('admin/posts')"
+                                href="/books"
+                                :active="request()->is('books')"
                             >
                                 Dashboard
                             </x-dropdown-item>
 
                             <x-dropdown-item
-                                href="/admin/posts/create"
-                                :active="request()->is('admin/posts/create')"
+                                href="/books/create"
+                                :active="request()->is('books/create')"
                             >
-                                New Post
+                                New Category
                             </x-dropdown-item>
                         @endadmin
 

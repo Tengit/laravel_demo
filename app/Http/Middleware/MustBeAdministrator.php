@@ -17,10 +17,10 @@ class MustBeAdministrator
      */
     public function handle(Request $request, Closure $next)
     {
-		// if( auth()->guard('web')->check() )
-		// {
-		// 	abort(Response::HTTP_FORBIDDEN);
-		// }
+		if( auth()->guard('admin')->check() )
+		{
+			abort(Response::HTTP_FORBIDDEN);
+		}
         return $next($request);
     }
 }

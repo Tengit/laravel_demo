@@ -21,7 +21,7 @@
 
             <div class="col-span-8">
                 <div class="hidden lg:flex justify-between mb-6">
-                    <a href="/categories"
+                    <a href="{{ route('categories.index') }}"
                        class="transition-colors duration-300 relative inline-flex items-center text-lg hover:text-blue-500">
                         <svg width="22" height="22" viewBox="0 0 22 22" class="mr-2">
                             <g fill="none" fill-rule="evenodd">
@@ -37,16 +37,34 @@
                     </a>
                 </div>
 
-                <h2 class="font-bold text-3xl lg:text-4xl mb-10">
+                <x-form.label name="Name"/>
+
+                <h2 class="font-bold text-2xl lg:text-3xl mb-10">
                     {{ $category->name }}
                 </h2>
 
-                <h3 class="text-1xl lg:text-4xl mb-10">
+                <x-form.label name="Abbreviation"/>
+                <h4 class="text-1xl lg:text-2xl mb-10">
                     {{ $category->abbreviation }}
-                </h3>
+                </h4>
 
+                <x-form.label name="Description"/>
                 <div class="space-y-4 lg:text-lg leading-loose">{!! $category->description !!}</div>
+
             </div>
+            <div class="col-span-8 col-start-5 mt-10 space-y-6">
+                <form action="{{ route('categories.destroy',$category->id) }}" method="POST">
+
+                    <a href="{{ route('categories.edit', $category->id) }}" class="text-blue-500 hover:text-blue-600">Edit</a>
+    
+                    <a href="/categories/create?name={{$category->name}}&abbreviation={{$category->abbreviation}}&description={{$category->description}}" class="text-blue-500 hover:text-blue-600">Copy</a>
+
+                    @csrf
+                    @method('DELETE')
+    
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div> 
         </article>
     </main>
 </x-layout>

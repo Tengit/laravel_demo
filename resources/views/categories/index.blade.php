@@ -21,7 +21,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="text-sm font-medium text-gray-900">
-                                                    <a href="/categories/{{ $category->name }}">
+                                                    <a href="{{ route('categories.show', $category->id) }}">
                                                         {{ $category->name }}
                                                     </a>
                                                 </div>
@@ -33,15 +33,15 @@
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $category->description }}</td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="/categories/{{ $category->id }}/edit" class="text-blue-500 hover:text-blue-600">Edit</a>
+                                            <a href="{{ route('categories.edit', $category->id) }}" class="text-blue-500 hover:text-blue-600">Edit</a>
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="/categories/create/?name={{$category->name}}&description={{$category->description}}" class="text-blue-500 hover:text-blue-600">Copy</a>
+                                            <a href="/categories/create?name={{$category->name}}&abbreviation={{$category->abbreviation}}&description={{$category->description}}" class="text-blue-500 hover:text-blue-600">Copy</a>
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <form method="POST" action="/categories/{{ $category->id }}">
+                                            <form method="POST" action="{{ route('categories.destroy', $category->id)}}">
                                                 @csrf
                                                 @method('DELETE')
 
