@@ -10,6 +10,7 @@ use DB;
 
 class PublishersController extends Controller
 {
+    
     public function index()
     {
         return view('publishers.index', [
@@ -51,8 +52,6 @@ class PublishersController extends Controller
 
         return redirect()->route('publishers.show', $publishers)
             ->with('success', 'Publisher updated successfully');
-
-        return redirect()->to('/publishers/'.$publishers->abbreviation);
     }
 
     public function destroy(Publishers $publishers)
@@ -75,5 +74,9 @@ class PublishersController extends Controller
             'email' => ['required', Rule::unique('publishers', 'email')->ignore($publishers)],
             'description' => '',
         ]);
+    }
+    public function books()
+    {
+        return $this->hasMany(Books::class);
     }
 }

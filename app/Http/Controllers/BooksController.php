@@ -51,8 +51,6 @@ class BooksController extends Controller
 
         return redirect()->route('books.show', $book)
             ->with('success', 'Book updated successfully');
-
-        return redirect()->to('/books/'.$book->abbreviation);
     }
 
     public function destroy(Books $book)
@@ -84,5 +82,22 @@ class BooksController extends Controller
             'price' => 'required',
             'date_published' => 'required',
         ]);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Categories::class);
+    }
+
+    public function publisher()
+    {
+        return $this->belongsTo(Publishers::class);
+    }
+
+    public function author()
+    {
+        return $this->belongsToMany(Authors::class)
+            ->as('author')
+            ->withTimestamps();
     }
 }

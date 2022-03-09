@@ -69,8 +69,6 @@ class CategoriesController extends Controller
 
         return redirect()->route('categories.show', $category)
             ->with('success', 'Category updated successfully');
-
-        return redirect()->to('/categories/'.$category->abbreviation);
     }
 
     public function destroy(Categories $category)
@@ -92,5 +90,9 @@ class CategoriesController extends Controller
             'abbreviation' => ['required', Rule::unique('categories', 'abbreviation')->ignore($category)],
             'description' => '',
         ]);
+    }
+    public function books()
+    {
+        return $this->hasMany(Books::class);
     }
 }

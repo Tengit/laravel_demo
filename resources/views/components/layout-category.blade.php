@@ -52,7 +52,7 @@
                                 href="/categories/create"
                                 :active="request()->is('categories/create')"
                             >
-                                New Category
+                                Create new Category
                             </x-dropdown-item>
                         @endadmin
 

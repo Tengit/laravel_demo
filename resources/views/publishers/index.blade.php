@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout-publisher>
     <x-setting-publisher heading="Manage Publishers">
         <div class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -60,4 +60,4 @@
             </div>
         </div>
     </x-setting-publisher>
-</x-layout>
+</x-layout-publisher>

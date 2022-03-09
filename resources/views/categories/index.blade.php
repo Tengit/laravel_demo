@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout-category>
     <x-setting-category heading="Manage Categories">
         <div class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -57,4 +57,4 @@
             </div>
         </div>
     </x-setting-category>
-</x-layout>
+</x-layout-category>

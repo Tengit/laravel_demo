@@ -17,7 +17,7 @@ class CreateBooksTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('isbn');
-            $table->integer('category_id')->unique();
+            $table->integer('category_id');
             $table->integer('parent_id')->unique()->nullable();
             $table->integer('publisher_id');
             $table->string('condition');

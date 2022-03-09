@@ -4,14 +4,17 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Books;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        echo 'Xin chào User, '. $user->name;
+        return view('books.index', [
+            'index'      => 1,
+            'books' => Books::latest()->paginate(2)
+        ]);
     }
 }
 

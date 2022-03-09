@@ -52,7 +52,7 @@
                                 href="/authors/create"
                                 :active="request()->is('authors/create')"
                             >
-                                New Category
+                                Create new Author
                             </x-dropdown-item>
                         @endadmin
 

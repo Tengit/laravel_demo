@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout-publisher>
     <x-setting-publisher :heading="'Edit Publisher: ' . $publisher->name">
         <form method="POST" action="{{ route('publishers.update', $publisher->id) }}">
             @csrf
@@ -12,4 +12,4 @@
             <x-form.button>Update</x-form.button>
         </form>
     </x-setting-publisher>
-</x-layout>
+</x-layout-publisher>

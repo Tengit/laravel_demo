@@ -52,7 +52,7 @@
                                 href="/publishers/create" class="{{ request()->is('publishers/create') ? 'text-blue-500' : '' }}"
                                 :active="request()->is('publishers/create')"
                             >
-                                New Category
+                                Create new Publisher
                             </x-dropdown-item>
                         @endadmin
 

@@ -52,7 +52,7 @@
                                 href="/books/create"
                                 :active="request()->is('books/create')"
                             >
-                                New Category
+                                Create new Book
                             </x-dropdown-item>
                         @endadmin
 

@@ -84,9 +84,9 @@ Route::post('categories', [CategoriesController::class, 'store']);
 */
 
 // Admin Section 
-Route::middleware('admin')->group(function () {
+Route::middleware('web')->group(function () {
     Route::resource('categories', CategoriesController::class);
-    Route::resource('authors', AuthorsController::class)->middleware('admin');
+    Route::resource('authors', AuthorsController::class);
     Route::resource('publishers', PublishersController::class);
-    Route::resource('books', BooksController::class)->middleware('admin');
+    Route::resource('books', BooksController::class);
 });
