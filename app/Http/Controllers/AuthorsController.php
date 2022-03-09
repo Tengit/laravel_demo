@@ -69,8 +69,6 @@ class AuthorsController extends Controller
 
         return redirect()->route('authors.show', $author)
             ->with('success', 'Author updated successfully');
-
-        return redirect()->to('/authors/'.$author->abbreviation);
     }
 
     public function destroy(Authors $author)
@@ -79,8 +77,6 @@ class AuthorsController extends Controller
 
         return redirect()->route('authors.index')
             ->with('success', 'Author Deleted!');
-
-        return back()->with('success', 'Author Deleted!');
     }
 
     protected function validatePost(?Authors $author = null): array
@@ -93,5 +89,12 @@ class AuthorsController extends Controller
             'address' => '',
             'email' => ['required', Rule::unique('authors', 'email')->ignore($author)],
         ]);
+    }
+
+    public function books()
+    {
+        return $this->belongsToMany(Books::class)
+            ->as('book')
+            ->withTimestamps();
     }
 }
