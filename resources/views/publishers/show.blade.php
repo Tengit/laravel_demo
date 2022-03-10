@@ -60,7 +60,7 @@
 
                     <a href="{{ route('publishers.edit', $publisher->id) }}" class="text-blue-500 hover:text-blue-600">Edit</a>
     
-                    <a href="/publishers/create?name={{$publisher->name}}&abbreviation={{$publisher->abbreviation}}&description={{$publisher->description}}" class="text-blue-500 hover:text-blue-600">Copy</a>
+                    <a href="{{ route('publishers.create') }}?name={{$publisher->name}}&abbreviation={{$publisher->abbreviation}}&description={{$publisher->description}}" class="text-blue-500 hover:text-blue-600">Copy</a>
 
                     @csrf
                     @method('DELETE')

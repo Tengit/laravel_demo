@@ -90,3 +90,11 @@ Route::middleware('web')->group(function () {
     Route::resource('publishers', PublishersController::class);
     Route::resource('books', BooksController::class);
 });
+/* User Section 
+Route::middleware('web')->group(function () {
+    Route::resource('categories', CategoriesController::class)->except('edit', 'create', 'update');
+    Route::resource('authors', AuthorsController::class)->except('edit', 'create', 'update');
+    Route::resource('publishers', PublishersController::class)->except('edit', 'create', 'update');
+    Route::resource('books', BooksController::class)->except('edit', 'create', 'update');
+});
+*/

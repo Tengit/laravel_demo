@@ -17,7 +17,9 @@
                  <x-form.label name="category"/>
 
                  <select name="category_id" id="category_id" required>
-                     @foreach (\App\Models\Categories::all() as $category)
+                        <option
+                            value="">-Select Category-</option> 
+                     @foreach ($categories as $category)
                          <option
                              value="{{ $category->id }}"
                              {{ old('category_id', $book->category_id) == $category->id ? 'selected' : '' }}
@@ -32,7 +34,9 @@
                  <x-form.label name="publisher"/>
 
                  <select name="publisher_id" id="publisher_id" required>
-                     @foreach (\App\Models\Publishers::all() as $publisher)
+                        <option
+                            value="">-Select Publisher-</option>
+                     @foreach ($publishers as $publisher)
                          <option
                              value="{{ $category->id }}"
                              {{ old('publisher_id', $book->publisher_id) == $publisher->id ? 'selected' : '' }}

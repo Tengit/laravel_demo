@@ -12,7 +12,7 @@
                 <select name="category_id" id="category_id" required>
                     <option
                         value="">-Select Category-</option>
-                    @foreach (\App\Models\Categories::all() as $category)
+                    @foreach ($categories as $category)
                         <option
                             value="{{ $category->id }}"
                             {{ old('category_id') == $category->id ? 'selected' : '' }}
@@ -28,8 +28,8 @@
 
                 <select name="publisher_id" id="publisher_id">
                         <option
-                            value="">-Select Category-</option>
-                    @foreach (\App\Models\Publishers::all() as $publisher)
+                            value="">-Select Publisher-</option>
+                    @foreach ($publishers as $publisher)
                         <option
                             value="{{ $publisher->id }}"
                             {{ old('publisher') == $publisher->id ? 'selected' : '' }}

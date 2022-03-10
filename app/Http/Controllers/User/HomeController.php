@@ -9,11 +9,18 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+
+    protected $pagination;
+    
+    public function __construct(){
+        $this->pagination = config('constants.pagination_records');
+    }
+
     public function index()
     {
         return view('books.index', [
             'index'      => 1,
-            'books' => Books::latest()->paginate(2)
+            'books' => Books::latest()->paginate($this->pagination)
         ]);
     }
 }

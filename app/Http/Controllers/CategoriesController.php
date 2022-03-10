@@ -10,30 +10,18 @@ use DB;
 
 class CategoriesController extends Controller
 {
+    protected $pagination;
+    
+    public function __construct(){
+        $this->pagination = config('constants.pagination_records');
+    }
+
     public function index()
     {
         return view('categories.index', [
             'index'      => 1,
-            'categories' => Categories::latest()->paginate(10)
+            'categories' => Categories::latest()->paginate($this->pagination)
         ]);
-    /*
-        $categories = Categories::latest()->paginate(5);
-        return view('categories.index', compact('categories'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
-            
-    */
-            
-    /*
-        $categories = DB::table('categories')
-            ->orderBy('created_at', 'desc')
-            ->orderBy('name', 'asc')
-            ->get();
-
-        return view('categories.index', [
-            'index'      => 1,
-            'categories' => $categories]
-        );
-    */
     }
     
     public function show(Categories $category)
@@ -77,8 +65,6 @@ class CategoriesController extends Controller
 
         return redirect()->route('categories.index')
             ->with('success', 'Category Deleted!');
-
-        return back()->with('success', 'Category Deleted!');
     }
 
     protected function validatePost(?Categories $category = null): array
@@ -90,9 +76,5 @@ class CategoriesController extends Controller
             'abbreviation' => ['required', Rule::unique('categories', 'abbreviation')->ignore($category)],
             'description' => '',
         ]);
-    }
-    public function books()
-    {
-        return $this->hasMany(Books::class);
     }
 }

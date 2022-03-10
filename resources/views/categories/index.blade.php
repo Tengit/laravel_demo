@@ -37,7 +37,7 @@
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="/categories/create?name={{$category->name}}&abbreviation={{$category->abbreviation}}&description={{$category->description}}" class="text-blue-500 hover:text-blue-600">Copy</a>
+                                            <a href="{{ route('categories.create') }}?name={{$category->name}}&abbreviation={{$category->abbreviation}}&description={{$category->description}}" class="text-blue-500 hover:text-blue-600">Copy</a>
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

@@ -11,11 +11,17 @@ use DB;
 class PublishersController extends Controller
 {
     
+    protected $pagination;
+    
+    public function __construct(){
+        $this->pagination = config('constants.pagination_records');
+    }
+
     public function index()
     {
         return view('publishers.index', [
             'index'      => 1,
-            'publishers' => Publishers::latest()->paginate(10)
+            'publishers' => Publishers::latest()->paginate($this->pagination)
         ]);
     }
     
@@ -60,8 +66,6 @@ class PublishersController extends Controller
 
         return redirect()->route('publishers.index')
             ->with('success', 'Publisher Deleted!');
-
-        return back()->with('success', 'Publisher Deleted!');
     }
 
     protected function validatePost(?Publishers $publishers = null): array
@@ -74,9 +78,5 @@ class PublishersController extends Controller
             'email' => ['required', Rule::unique('publishers', 'email')->ignore($publishers)],
             'description' => '',
         ]);
-    }
-    public function books()
-    {
-        return $this->hasMany(Books::class);
     }
 }

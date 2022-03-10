@@ -4,17 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Books;
+use App\Models\Categories;
+use App\Models\Publishers;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
+use App\Repositories\BookInterface;
 
 class BooksController extends Controller
 {
+    private $bookRepository;
+    private $pagination;
+
+    public function __construct(BookInterface $bookRepository)
+    {
+        $this->bookRepository = $bookRepository;
+        $this->pagination = config('constants.pagination_records');
+    }
+
     public function index()
     {
         return view('books.index', [
             'index'      => 1,
-            'books' => Books::latest()->paginate(10)
+            'books' => Books::latest()->paginate($this->pagination)
         ]);
     }
     
@@ -25,7 +37,9 @@ class BooksController extends Controller
     
     public function create(Request $request)
     {
-        return view('books.create');
+        $categories = Categories::all();
+        $publishers = Publishers::all();
+        return view('books.create', compact('categories', 'publishers'));
     }
 
     public function store(Request $request)
@@ -40,7 +54,9 @@ class BooksController extends Controller
 
     public function edit(Books $book)
     {
-        return view('books.edit', compact('book'));
+        $categories = Categories::all();
+        $publishers = Publishers::all();
+        return view('books.edit', compact('book', 'categories', 'publishers'));
     }
 
     public function update(Books $book)
@@ -82,22 +98,5 @@ class BooksController extends Controller
             'price' => 'required',
             'date_published' => 'required',
         ]);
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Categories::class);
-    }
-
-    public function publisher()
-    {
-        return $this->belongsTo(Publishers::class);
-    }
-
-    public function author()
-    {
-        return $this->belongsToMany(Authors::class)
-            ->as('author')
-            ->withTimestamps();
     }
 }

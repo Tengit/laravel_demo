@@ -63,7 +63,7 @@
 
                     <a href="{{ route('authors.edit', $author->id) }}" class="text-blue-500 hover:text-blue-600">Edit</a>
     
-                    <a href="/authors/create?name={{$author->name}}&biography={{$author->biography}}" class="text-blue-500 hover:text-blue-600">Copy</a>
+                    <a href="{{ route('authors.create') }}?name={{$author->name}}&biography={{$author->biography}}" class="text-blue-500 hover:text-blue-600">Copy</a>
 
                     @csrf
                     @method('DELETE')

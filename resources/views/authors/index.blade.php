@@ -43,7 +43,7 @@
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="/authors/create?name={{$author->name}}&biography={{$author->biography}}" class="text-blue-500 hover:text-blue-600">Copy</a>
+                                            <a href="{{ route('authors.create') }}?name={{$author->name}}&biography={{$author->biography}}" class="text-blue-500 hover:text-blue-600">Copy</a>
                                         </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

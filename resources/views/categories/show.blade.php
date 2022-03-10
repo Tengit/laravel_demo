@@ -57,7 +57,7 @@
 
                     <a href="{{ route('categories.edit', $category->id) }}" class="text-blue-500 hover:text-blue-600">Edit</a>
     
-                    <a href="/categories/create?name={{$category->name}}&abbreviation={{$category->abbreviation}}&description={{$category->description}}" class="text-blue-500 hover:text-blue-600">Copy</a>
+                    <a href="{{ route('categories.create') }}?name={{$category->name}}&abbreviation={{$category->abbreviation}}&description={{$category->description}}" class="text-blue-500 hover:text-blue-600">Copy</a>
 
                     @csrf
                     @method('DELETE')

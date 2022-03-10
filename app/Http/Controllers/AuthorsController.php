@@ -7,33 +7,22 @@ use App\Models\Authors;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
+use App\Repositories\AuthorInterface;
 
 class AuthorsController extends Controller
 {
+    private $authorRepository;
+    private $pagination;
+
+    public function __construct(AuthorInterface $authorRepository)
+    {
+        $this->authorRepository = $authorRepository;
+        $this->pagination = config('constants.pagination_records');
+    }
+
     public function index()
     {
-        return view('authors.index', [
-            'index'      => 1,
-            'authors' => Authors::latest()->paginate(10)
-        ]);
-    /*
-        $authors = Authors::latest()->paginate(5);
-        return view('authors.index', compact('authors'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
-            
-    */
-            
-    /*
-        $authors = DB::table('authors')
-            ->orderBy('created_at', 'desc')
-            ->orderBy('name', 'asc')
-            ->get();
-
-        return view('authors.index', [
-            'index'      => 1,
-            'authors' => $authors]
-        );
-    */
+        return response()->json($this->authorRepository->all(), 200);
     }
     
     public function show(Authors $author)
@@ -74,7 +63,6 @@ class AuthorsController extends Controller
     public function destroy(Authors $author)
     {
         $author->delete();
-
         return redirect()->route('authors.index')
             ->with('success', 'Author Deleted!');
     }
@@ -89,12 +77,5 @@ class AuthorsController extends Controller
             'address' => '',
             'email' => ['required', Rule::unique('authors', 'email')->ignore($author)],
         ]);
-    }
-
-    public function books()
-    {
-        return $this->belongsToMany(Books::class)
-            ->as('book')
-            ->withTimestamps();
     }
 }
