@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
 use App\Repositories\BookInterface;
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 
 class BooksController extends Controller
 {
@@ -42,9 +44,10 @@ class BooksController extends Controller
         return view('books.create', compact('categories', 'publishers'));
     }
 
-    public function store(Request $request)
+    public function store(StoreBookRequest $request)
     {
-        $book = Books::create(array_merge($this->validatePost(), [
+        $input = $request->all();
+        $book = Books::create(array_merge($input, [
             'created_by' =>  $request->user()->id,
             'modified_by' =>  $request->user()->id
         ]));
@@ -59,12 +62,9 @@ class BooksController extends Controller
         return view('books.edit', compact('book', 'categories', 'publishers'));
     }
 
-    public function update(Books $book)
+    public function update(UpdateBookRequest $request, Books $book)
     {
-        $attributes = $this->validatePost($book);
-
-        $book->update($attributes);
-
+        $book->update($request->all());
         return redirect()->route('books.show', $book)
             ->with('success', 'Book updated successfully');
     }
@@ -77,26 +77,5 @@ class BooksController extends Controller
             ->with('success', 'Book deleted!');
 
         return back()->with('success', 'Book Deleted!');
-    }
-
-    protected function validatePost(?Books $book = null): array
-    {
-        $book ??= new Books();
-
-        return request()->validate([
-            'title' => 'required',
-            'isbn' => 'required',
-            'parent_id' => '',
-            'category_id' => 'required',
-            'publisher_id' => 'required',
-            'condition' => 'required',
-            'content' => 'required',
-            'num_pages' => 'required',
-            'quantity' => 'required',
-            'edition' => 'required',
-            'description' => 'required',
-            'price' => 'required',
-            'date_published' => 'required',
-        ]);
     }
 }

@@ -7,6 +7,8 @@ use App\Models\Categories;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 
 class CategoriesController extends Controller
 {
@@ -34,9 +36,10 @@ class CategoriesController extends Controller
         return view('categories.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $category = Categories::create(array_merge($this->validatePost(), [
+        $input = $request->all();
+        $category = Categories::create(array_merge($input, [
             // 'created_by' => request()->user()->id,
             // 'modified_by' => request()->user()->id
         ]));
@@ -49,12 +52,9 @@ class CategoriesController extends Controller
         return view('categories.edit', compact('category'));
     }
 
-    public function update(Categories $category)
+    public function update(UpdateCategoryRequest $request, Categories $category)
     {
-        $attributes = $this->validatePost($category);
-
-        $category->update($attributes);
-
+        $category->update($request->all());
         return redirect()->route('categories.show', $category)
             ->with('success', 'Category updated successfully');
     }
@@ -65,16 +65,5 @@ class CategoriesController extends Controller
 
         return redirect()->route('categories.index')
             ->with('success', 'Category Deleted!');
-    }
-
-    protected function validatePost(?Categories $category = null): array
-    {
-        $category ??= new Categories();
-
-        return request()->validate([
-            'name' => 'required',
-            'abbreviation' => ['required', Rule::unique('categories', 'abbreviation')->ignore($category)],
-            'description' => '',
-        ]);
     }
 }

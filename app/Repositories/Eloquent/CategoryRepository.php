@@ -17,7 +17,7 @@ class CategoryRepository extends BaseRepository implements CategoryInterface
      *
      * @param Model $model
      */
-    public function __construct(Books $model)
+    public function __construct(Categories $model)
     {
         $this->model = $model;
     }

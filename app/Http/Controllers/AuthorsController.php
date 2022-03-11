@@ -9,6 +9,9 @@ use Illuminate\Validation\Rule;
 use DB;
 use App\Repositories\AuthorInterface;
 
+use App\Http\Requests\StoreAuthorRequest;
+use App\Http\Requests\UpdateAuthorRequest;
+
 class AuthorsController extends Controller
 {
     private $authorRepository;
@@ -35,9 +38,10 @@ class AuthorsController extends Controller
         return view('authors.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreAuthorRequest $request)
     {
-        $author = Authors::create(array_merge($this->validatePost(), [
+        $input = $request->all();        
+        $author = Authors::create(array_merge($input, [
             'created_by' =>  $request->user()->id,
             'modified_by' =>  $request->user()->id
         ]));
@@ -50,11 +54,9 @@ class AuthorsController extends Controller
         return view('authors.edit', compact('author'));
     }
 
-    public function update(Authors $author)
+    public function update(UpdateAuthorRequest $request, Authors $author)
     {
-        $attributes = $this->validatePost($author);
-
-        $author->update($attributes);
+        $author->update($request->all());
 
         return redirect()->route('authors.show', $author)
             ->with('success', 'Author updated successfully');
@@ -65,17 +67,5 @@ class AuthorsController extends Controller
         $author->delete();
         return redirect()->route('authors.index')
             ->with('success', 'Author Deleted!');
-    }
-
-    protected function validatePost(?Authors $author = null): array
-    {
-        $author ??= new Authors();
-
-        return request()->validate([
-            'name' => 'required',
-            'biography' => 'required',
-            'address' => '',
-            'email' => ['required', Rule::unique('authors', 'email')->ignore($author)],
-        ]);
     }
 }

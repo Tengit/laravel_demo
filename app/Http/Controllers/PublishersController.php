@@ -7,6 +7,8 @@ use App\Models\Publishers;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
+use App\Http\Requests\StorePublisherRequest;
+use App\Http\Requests\UpdatePublisherRequest;
 
 class PublishersController extends Controller
 {
@@ -35,9 +37,10 @@ class PublishersController extends Controller
         return view('publishers.create');
     }
 
-    public function store(Request $request)
+    public function store(StorePublisherRequest $request)
     {
-        $publishers = Publishers::create(array_merge($this->validatePost(), [
+        $input = $request->all();
+        $publishers = Publishers::create(array_merge($input, [
             // 'created_by' => request()->user()->id,
             // 'modified_by' => request()->user()->id
         ]));
@@ -50,12 +53,9 @@ class PublishersController extends Controller
         return view('publishers.edit', compact('publisher'));
     }
 
-    public function update(Publishers $publishers)
+    public function update(UpdatePublisherRequest $request, Publishers $publishers)
     {
-        $attributes = $this->validatePost($publishers);
-
-        $publishers->update($attributes);
-
+        $publishers->update($request->all());
         return redirect()->route('publishers.show', $publishers)
             ->with('success', 'Publisher updated successfully');
     }
@@ -66,17 +66,5 @@ class PublishersController extends Controller
 
         return redirect()->route('publishers.index')
             ->with('success', 'Publisher Deleted!');
-    }
-
-    protected function validatePost(?Publishers $publishers = null): array
-    {
-        $publishers ??= new Publishers();
-
-        return request()->validate([
-            'name' => 'required',
-            'address' => 'required',
-            'email' => ['required', Rule::unique('publishers', 'email')->ignore($publishers)],
-            'description' => '',
-        ]);
     }
 }

@@ -17,7 +17,7 @@ class PublisherRepository extends BaseRepository implements PublisherInterface
      *
      * @param Model $model
      */
-    public function __construct(Books $model)
+    public function __construct(Publishers $model)
     {
         $this->model = $model;
     }

@@ -17,7 +17,7 @@ class AuthorRepository extends BaseRepository implements AuthorInterface
      *
      * @param Model $model
      */
-    public function __construct(Books $model)
+    public function __construct(Authors $model)
     {
         $this->model = $model;
     }
