@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('fullname');
-            $table->integer('role_id');
+            $table->integer('role_id')->nullable();
             $table->date ('birthday')->nullable();
             $table->integer('created_by');
             $table->integer('modified_by');

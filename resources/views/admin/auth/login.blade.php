@@ -1,48 +1,49 @@
-<x-layout>
-    <section class="px-6 py-8">
-        <main class="max-w-lg mx-auto mt-10 bg-gray-100 border border-gray-200 p-6 rounded-xl">
-            <h1 class="text-center font-bold text-xl">Admin login</h1>
-
-            <form method="POST" action="{{ route('admin.login') }}" class="mt-10">
-                @csrf
-
-                <div class="mb-6">
-                    <label class="block mb-2 uppercase font-bold text-xs text-gray-700"
-                           for="email"
-                    >
-                        Email
-                    </label>
-
-                    <input class="border border-gray-400 p-2 w-full"
-                           type="email"
-                           name="email"
-                           id="email"
-                    >
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+</head>
+<body style="background-color:#c8d9e8 !important">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4" style="margin-top: 45px">
+                <h3 class="font-bold md:text-[24px] text-[22px] text-center mb-[55px] @if ($errors->any()) mb-[40px] @endif">{{ __('Admin Login') }}</h3>
+                @if (count($errors) > 0)
+                <div class="error-message">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
-
-                <div class="mb-6">
-                    <label class="block mb-2 uppercase font-bold text-xs text-gray-700"
-                           for="password"
-                    >
-                        Password
-                    </label>
-
-                    <input class="border border-gray-400 p-2 w-full"
-                           type="password"
-                           name="password"
-                           id="password"
-                    >
-                </div>
-
-
-                <div class="mb-6">
-                    <button type="submit"
-                            class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500"
-                    >
-                        Đăng nhập
-                    </button>
-                </div>
-            </form>
-        </main>
-    </section>
-</x-layout>
+                @endif
+                 <form action="{{ route('admin.check') }}" method="post">
+                    @if (Session::get('fail'))
+                        <div class="alert alert-danger">
+                            {{ Session::get('fail') }}
+                        </div>
+                    @endif
+                    @csrf
+                     <div class="form-group">
+                         <label for="email">Email</label>
+                         <input type="text" class="form-control" name="email" placeholder="Enter email address" value="{{ old('email') }}">
+                         <span class="text-danger">@error('email'){{ $message }}@enderror</span>
+                     </div>
+                     <div class="form-group">
+                         <label for="password">Password</label>
+                         <input type="password" class="form-control" name="password" placeholder="Enter password" value="{{ old('password') }}">
+                         <span class="text-danger">@error('password'){{ $message }}@enderror</span>
+                     </div>
+                     <div class="form-group">
+                         <button type="submit" class="btn btn-primary">Login</button>
+                     </div>
+                 </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

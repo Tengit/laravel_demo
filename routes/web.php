@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\User\Auth\LoginController;
+use App\Http\Controllers\User\Auth\UserController;
+use App\Http\Controllers\Admin\Auth\AdminController;
 use App\Http\Controllers\User\HomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -28,30 +29,42 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::match(['get', 'post'], '/login', [LoginController::class, 'login'])->name('login');
-Route::middleware('auth')->group(function (){
-    Route::get('/', [HomeController::class, 'index'])->name('home');
+Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+Route::prefix('admin')->name('admin.')->group(function(){
+       
+    Route::middleware(['guest:admin','PreventBackHistory'])->group(function(){
+          Route::view('/login','admin.auth.login')->name('login');
+          Route::post('/check',[AdminController::class,'check'])->name('check');
+    });
+
+    Route::middleware(['auth:admin','PreventBackHistory'])->group(function(){
+        Route::view('/home','admin.auth.home')->name('home');
+        Route::view('/','admin.auth.home')->name('home');
+        Route::post('/logout',[AdminController::class,'logout'])->name('logout');
+    });
+
 });
 
-Route::get('/hello', function () {
-    return 'Hello World';
+Route::prefix('user')->name('user.')->group(function(){
+  
+    Route::middleware(['guest:web','PreventBackHistory'])->group(function(){
+          Route::view('/login','auth.login')->name('login');
+          Route::view('/register','auth.register')->name('register');
+          Route::post('/create',[UserController::class,'create'])->name('create');
+          Route::post('/check',[UserController::class,'check'])->name('check');
+    });
+
+    Route::middleware(['auth:web','PreventBackHistory'])->group(function(){
+          Route::view('/home','auth.home')->name('home');
+          Route::post('/logout',[UserController::class,'logout'])->name('logout');
+    });
+
 });
 
-Route::get('/welcome', function() {
-    return view('commons.pages.news', ['title'=>'xxx']);
-});
-
-Route::match(['get', 'post'], '/login', [LoginController::class, 'login'])->name('login');
-Route::middleware('auth')->group(function (){
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-});
-
-Route::get('/register', [RegisterController::class, 'create'])->middleware('guest');
-Route::post('register', [RegisterController::class, 'store'])->middleware('guest');
-
-// Route::get('login', [SessionsController::class, 'create'])->middleware('guest');
-// Route::post('login', [SessionsController::class, 'store'])->middleware('guest');
-Route::post('logout', [SessionsController::class, 'destroy'])->middleware('auth');
 
 /*
 // books
