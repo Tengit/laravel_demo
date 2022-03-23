@@ -4,9 +4,9 @@
         <div id="sidebar-menu">
             <ul class="metismenu" id="side-menu">
                 <li>
-                    <a href="{{route('admin.home')}}" class="nav-link">
+                    <a href="{{routeByPlaceId('staff.staffDashboard')}}" class="nav-link">
                         <i class="mdi mdi-view-dashboard"></i>
-                        <span>{{trans('admin_top.title') }}</span>
+                        <span>{{trans('staff_dashboard.page_title') }}</span>
                     </a>
                 </li>
             </ul>

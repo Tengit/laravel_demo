@@ -28,6 +28,9 @@ use App\Http\Controllers\CategoriesController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/home', function () {
+    return view('welcome');
+});
 
 Auth::routes();
 
@@ -59,12 +62,14 @@ Route::prefix('user')->name('user.')->group(function(){
     });
 
     Route::middleware(['auth:web','PreventBackHistory'])->group(function(){
-          Route::view('/home','auth.home')->name('home');
-          Route::post('/logout',[UserController::class,'logout'])->name('logout');
+        Route::view('/home','auth.home')->name('home');
+        Route::view('/','auth.home')->name('home');
+        Route::post('/logout',[UserController::class,'logout'])->name('logout');
     });
 
 });
 
+Route::view('/register', 'auth.register')->name('register');
 
 /*
 // books

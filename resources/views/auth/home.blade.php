@@ -1,40 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>User Dashboard | Home</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-</head>
-<body>
+@section('title', 'User page')
+@extends('commons.layouts.user.app')
+@section('content')
+<div class="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    Dashboard
+                </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 offset-md-3" style="margin-top: 45px">
-                 <h4>user Dashboard</h4><hr>
-                 <table class="table table-striped table-inverse table-responsive">
-                     <thead class="thead-inverse">
-                         <tr>
-                             <th>Name</th>
-                             <th>Email</th>
-                             <th>Action</th>
-                         </tr>
-                         </thead>
-                         <tbody>
-                             <tr>
-                                 <td>{{ Auth::guard('web')->user()->name }}</td>
-                                 <td>{{ Auth::guard('web')->user()->email }}</td>
-                                 <td>
-                                     <a href="{{ route('user.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
-                                     <form action="{{ route('user.logout') }}" method="post" class="d-none" id="logout-form">@csrf</form>
-                                 </td>
-                             </tr>
-                         </tbody>
-                 </table>
+                <div class="card-body">
+                    @if(session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    You are logged in!
+                </div>
             </div>
         </div>
     </div>
-    
-</body>
-</html>
+</div>
+@endsection

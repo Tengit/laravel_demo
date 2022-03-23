@@ -14,10 +14,8 @@ class UserController extends Controller
           $request->validate([
               'name'=>'required',
               'fullname'=>'required',
-              'role_id'=>'required',
               'email'=>'required|email|unique:users,email',
               'password'=>'required|min:5|max:30',
-              'cpassword'=>'required|min:5|max:30|same:password'
           ]);
 
           $user = new User();
@@ -31,7 +29,7 @@ class UserController extends Controller
           $save = $user->save();
 
           if( $save ){
-              return redirect()->back()->with('success','You are now registered successfully');
+              return redirect()->route('user.login');
           }else{
               return redirect()->back()->with('fail','Something went wrong, failed to register');
           }

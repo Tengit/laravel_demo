@@ -1,40 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin Dashboard | Home</title>
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-</head>
-<body style="background-color: #d7dadb">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 offset-md-3" style="margin-top: 45px">
-                 <h4>Admin Dashboard</h4><hr>
-                 <table class="table table-striped table-inverse table-responsive">
-                     <thead class="thead-inverse">
-                         <tr>
-                             <th>Name</th>
-                             <th>Email</th>
-                             <th>Phone</th>
-                             <th>Action</th>
-                         </tr>
-                         </thead>
-                         <tbody>
-                             <tr>
-                                 <td scope="row">{{ Auth::guard('admin')->user()->name }}</td>
-                                 <td>{{ Auth::guard('admin')->user()->email }}</td>
-                                 <td>{{ Auth::guard('admin')->user()->phone }}</td>
-                                 <td>
-                                     <a href="{{ route('admin.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
-                                     <form action="{{ route('admin.logout') }}" id="logout-form" method="post">@csrf</form>
-                                 </td>
-                             </tr>
-                         </tbody>
-                 </table>
+@section('title', 'Admin page')
+@extends('commons.layouts.staff.app')
+@section('content')
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card-box">
+                <div class="panel-body">
+                    <div class="clearfix">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="page-title mb-0">Admin Dashboard</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if ($message = Session::get('message'))
+                        <div class="row my-3">
+                            <div class="col-12">
+                                <div class="alert alert-success alert-block text-center">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    <strong>{{ $message }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    <div class="row mb-4 mt-5">
+                        <div class="col-12">
+                            <div class="row justify-content-center dataTables_wrapper">
+                                <div class="col-sm-12">
+                                    <div class="table-responsive mb-3">
+                                        <table id="admin_top_table"
+                                               class="table table-striped table-bordered dt-responsive mb-0">
+                                            <thead class="table-head">
+                                                <tr>
+                                                    <th>{{trans('admin_top.place_name')}}</th>
+                                                    <th class="width-column-three-letter">{{trans('admin_top.capacity')}}</th>
+                                                    <th class="width-column-three-letter">{{trans('admin_top.number_of_evacuees')}}</th>
+                                                    <th class="width-column">{{trans('admin_top.accommodation_rate')}}</th>
+                                                    <th class="width-column-two-letter">{{trans('admin_top.household')}}</th>
+                                                    <th class="width-column-one-letter">{{trans('commons.male')}}</th>
+                                                    <th class="width-column-one-letter">{{trans('commons.female')}}</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{trans('admin_top.place_name')}}</th>
+                                                    <th class="width-column-three-letter">{{trans('admin_top.capacity')}}</th>
+                                                    <th class="width-column-three-letter">{{trans('admin_top.number_of_evacuees')}}</th>
+                                                    <th class="width-column">{{trans('admin_top.accommodation_rate')}}</th>
+                                                    <th class="width-column-two-letter">{{trans('admin_top.household')}}</th>
+                                                    <th class="width-column-one-letter">{{trans('commons.male')}}</th>
+                                                    <th class="width-column-one-letter">{{trans('commons.female')}}</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</body>
-</html>
+@endsection
