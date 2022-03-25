@@ -5,12 +5,6 @@
     <link href="{{ asset('css/admin/admin_top.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin/switcher.css') }}" rel="stylesheet">
 @endpush
-@push('scripts')
-    <script src="{{ asset('js/admin/admin_top.js')}}"></script>
-    <script src="{{ asset('js/change_status_full_modal.js') }}"></script>
-    <script src="{{ asset('js/admin/jquery.switcher.js') }}"></script>
-    <script>$.switcher();</script>
-@endpush
 @section('content')
     <div class="row mt-4">
         <div class="col-12">
@@ -142,3 +136,9 @@
     </div>
     @include('common.layouts.confirm_change_full_status_modal')
 @endsection
+@push('scripts')
+    <script src="{{ asset('js/admin/admin_top.js')}}"></script>
+    <script src="{{ asset('js/change_status_full_modal.js') }}"></script>
+    <script src="{{ asset('js/admin/jquery.switcher.js') }}"></script>
+    <script>$.switcher();</script>
+@endpush

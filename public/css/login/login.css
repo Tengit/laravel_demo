@@ -33,11 +33,11 @@ opacity: .95;
 
 /* Start form  attributes */
 form {
-    width: 400px;
+    width: 350px;
     min-height: 500px;
     height: auto;
     border-radius: 5px;
-    margin: 2% auto;
+    margin: 0 auto;
     box-shadow: 0 9px 50px hsla(20, 67%, 75%, 0.31);
     padding: 2%;
 }
@@ -52,7 +52,7 @@ form .con {
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
   
-      margin: 0 auto;
+    margin: 0 auto;
 }
 
 /* the header form form */
@@ -79,7 +79,6 @@ header p {letter-spacing: 0.05em;}
     background: #fff;
     color: #333;
     padding: 14.5px 0px 15px 9px;
-    border-radius: 5px 0px 0px 5px;
 }
 .error {
     background: #fff;
@@ -121,15 +120,8 @@ input[class="form-input"]{
     outline: none;
     border: none;
   
-    border-radius: 0px 5px 5px 0px;
     transition: 0.2s linear;
     
-}
-input[id="txt-input"] {width: 250px;}
-/* focus  */
-input:focus {
-    transform: translateX(-2px);
-    border-radius: 5px;
 }
 
 /* //////////////////////////////////////////// */

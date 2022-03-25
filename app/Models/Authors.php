@@ -16,7 +16,6 @@ class Authors extends Model
     protected $fillable = [
         'name',
         'biography',
-        'address',
         'email',
     ];
 

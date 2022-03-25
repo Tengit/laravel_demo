@@ -25,9 +25,16 @@ class UpdatePublisherRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'address' => 'required',
-            'email' => ['required', Rule::unique('publishers', 'email')->ignore($this->publishers)],
+            'name' =>  [
+                'required'
+            ],
+            'address' =>  [
+                'required'
+            ],
+            'email' => [
+                'required',
+                Rule::unique('publishers', 'email')->ignore($this->publishers)
+            ],
         ];
     }
 }

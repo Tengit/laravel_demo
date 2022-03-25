@@ -25,18 +25,44 @@ class StoreBookRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', Rule::unique('books', 'title')],
-            'isbn' => ['required', Rule::unique('books', 'isbn')],
-            'category_id' => 'required',
-            'publisher_id' => 'required',
-            'condition' => 'required',
-            'content' => 'required',
-            'num_pages' => 'required',
-            'quantity' => 'required',
-            'edition' => 'required',
-            'description' => 'required',
-            'price' => 'required',
-            'date_published' => 'required',
+            'title'         => [
+                'required',
+                Rule::unique('books', 'title')
+            ],
+            'isbn'         => [
+                'required',
+                Rule::unique('books', 'isbn')
+            ],
+            'category_id'          => [
+                'required',
+            ],
+            'publisher_id'     => [
+                'required',
+            ],
+            'condition'     => [
+                'required',
+            ],
+            'content'     => [
+                'required',
+            ],
+            'num_pages'     => [
+                'required',
+            ],
+            'quantity'     => [
+                'required',
+            ],
+            'edition'     => [
+                'required',
+            ],
+            'description'     => [
+                'required',
+            ],
+            'price'     => [
+                'required',
+            ],
+            'date_published'     => [
+                'required',
+            ],
         ];
     }
 }

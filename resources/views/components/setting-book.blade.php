@@ -10,11 +10,11 @@
             <h4 class="font-semibold mb-4">Menu</h4>
             <ul>
                 <li>
-                    <a href="/books" class="{{ request()->is('books') ? 'text-blue-500' : '' }}">All Books</a>
+                    <a href="{{ route('admin.books.index') }}" class="{{ request()->is('admin/books') ? 'text-blue-500' : '' }}">All Books</a>
                 </li>
 
                 <li>
-                    <a href="/books/create" class="{{ request()->is('books/create') ? 'text-blue-500' : '' }}">New Book</a>
+                    <a href="{{ route('admin.books.create') }}" class="{{ request()->is('admin/books/create') ? 'text-blue-500' : '' }}">New Book</a>
                 </li>
             </ul>
         </aside>

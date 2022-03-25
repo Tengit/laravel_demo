@@ -52,7 +52,7 @@ class BooksController extends Controller
             'modified_by' =>  $request->user()->id
         ]));
 
-        return redirect()->route('books.show', $book);
+        return redirect()->route('admin.books.show', $book);
     }
 
     public function edit(Books $book)

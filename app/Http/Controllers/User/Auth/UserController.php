@@ -6,45 +6,82 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Books;
+
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
-    function create(Request $request){
-          //Validate Inputs
-          $request->validate([
-              'name'=>'required',
-              'fullname'=>'required',
-              'email'=>'required|email|unique:users,email',
-              'password'=>'required|min:5|max:30',
-          ]);
-
-          $user = new User();
-          $user->name = $request->name;
-          $user->fullname = $request->fullname;
-          $user->role_id = config('constants.role_user');
-          $user->created_by = '1';
-          $user->modified_by = '1';
-          $user->email = $request->email;
-          $user->password = \Hash::make($request->password);
-          $save = $user->save();
-
-          if( $save ){
-              return redirect()->route('user.login');
-          }else{
-              return redirect()->back()->with('fail','Something went wrong, failed to register');
-          }
+    /**
+     * @standard
+     * 
+     */
+    public function index()
+    {
+        $books = Books::all();
+        return view('auth.home', [
+            'index'      => 1,
+            'books' => $books
+        ]);
     }
 
-    function check(Request $request){
-        //Validate inputs
-        $request->validate([
-           'email'=>'required|email|exists:users,email',
-           'password'=>'required|min:5|max:30'
-        ],[
-            'email.exists'=>'This email is not exists on users table'
-        ]);
+    public function create()
+    {
+        return redirect()->route('login');
+    }
 
+    public function store(StoreUserRequest $request)
+    {
+        /*
+        $request->request->add([
+            'role_id' =>  config('constants.role_user'),
+            'created_by' =>  config('constants.role_user'),
+            'modified_by' =>  config('constants.role_user'),
+        ]);
+        */
+        $user = User::create($request->all());
+        if( $user ){
+            return redirect()->route('user.login');
+        }else{
+            return redirect()->back()->with('fail','Something went wrong, failed to register');
+        }
+    //    return redirect()->route('users.index');
+    }
+
+    public function edit(User $user)
+    {
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(UpdateUserRequest $request, User $user)
+    {
+        $user->update($request->all());
+
+        return redirect()->route('users.index');
+    }
+
+    public function show(User $user)
+    {
+        
+        return view('users.show', compact('user'));
+    }
+
+    public function destroy(User $user)
+    {
+
+        $user->delete();
+
+        return back();
+    }
+    
+    /**
+     * @func check login
+     */
+    public function check(UpdateUserRequest $request)
+    {
         $creds = $request->only('email','password');
+        
         if( Auth::guard('web')->attempt($creds) ){
             return redirect()->route('user.home');
         }else{
@@ -52,7 +89,8 @@ class UserController extends Controller
         }
     }
 
-    function logout(){
+    public function logout()
+    {
         Auth::guard('web')->logout();
         return redirect('/');
     }

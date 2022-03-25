@@ -1,25 +1,83 @@
-@section('title', 'User page')
-@extends('commons.layouts.user.app')
+@section('title', 'User Page')
+@extends('commons.layouts.staff.app')
 @section('content')
-<div class="content">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    Dashboard
-                </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card-box">
+                <div class="panel-body">
+                    <div class="clearfix">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="page-title mb-0">{{trans('global.user.top_title')}}</h5>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="card-body">
-                    @if(session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                    @if ($message = Session::get('message'))
+                        <div class="row my-3">
+                            <div class="col-12">
+                                <div class="alert alert-success alert-block text-center">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    <strong>{{ $message }}</strong>
+                                </div>
+                            </div>
                         </div>
                     @endif
-
-                    You are logged in!
+                    <div class="row mb-4 mt-5">
+                        <div class="col-12">
+                            <div class="row justify-content-center dataTables_wrapper">
+                                <div class="col-sm-12">
+                                    <div class="table-responsive mb-3">
+                                        <table id="admin_top_table"
+                                               class="table table-striped table-bordered dt-responsive mb-0">
+                                            <thead class="table-head">
+                                                <tr>
+                                                    <th class="px-6 py-4">No.</th>
+                                                    <th class="px-6 py-4">Title</th>
+                                                    <th class="px-6 py-4">Content</th>
+                                                    <th class="px-6 py-4">Description</th>
+                                                    <th class="px-6 py-4">Pages number</th>
+                                                    <th class="px-6 py-4">Quantity</th>
+                                                    <th class="px-6 py-4">Price</th>
+                                                    <th class="px-6 py-4">Isbn</th>
+                                                    <th class="px-6 py-4">Category</th>
+                                                    <th class="px-6 py-4">Author</th>
+                                                    <th class="px-6 py-4">Publisher</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($books as $book)
+                                                <tr>
+                                                    <th class="total">{{ $index++ }}</th>
+                                                    <th class="total">
+                                                        <div class="flex items-center">
+                                                            <div class="text-sm font-medium text-gray-900">
+                                                                <a href="{{ route('admin.books.show', $book->id) }}">
+                                                                    {{ $book->title }}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th class="total">{{ $book->content }}</th>
+                                                    <th class="total">{{ $book->description }}</th>
+                                                    <th class="total">{{ $book->num_pages }}</th>
+                                                    <th class="total">{{ $book->quantity }}</th>
+                                                    <th class="total">{{ $book->price }}</th>
+                                                    <th class="total">{{ $book->isbn }}</th>
+                                                    <th class="total">{{ $book->category_id }}</th>
+                                                    <th class="total"></th>
+                                                    <th class="total">{{ $book->publisher_id }}</th>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

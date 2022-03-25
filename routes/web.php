@@ -45,9 +45,10 @@ Route::prefix('admin')->name('admin.')->group(function(){
     });
 
     Route::middleware(['auth:admin','PreventBackHistory'])->group(function(){
-        Route::view('/home','admin.auth.home')->name('home');
-        Route::view('/','admin.auth.home')->name('home');
+        Route::get('/home', [AdminController::class,'index'])->name('home');
+        Route::get('/', [AdminController::class,'index'])->name('home');
         Route::post('/logout',[AdminController::class,'logout'])->name('logout');
+        Route::resource('books', BooksController::class);
     });
 
 });
@@ -57,19 +58,25 @@ Route::prefix('user')->name('user.')->group(function(){
     Route::middleware(['guest:web','PreventBackHistory'])->group(function(){
           Route::view('/login','auth.login')->name('login');
           Route::view('/register','auth.register')->name('register');
-          Route::post('/create',[UserController::class,'create'])->name('create');
+          Route::post('/create',[UserController::class,'store'])->name('create');
           Route::post('/check',[UserController::class,'check'])->name('check');
     });
 
     Route::middleware(['auth:web','PreventBackHistory'])->group(function(){
-        Route::view('/home','auth.home')->name('home');
-        Route::view('/','auth.home')->name('home');
+        // Route::view('/home', 'auth.home')->name('home');
+        // Route::view('/','auth.home')->name('home');
+        Route::get('/home', [UserController::class,'index'])->name('home');
+        Route::get('/', [UserController::class,'index'])->name('home');
         Route::post('/logout',[UserController::class,'logout'])->name('logout');
     });
 
 });
-
-Route::view('/register', 'auth.register')->name('register');
+// User Section 
+Route::middleware('web')->group(function () {
+    Route::resource('categories', CategoriesController::class);
+    Route::resource('authors', AuthorsController::class);
+    Route::resource('publishers', PublishersController::class);
+});
 
 /*
 // books
@@ -99,7 +106,6 @@ Route::get('categories/create', [CategoriesController::class, 'create'])
 Route::get('categories/record={category:id}', [CategoriesController::class, 'show']);
 Route::get('categories/{category:id}/edit', [CategoriesController::class, 'edit'])->middleware('admin');
 Route::post('categories', [CategoriesController::class, 'store']);
-*/
 
 // Admin Section 
 Route::middleware('web')->group(function () {

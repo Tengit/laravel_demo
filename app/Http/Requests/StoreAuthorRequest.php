@@ -25,9 +25,18 @@ class StoreAuthorRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'biography' => 'required',
-            'email' => ['required', Rule::unique('authors', 'email')]
+            'name'       => [
+                'required',
+            ],
+            'biography' => [
+                'required',
+            ],
+            'email' => [
+                'required',
+                'email',
+                'max:100',
+                Rule::unique('authors', 'email')
+            ],
         ];
     }
 }

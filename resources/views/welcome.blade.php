@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Learn Laravel from NTA</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -65,7 +65,7 @@
                         <a href="{{ route('login') }}">Login</a>
                         
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
+                            <a href="{{ route('user.register') }}">Register</a>
                         @endif
                     @endauth
                 </div>
@@ -88,6 +88,5 @@
                 </div>
             </div>
         </div>
-        @include('commons.layouts.user.footer')
     </body>
 </html>

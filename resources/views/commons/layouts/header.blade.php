@@ -3,20 +3,27 @@
     <ul class="list-unstyled topnav-menu float-right mb-0">
         <li class="dropdown notification-list">
             <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                <span class="d-none d-sm-inline-block ml-1 font-weight-medium">User</span>
-                <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
+                <span class="d-none d-sm-inline-block ml-1 font-weight-medium">{{ Auth::guard('admin')->user()->name }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-                <div class="dropdown-divider"></div>
-                <!-- item-->
-                <a href="{{ route('admin.logout')}}" class="dropdown-item notify-item">
-                    <i class="mdi mdi-logout-variant"></i>
-                    <span>{{ trans('commons.logout') }}</span>
+                <a class="dropdown-item notify-item" href="{{ route('admin.logout') }}"
+                    onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                    {{ __('Logout') }}
                 </a>
 
+                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             </div>
         </li>
+        <li class="dropdown notification-list">
+            <a href="javascript:void(0);" class="nav-link right-bar-toggle waves-effect waves-light">
+                <p>{{  Carbon\Carbon::now() }}</p>
+            </a>
+        </li>
     </ul>
+
 
     <!-- LOGO -->
     <div class="logo-box">
@@ -36,6 +43,6 @@
         </li>
     </ul>
 
-    <h3 class="admin_title text-white mt-2"> @yield('title')</h3>
+    <h3 class="admin_title text-white mt-2">{{ Auth::guard('admin')->user()->name }} - @yield('title')</h3>
 
 </div>

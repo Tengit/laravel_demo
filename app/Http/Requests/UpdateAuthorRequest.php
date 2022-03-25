@@ -25,9 +25,16 @@ class UpdateAuthorRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'biography' => 'required',
-            'email' => ['required', Rule::unique('authors', 'email')->ignore($this->author)]
+            'name'       => [
+                'required',
+            ],
+            'biography' => [
+                'required',
+            ],
+            'email' => [
+                'required',
+                Rule::unique('authors', 'email')->ignore($this->author)
+            ]
         ];
     }
 }

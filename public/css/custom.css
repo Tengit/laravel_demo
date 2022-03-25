@@ -1,6 +1,6 @@
 .ck-editor__editable,
 textarea {
-    min-height: 150px;
+    min-height: 50px;
 }
 
 .datatable {
@@ -114,4 +114,14 @@ table.dataTable thead .sorting_desc {
 
 .form-check.is-invalid ~ .invalid-feedback {
     display: block;
+}
+
+.error {
+    background: #fff;
+    color: #f00;
+}
+
+.text-danger {
+    background: #fff;
+    color: #f00;
 }

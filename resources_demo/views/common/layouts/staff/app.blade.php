@@ -8,6 +8,10 @@
         <!-- end Topbar -->
     </header>
 
+    <!-- Left Sidebar Start -->
+    @include('common.layouts.sidebar')
+    <!-- Left Sidebar End -->
+
     <!-- Begin page -->
     <div class="wrapper">
         @yield('content')

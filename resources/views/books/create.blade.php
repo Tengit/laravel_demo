@@ -1,67 +1,56 @@
-<x-layout-book>
-    <x-setting-book heading="Add new Book">
-        <form method="POST" action="{{ route('books.store') }}" enctype="multipart/form-data">
+@extends('commons.layouts.app')
+@section('content')
+
+<div class="card">
+    <div class="card-header">
+        {{ trans('cruds.book.title_singular') }}
+    </div>
+
+    <div class="card-body">
+        <form method="POST" action="{{ route("admin.books.store") }}" enctype="multipart/form-data">
             @csrf
-
-            <x-form.input name="title" required />
-            <x-form.input name="isbn" required />
-
-            <x-form.field>
-                <x-form.label name="category"/>
-
-                <select name="category_id" id="category_id" required>
-                    <option
-                        value="">-Select Category-</option>
-                    @foreach ($categories as $category)
+            <div class="form-group">
+                <label class="required" for="title">{{ trans('cruds.book.fields.title') }}</label>
+                <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text" name="title" id="title" value="{{ old('title', '') }}" required>
+                @if($errors->has('title'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('title') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.book.fields.name_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="isbn">{{ trans('cruds.book.fields.isbn') }}</label>
+                <input class="form-control {{ $errors->has('isbn') ? 'is-invalid' : '' }}" type="text" name="isbn" id="isbn" value="{{ old('isbn', '') }}" required>
+                @if($errors->has('isbn'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('isbn') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.book.fields.name_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label class="required" for="category_id">{{ trans('cruds.category.fields.category') }}</label>
+                <select class="form-control select2 {{ $errors->has('category_id') ? 'is-invalid' : '' }}" name="category_id" id="category_id" required>
                         <option
-                            value="{{ $category->id }}"
-                            {{ old('category_id') == $category->id ? 'selected' : '' }}
-                        >{{ ucwords($category->name) }}</option>
+                            value="">-Select Category-</option>
+                    @foreach($categories as $id => $category)
+                        <option value="{{ $id }}" {{ old('category_id') == $id ? 'selected' : '' }}>{{ $category->name }}</option>
                     @endforeach
                 </select>
-
-                <x-form.error name="category"/>
-            </x-form.field>
-
-            <x-form.field>
-                <x-form.label name="publisher"/>
-
-                <select name="publisher_id" id="publisher_id">
-                        <option
-                            value="">-Select Publisher-</option>
-                    @foreach ($publishers as $publisher)
-                        <option
-                            value="{{ $publisher->id }}"
-                            {{ old('publisher') == $publisher->id ? 'selected' : '' }}
-                        >{{ ucwords($publisher->name) }}</option>
-                    @endforeach
-                </select>
-
-                <x-form.error name="publisher"/>
-            </x-form.field>
-
-            <x-form.input name="num_pages" required />
-            <x-form.input name="quantity" required />
-            <x-form.input name="price" required />
-            <x-form.textarea name="content" required />
-            <x-form.field>
-                <x-form.label name="condition"/>
-                    <select name="condition" id="condition">
-                        <option
-                            value="">-Select Condition-</option>
-                        <option
-                            value="Old">Old</option>
-                        <option
-                            value="New">New</option>
-                    </select>
-                <x-form.error name="condition"/>
-            </x-form.field>
-
-            <x-form.textarea name="description" required />
-            <x-form.input name="edition" required />
-            <x-form.input name="date_published" type="date" />
-
-            <x-form.button>Save</x-form.button>
+                @if($errors->has('category_id'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('category_id') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.book.fields.name_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-danger" type="submit">
+                    {{ trans('global.save') }}
+                </button>
+            </div>
         </form>
-    </x-setting-book>
-</x-layout-book>
+    </div>
+</div>
+@endsection

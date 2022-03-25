@@ -6,7 +6,7 @@
                 <li>
                     <a href="{{route('admin.home')}}" class="nav-link">
                         <i class="mdi mdi-view-dashboard"></i>
-                        <span>{{trans('admin_top.title') }}</span>
+                        <span>{{trans('global.admin.title') }}</span>
                     </a>
                 </li>
             </ul>

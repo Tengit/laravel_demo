@@ -25,9 +25,16 @@ class StorePublisherRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'address' => 'required',
-            'email' => ['required', Rule::unique('publishers', 'email')],
+            'name'       => [
+                'required',
+            ],
+            'address'       => [
+                'required',
+            ],
+            'email' => [
+                'required',
+                Rule::unique('publishers', 'email')
+            ],
         ];
     }
 }
