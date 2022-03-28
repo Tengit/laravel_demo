@@ -21,4 +21,11 @@ class CategoryRepository extends BaseRepository implements CategoryInterface
     {
         $this->model = $model;
     }
+    
+
+    //lấy model tương ứng
+    public function getModel()
+    {
+        return \App\Models\Categories::class;
+    }
 }

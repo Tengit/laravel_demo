@@ -15,44 +15,48 @@ use App\Http\Requests\UpdateBookRequest;
 
 class BooksController extends Controller
 {
-    private $bookRepository;
-    private $pagination;
+    protected $bookInterface;
+    protected $pagination;
 
-    public function __construct(BookInterface $bookRepository)
+    public function __construct(BookInterface $bookInterface)
     {
-        $this->bookRepository = $bookRepository;
-        $this->pagination = config('constants.pagination_records');
+        $this->bookInterface = $bookInterface;
+        // $this->pagination = config('constants.pagination_records');
     }
 
     public function index()
     {
-        return view('books.index', [
-            'index'      => 1,
-            'books' => Books::latest()->paginate($this->pagination)
-        ]);
+        $books = $this->bookInterface->getAll();
+        return view('admin.auth.home', compact('books'));
     }
-    
-    public function show(Books $book)
+    /**
+     * 
+     */
+    public function show( $id )
     {
+        $book = $this->bookInterface->find($id);
+        
         return view('books.show', compact('book'));
     }
-    
-    public function create(Request $request)
+
+    public function create()
     {
         $categories = Categories::all();
         $publishers = Publishers::all();
         return view('books.create', compact('categories', 'publishers'));
     }
-
+    /**
+     * 
+     */
     public function store(StoreBookRequest $request)
     {
-        $input = $request->all();
-        $book = Books::create(array_merge($input, [
-            'created_by' =>  $request->user()->id,
-            'modified_by' =>  $request->user()->id
-        ]));
+        $book = $this->bookInterface->create($request->all());
 
-        return redirect()->route('admin.books.show', $book);
+        if( $book ){
+            return redirect()->route('admin.books.show', $book);
+        }else{
+            return redirect()->route('admin.books.create');
+        }
     }
 
     public function edit(Books $book)
@@ -62,20 +66,26 @@ class BooksController extends Controller
         return view('books.edit', compact('book', 'categories', 'publishers'));
     }
 
-    public function update(UpdateBookRequest $request, Books $book)
+    public function update(UpdateBookRequest $request, $id)
     {
-        $book->update($request->all());
-        return redirect()->route('books.show', $book)
+        $book = $this->bookInterface->update($id, $request->all());
+
+        return redirect()->route('admin.books.show', $book)
             ->with('success', 'Book updated successfully');
     }
 
-    public function destroy(Books $book)
+    public function destroy($id)
     {
-        $book->delete();
+        $this->bookInterface->delete($id);
+        
+        return redirect()->route('admin.books.index')
+        ->with('success', 'Book deleted!');
+    }
 
-        return redirect()->route('books.index')
-            ->with('success', 'Book deleted!');
+    public function delete($id)
+    {
+        $book = $this->bookInterface->find($id);
 
-        return back()->with('success', 'Book Deleted!');
+        return view('books.delete', compact('book'));
     }
 }

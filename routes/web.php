@@ -53,6 +53,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
 });
 
+Route::get('books/delete/{id}', [BooksController::class, 'delete'])->name('delete');
+
 Route::prefix('user')->name('user.')->group(function(){
   
     Route::middleware(['guest:web','PreventBackHistory'])->group(function(){

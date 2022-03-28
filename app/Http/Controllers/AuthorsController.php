@@ -14,39 +14,34 @@ use App\Http\Requests\UpdateAuthorRequest;
 
 class AuthorsController extends Controller
 {
-    private $authorRepository;
+    private $authorInterface;
     private $pagination;
 
-    public function __construct(AuthorInterface $authorRepository)
+    public function __construct(AuthorInterface $authorInterface)
     {
-        $this->authorRepository = $authorRepository;
+        $this->authorInterface = $authorInterface;
         $this->pagination = config('constants.pagination_records');
     }
 
     public function index()
     {
-        return response()->json($this->authorRepository->all(), 200);
+        $authors = $this->authorInterface->getAll();
+
+        return view('authors.index', [
+            'index' => 1,
+            'authors' => $authors]);
     }
-    
-    public function show(Authors $author)
+
+    public function show($id)
     {
-        return view('authors.show', compact('author'));
+        $authors = $this->authorInterface->find($id);
+
+        return view('authors.show', ['authors' => $authors]);
     }
-    
-    public function create(Request $request)
+
+    public function create()
     {
         return view('authors.create');
-    }
-
-    public function store(StoreAuthorRequest $request)
-    {
-        $input = $request->all();        
-        $author = Authors::create(array_merge($input, [
-            'created_by' =>  $request->user()->id,
-            'modified_by' =>  $request->user()->id
-        ]));
-
-        return redirect()->route('authors.show', $author);
     }
 
     public function edit(Authors $author)
@@ -54,18 +49,27 @@ class AuthorsController extends Controller
         return view('authors.edit', compact('author'));
     }
 
-    public function update(UpdateAuthorRequest $request, Authors $author)
+    public function store(StoreAuthorRequest $request)
     {
-        $author->update($request->all());
-
-        return redirect()->route('authors.show', $author)
-            ->with('success', 'Author updated successfully');
+        $author = $this->authorInterface->create($request->all());
+        if( $author ){
+            return redirect()->route('authors.show');
+        }else{
+            return redirect()->route('authors.create');
+        }
     }
 
-    public function destroy(Authors $author)
+    public function update(UpdateAuthorRequest $request, $id)
     {
-        $author->delete();
-        return redirect()->route('authors.index')
-            ->with('success', 'Author Deleted!');
+        $author = $this->authorInterface->update($id, $request->all());
+
+        return view('authors.show');
+    }
+
+    public function destroy($id)
+    {
+        $this->authorInterface->delete($id);
+        
+        return view('authors.index');
     }
 }

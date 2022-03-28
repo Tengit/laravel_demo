@@ -7,13 +7,38 @@ use Illuminate\Database\Eloquent\Model;
 
 interface BaseInterface
 {
-    public function all();
-	public function find($id);
+    /**
+     * Get all
+     * @return mixed
+     */
+    public function getAll();
 
-	// public function paginate($count);
-	// public function store($data);
-	// public function update($id, $data);
-	// public function delete($id);
-	// public function findBy($field, $value);
+    /**
+     * Get one
+     * @param $id
+     * @return mixed
+     */
+    public function find($id);
 
+    /**
+     * Create
+     * @param array $attributes
+     * @return mixed
+     */
+    public function create($attributes = []);
+
+    /**
+     * Update
+     * @param $id
+     * @param array $attributes
+     * @return mixed
+     */
+    public function update($id, $attributes = []);
+
+    /**
+     * Delete
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id);    
 }

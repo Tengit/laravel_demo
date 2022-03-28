@@ -21,4 +21,10 @@ class PublisherRepository extends BaseRepository implements PublisherInterface
     {
         $this->model = $model;
     }
+    
+    //lấy model tương ứng
+    public function getModel()
+    {
+        return \App\Models\Publishers::class;
+    }
 }

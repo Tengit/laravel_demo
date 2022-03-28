@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Authors;
 use App\Repositories\AuthorInterface;
+use App\Repositories\Eloquent\BaseRepository;
 
 class AuthorRepository extends BaseRepository implements AuthorInterface
 {
@@ -13,7 +14,7 @@ class AuthorRepository extends BaseRepository implements AuthorInterface
     protected $model;
 
     /**
-     * BaseRepository constructor.
+     * AuthorRepository constructor.
      *
      * @param Model $model
      */
@@ -21,4 +22,11 @@ class AuthorRepository extends BaseRepository implements AuthorInterface
     {
         $this->model = $model;
     }
+
+    //lấy model tương ứng
+    public function getModel()
+    {
+        return \App\Models\Authors::class;
+    }
+    
 }

@@ -9,42 +9,47 @@ use Illuminate\Validation\Rule;
 use DB;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Repositories\CategoryInterface;
 
 class CategoriesController extends Controller
 {
-    protected $pagination;
-    
-    public function __construct(){
+    private $categoryInterface;
+    private $pagination;
+
+    public function __construct(CategoryInterface $categoryInterface)
+    {
+        $this->categoryInterface = $categoryInterface;
         $this->pagination = config('constants.pagination_records');
     }
 
     public function index()
     {
+        $categories = $this->categoryInterface->getAll();
         return view('categories.index', [
             'index'      => 1,
-            'categories' => Categories::latest()->paginate($this->pagination)
+            'categories' => $categories
         ]);
     }
-    
-    public function show(Categories $category)
+
+    public function show( $id )
     {
-        return view('categories.show', compact('category'));
+        $category = $this->categoryInterface->find($id);
+        return view('categories.show', ['category' => $category]);
     }
     
-    public function create(Request $request)
+    public function create()
     {
         return view('categories.create');
     }
 
     public function store(StoreCategoryRequest $request)
     {
-        $input = $request->all();
-        $category = Categories::create(array_merge($input, [
-            // 'created_by' => request()->user()->id,
-            // 'modified_by' => request()->user()->id
-        ]));
-
-        return redirect()->route('categories.show', $category);
+        $category = $this->categoryInterface->create($request->all());
+        if( $category ){
+            return redirect()->route('categories.show');
+        }else{
+            return redirect()->route('categories.create');
+        }
     }
 
     public function edit(Categories $category)
@@ -52,18 +57,17 @@ class CategoriesController extends Controller
         return view('categories.edit', compact('category'));
     }
 
-    public function update(UpdateCategoryRequest $request, Categories $category)
+    public function update(UpdateCategoryRequest $request, $id)
     {
-        $category->update($request->all());
-        return redirect()->route('categories.show', $category)
-            ->with('success', 'Category updated successfully');
+        $author = $this->categoryInterface->update($id, $request->all());
+
+        return view('categories.show');
     }
 
-    public function destroy(Categories $category)
+    public function destroy($id)
     {
-        $category->delete();
-
-        return redirect()->route('categories.index')
-            ->with('success', 'Category Deleted!');
+        $this->categoryInterface->delete($id);
+        
+        return view('categories.index');
     }
 }

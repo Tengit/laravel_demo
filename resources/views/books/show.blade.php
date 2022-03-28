@@ -1,83 +1,159 @@
-<x-layout-book>
-    <main class="max-w-6xl mx-auto mt-10 lg:mt-20 space-y-6">
-        <article class="max-w-4xl mx-auto lg:grid lg:grid-cols-12 gap-x-10">
-            <div class="col-span-4 lg:text-center lg:pt-14 mb-10">
-                <p align="left" class="mt-4 block text-gray-400 text-xs">
-                    Infomations: {{ $book->name }}
-                </p>
-                <p align="left" class="mt-4 block text-gray-400 text-xs">
-                    Date created: <time>{{ $book->created_at }}</time>
-                </p>
-                <p align="left" class="mt-4 block text-gray-400 text-xs">
-                    Date modified: <time>{{ $book->updated_at }}</time>
-                </p>
-                <p align="left" class="mt-4 block text-gray-400 text-xs">
-                    Created by: {{ $book->created_by }}
-                </p>
-                <p align="left" class="mt-4 block text-gray-400 text-xs">
-                    Modified by: {{ $book->modified_by }}
-                </p>
+@extends('commons.layouts.app')
+@section('content')
+
+<div class="card">
+    <div class="card-header">
+        Infomations: {{ $book->title }}
+    </div>
+
+    <div class="card-body">
+        <div class="form-group">
+            <div class="form-group">
+                <a class="btn btn-success" href="{{ route('admin.home') }}">
+                    Back to Books
+                </a>
             </div>
-
-            <div class="col-span-8">
-                <div class="hidden lg:flex justify-between mb-6">
-                    <a href="{{ route('books.index') }}"
-                       class="transition-colors duration-300 relative inline-flex items-center text-lg hover:text-blue-500">
-                        <svg width="22" height="22" viewBox="0 0 22 22" class="mr-2">
-                            <g fill="none" fill-rule="evenodd">
-                                <path stroke="#000" stroke-opacity=".012" stroke-width=".5" d="M21 1v20.16H.84V1z">
-                                </path>
-                                <path class="fill-current"
-                                      d="M13.854 7.224l-3.847 3.856 3.847 3.856-1.184 1.184-5.04-5.04 5.04-5.04z">
-                                </path>
-                            </g>
-                        </svg>
-
-                        Back to Books
-                    </a>
-                </div>
-
-                <x-form.label name="Title"/>
-
-                <h2 class="font-bold text-2xl lg:text-3xl mb-10">
-                    {{ $book->title }}
-                </h2>
-
-                <x-form.label name="Content"/>
-                <div class="space-y-4 lg:text-lg leading-loose">{!! $book->content !!}</div>
-
-                <x-form.label name="Desccription"/>
-                <div class="space-y-4 lg:text-lg leading-loose">{!! $book->desccription !!}</div>
-
-                <x-form.label name="isbn"/>
-                <div class="space-y-4 lg:text-lg leading-loose">{!! $book->isbn !!}</div>
-
-                <x-form.label name="Number Pages"/>
-                <div class="space-y-4 lg:text-lg leading-loose">{!! $book->num_pages !!}</div>
-
-                <x-form.label name="Quantity"/>
-                <div class="space-y-4 lg:text-lg leading-loose">{!! $book->quantity !!}</div>
-
-                <x-form.label name="Price"/>
-                <div class="space-y-4 lg:text-lg leading-loose">{!! $book->price !!}</div>
-
-                <x-form.label name="condition"/>
-                <div class="space-y-4 lg:text-lg leading-loose">{!! $book->condition !!}</div>
-
+            <table class="table table-bordered table-sbooked">
+                <tbody>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.title') }}
+                        </th>
+                        <td>
+                            {{ $book->title }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.content') }}
+                        </th>
+                        <td>
+                            {{ $book->content ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.isbn') }}
+                        </th>
+                        <td>
+                            {{ $book->isbn }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.quantity') }}
+                        </th>
+                        <td>
+                            {{ $book->quantity }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Date Published
+                        </th>
+                        <td>
+                            {{ $book->date_published }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.price') }}
+                        </th>
+                        <td>
+                            {{ number_format($book->price) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.num_pages') }}
+                        </th>
+                        <td>
+                            {{ $book->num_pages }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.condition') }}
+                        </th>
+                        <td>
+                            {{ $book->condition }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.description') }}
+                        </th>
+                        <td>
+                            {{ $book->description ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.category') }}
+                        </th>
+                        <td>
+                            {{ $book->category->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.publisher') }}
+                        </th>
+                        <td>
+                            {{ $book->publisher->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.edition') }}
+                        </th>
+                        <td>
+                            {{ $book->edition }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Date created:
+                        </th>
+                        <td>
+                            <time>{{ $book->created_at }} </time>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Date modified:
+                        </th>
+                        <td>
+                            <time>{{ $book->updated_at }} </time>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Created by:
+                        </th>
+                        <td>
+                            {{ $book->created_by }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Modified by:
+                        </th>
+                        <td>
+                            {{ $book->modified_by }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <a class="btn btn-success" href="{{ route('admin.home') }}">
+                    Back to Books
+                </a>
             </div>
-            <div class="col-span-8 col-start-5 mt-10 space-y-6">
-                <form action="{{ route('books.destroy',$book->id) }}" method="POST">
+        </div>
+    </div>
+</div>
 
-                    <a href="{{ route('books.edit', $book->id) }}" class="text-blue-500 hover:text-blue-600">Edit</a>
-    
-                    <a href="{{ route('books.create') }}?title={{$book->title}}" class="text-blue-500 hover:text-blue-600">Copy</a>
 
-                    @csrf
-                    @method('DELETE')
-    
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </div> 
-        </article>
-    </main>
-</x-layout-book>
+
+@endsection

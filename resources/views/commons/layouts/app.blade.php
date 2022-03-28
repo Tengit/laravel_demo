@@ -24,6 +24,10 @@
                 <!-- Content -->
                 @yield('content')
                 <!-- Content -->
+
+                <!-- Modal -->
+                @yield('modal')
+                <!-- Modal -->
             </div>
             <!-- end container-fluid -->
         </div> <!-- end content -->

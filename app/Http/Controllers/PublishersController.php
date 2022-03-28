@@ -9,43 +9,47 @@ use Illuminate\Validation\Rule;
 use DB;
 use App\Http\Requests\StorePublisherRequest;
 use App\Http\Requests\UpdatePublisherRequest;
+use App\Repositories\PublisherInterface;
 
 class PublishersController extends Controller
 {
-    
-    protected $pagination;
-    
-    public function __construct(){
+    private $publisherInterface;
+    private $pagination;
+
+    public function __construct(PublisherInterface $publisherInterface)
+    {
+        $this->publisherInterface = $publisherInterface;
         $this->pagination = config('constants.pagination_records');
     }
 
     public function index()
     {
+        $publishers = $this->publisherInterface->getAll();
         return view('publishers.index', [
             'index'      => 1,
-            'publishers' => Publishers::latest()->paginate($this->pagination)
+            'publishers' => $publishers
         ]);
     }
-    
-    public function show(Publishers $publisher)
+
+    public function show( $id )
     {
-        return view('publishers.show', compact('publisher'));
+        $publisher = $this->publisherInterface->find($id);
+        return view('publishers.show', ['publisher' => $publisher]);
     }
     
-    public function create(Request $request)
+    public function create()
     {
         return view('publishers.create');
     }
 
     public function store(StorePublisherRequest $request)
     {
-        $input = $request->all();
-        $publishers = Publishers::create(array_merge($input, [
-            // 'created_by' => request()->user()->id,
-            // 'modified_by' => request()->user()->id
-        ]));
-
-        return redirect()->route('publishers.show', $publishers);
+        $publisher = $this->publisherInterface->create($request->all());
+        if( $publisher ){
+            return redirect()->route('publishers.show');
+        }else{
+            return redirect()->route('publishers.create');
+        }
     }
 
     public function edit(Publishers $publisher)
@@ -53,18 +57,17 @@ class PublishersController extends Controller
         return view('publishers.edit', compact('publisher'));
     }
 
-    public function update(UpdatePublisherRequest $request, Publishers $publishers)
+    public function update(UpdatePublisherRequest $request, $id)
     {
-        $publishers->update($request->all());
-        return redirect()->route('publishers.show', $publishers)
-            ->with('success', 'Publisher updated successfully');
+        $author = $this->publisherInterface->update($id, $request->all());
+
+        return view('publishers.show');
     }
 
-    public function destroy(Publishers $publishers)
+    public function destroy($id)
     {
-        $publishers->delete();
-
-        return redirect()->route('publishers.index')
-            ->with('success', 'Publisher Deleted!');
+        $this->publisherInterface->delete($id);
+        
+        return view('publishers.index');
     }
 }
