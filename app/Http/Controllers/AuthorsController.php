@@ -7,51 +7,74 @@ use App\Models\Authors;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
-use App\Repositories\AuthorInterface;
+use App\Repositories\Authors\AuthorRepository;
 
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 
 class AuthorsController extends Controller
 {
-    private $authorInterface;
-    private $pagination;
-
-    public function __construct(AuthorInterface $authorInterface)
+    protected $authorRepository;
+    
+    /**
+     * __contruct
+     * @return object
+     */
+    public function __construct(AuthorRepository $authorRepository)
     {
-        $this->authorInterface = $authorInterface;
-        $this->pagination = config('constants.pagination_records');
+        $this->authorRepository = $authorRepository;
     }
 
+    /**
+     * Get all
+     * @return mixed
+     */
     public function index()
     {
-        $authors = $this->authorInterface->getAll();
-
-        return view('authors.index', [
-            'index' => 1,
-            'authors' => $authors]);
+        $authors = $this->authorRepository->getAll();
+        $index = 1;
+        return view('authors.index', compact('authors', 'index'));
     }
 
+    /**
+     * Show one
+     * @param $id
+     * @return mixed
+     */
     public function show($id)
     {
-        $authors = $this->authorInterface->find($id);
-
+        $authors = $this->authorRepository->find($id);
         return view('authors.show', ['authors' => $authors]);
     }
 
+    /**
+     * Create
+     * @return mixed
+     */
     public function create()
     {
         return view('authors.create');
     }
 
+    /**
+     * Edit
+     * @param array object
+     * @return mixed
+     */
     public function edit(Authors $author)
     {
         return view('authors.edit', compact('author'));
     }
 
+    /**
+     * Store
+     * @param array $attributes
+     * @return mixed
+     */
     public function store(StoreAuthorRequest $request)
     {
-        $author = $this->authorInterface->create($request->all());
+        $author = $this->authorRepository->create($request->all());
+
         if( $author ){
             return redirect()->route('authors.show');
         }else{
@@ -59,17 +82,31 @@ class AuthorsController extends Controller
         }
     }
 
+    /**
+     * Update
+     * @param $id
+     * @param array $request
+     * @return mixed
+     */
     public function update(UpdateAuthorRequest $request, $id)
     {
-        $author = $this->authorInterface->update($id, $request->all());
+        $author = $this->authorRepository->update($id, $request->all());
 
-        return view('authors.show');
+        return redirect()->route('authors.show', $author)
+            ->with('success', 'Author updated successfully');
     }
 
-    public function destroy($id)
+    /**
+     * Destroy
+     * @param $id
+     * @return mixed
+     */
+    public function destroy(Authors $author)
     {
-        $this->authorInterface->delete($id);
-        
-        return view('authors.index');
+        $author->delete();
+        return redirect()->route('authors.index')->with([
+            'message' => 'Deleted successfully',
+            'alert-type' => 'success'
+        ]);
     }
 }

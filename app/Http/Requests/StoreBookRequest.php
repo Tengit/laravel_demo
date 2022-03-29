@@ -27,10 +27,14 @@ class StoreBookRequest extends FormRequest
         return [
             'title'         => [
                 'required',
+                'min:5',
+                'max:100',
                 Rule::unique('books', 'title')
             ],
             'isbn'         => [
                 'required',
+                'min:5',
+                'max:20',
                 Rule::unique('books', 'isbn')
             ],
             'category_id'          => [
@@ -44,24 +48,31 @@ class StoreBookRequest extends FormRequest
             ],
             'content'     => [
                 'required',
-            ],
-            'num_pages'     => [
-                'required',
-            ],
-            'quantity'     => [
-                'required',
-            ],
-            'edition'     => [
-                'required',
+                'min:5',
             ],
             'description'     => [
                 'required',
             ],
+            'num_pages'     => [
+                'required',
+                'regex:/^(([0-9]*)(\.([0-9]+))?)$/',
+            ],
+            'quantity'     => [
+                'required',
+                'regex:/^(([0-9]*)(\.([0-9]+))?)$/',
+            ],
+            'edition'     => [
+                'required',
+                'max:2',
+                'regex:/^(([0-9]*)(\.([0-9]+))?)$/',
+            ],
             'price'     => [
                 'required',
+                'regex:/^(([0-9]*)(\.([0-9]+))?)$/',
             ],
             'date_published'     => [
                 'required',
+                'date_format:' . config('constants.date_format'),
             ],
         ];
     }

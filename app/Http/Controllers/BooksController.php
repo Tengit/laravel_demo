@@ -9,48 +9,69 @@ use App\Models\Publishers;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
-use App\Repositories\BookInterface;
+use App\Repositories\Books\BookRepository;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 
 class BooksController extends Controller
 {
-    protected $bookInterface;
-    protected $pagination;
-
-    public function __construct(BookInterface $bookInterface)
+    protected $bookRepository;
+    protected $categories;
+    protected $publishers;
+ 
+    /**
+     * __contruct
+     * @return object
+     */
+    public function __construct(BookRepository $bookRepository)
     {
-        $this->bookInterface = $bookInterface;
-        // $this->pagination = config('constants.pagination_records');
+        $this->bookRepository = $bookRepository;
+        $this->categories = Categories::all();
+        $this->publishers = Publishers::all();
     }
 
+    /**
+     * Get all
+     * @return mixed
+     */
     public function index()
     {
-        $books = $this->bookInterface->getAll();
-        return view('admin.auth.home', compact('books'));
+        $books = $this->bookRepository->getAll();
+        $index = 1;
+        return view('admin.auth.home', compact('books', 'index'));
     }
+
     /**
-     * 
+     * Show one
+     * @param $id
+     * @return mixed
      */
     public function show( $id )
     {
-        $book = $this->bookInterface->find($id);
-        
+        $book = $this->bookRepository->find($id);
         return view('books.show', compact('book'));
     }
 
+    /**
+     * Create
+     * @param array $attributes
+     * @return mixed
+     */
     public function create()
     {
-        $categories = Categories::all();
-        $publishers = Publishers::all();
+        $categories = $this->categories;
+        $publishers = $this->publishers;
         return view('books.create', compact('categories', 'publishers'));
     }
+
     /**
-     * 
+     * Store
+     * @param array $attributes
+     * @return mixed
      */
     public function store(StoreBookRequest $request)
     {
-        $book = $this->bookInterface->create($request->all());
+        $book = $this->bookRepository->create($request->all());
 
         if( $book ){
             return redirect()->route('admin.books.show', $book);
@@ -59,32 +80,54 @@ class BooksController extends Controller
         }
     }
 
+    /**
+     * Edit
+     * @param array object
+     * @return mixed
+     */
     public function edit(Books $book)
     {
-        $categories = Categories::all();
-        $publishers = Publishers::all();
+        $categories = $this->categories;
+        $publishers = $this->publishers;
         return view('books.edit', compact('book', 'categories', 'publishers'));
     }
 
+    /**
+     * Update
+     * @param $id
+     * @param array $attributes
+     * @return mixed
+     */
     public function update(UpdateBookRequest $request, $id)
     {
-        $book = $this->bookInterface->update($id, $request->all());
+        $book = $this->bookRepository->update($id, $request->all());
 
         return redirect()->route('admin.books.show', $book)
             ->with('success', 'Book updated successfully');
     }
 
-    public function destroy($id)
+    /**
+     * Destroy
+     * @param $id
+     * @return mixed
+     */
+    public function destroy(Books $book)
     {
-        $this->bookInterface->delete($id);
-        
-        return redirect()->route('admin.books.index')
-        ->with('success', 'Book deleted!');
+        $book->delete();
+        return redirect()->route('admin.books.index')->with([
+            'message' => 'Deleted successfully',
+            'alert-type' => 'success'
+        ]);
     }
 
+    /**
+     * Delete
+     * @param $id
+     * @return mixed
+     */
     public function delete($id)
     {
-        $book = $this->bookInterface->find($id);
+        $book = $this->bookRepository->find($id);
 
         return view('books.delete', compact('book'));
     }

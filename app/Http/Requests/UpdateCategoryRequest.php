@@ -26,10 +26,14 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name' =>  [
-                'required'
+                'required',
+                'min:5',
+                'max:20',
             ],
             'abbreviation' => [
                 'required',
+                'min:5',
+                'max:20',
                 Rule::unique('categories', 'abbreviation')->ignore($this->category)
             ],
         ];

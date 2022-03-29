@@ -20,10 +20,13 @@ class UserController extends Controller
     public function index()
     {
         $books = Books::all();
-        return view('auth.home', [
-            'index'      => 1,
-            'books' => $books
-        ]);
+        $index = 1;
+        return view('auth.home', 
+            compact(
+                'index',
+                'books'
+            )
+        );
     }
 
     public function create()
@@ -63,7 +66,6 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        
         return view('users.show', compact('user'));
     }
 

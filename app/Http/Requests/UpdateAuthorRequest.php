@@ -27,12 +27,22 @@ class UpdateAuthorRequest extends FormRequest
         return [
             'name'       => [
                 'required',
+                'min:5',
+                'max:100',
             ],
             'biography' => [
                 'required',
+                'min:5',
+                'max:200',
+            ],
+            'birthday'     => [
+                'required',
+                'date_format:' . config('constants.date_format'),
             ],
             'email' => [
                 'required',
+                'min:5',
+                'max:100',
                 Rule::unique('authors', 'email')->ignore($this->author)
             ]
         ];

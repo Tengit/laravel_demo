@@ -46,6 +46,6 @@
         </li>
     </ul>
 
-    <h3 class="admin_title text-white mt-2">{{ Auth::guard('web')->user()->name }} - @yield('title')</h3>
+    <h3 class="admin_title text-white mt-2" style="padding-top:10px;">{{ Auth::guard('web')->user()->name }} - @yield('title')</h3>
 
 </div>

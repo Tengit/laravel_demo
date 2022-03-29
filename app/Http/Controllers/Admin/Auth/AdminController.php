@@ -10,22 +10,26 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Books;
+use App\Http\Controllers\BooksController;
 
 class AdminController extends Controller
 {
+
     /**
-     * 
+     * Get all
+     * @return mixed
      */
-    
     public function index()
     {
-        $books = Books::with('category', 'publisher')->get();
-        return view('admin.auth.home', [
-            'index'      => 1,
-            'books' => $books
-        ]);
+        $books = Books::all();
+        $index = 1;
+        return view('admin.auth.home', compact('books', 'index'));
     }
 
+    /**
+     * Check login
+     * @return route
+     */
     public function check(UpdateAdminRequest $request)
     {
         $creds = $request->only('email','password');

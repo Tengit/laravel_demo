@@ -27,9 +27,13 @@ class StoreCategoryRequest extends FormRequest
         return [
             'name'       => [
                 'required',
+                'min:5',
+                'max:20',
             ],
             'abbreviation' => [
                 'required',
+                'min:5',
+                'max:20',
                 Rule::unique('categories', 'abbreviation')
             ],
         ];

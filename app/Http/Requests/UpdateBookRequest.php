@@ -27,10 +27,14 @@ class UpdateBookRequest extends FormRequest
         return [
             'title' => [
                 'required',
+                'min:5',
+                'max:100',
                 Rule::unique('books', 'title')->ignore($this->book)
             ],
             'isbn' => [
                 'required',
+                'min:5',
+                'max:20',
                 Rule::unique('books', 'isbn')->ignore($this->book)
             ],
             'category_id' => [
@@ -43,21 +47,27 @@ class UpdateBookRequest extends FormRequest
                 'required'
             ],
             'content' => [
-                'required'
+                'required',
+                'min:5',
             ],
-            'num_pages' => [
-                'required'
+            'num_pages'     => [
+                'required',
+                'regex:/^(([0-9]*)(\.([0-9]+))?)$/',
             ],
-            'quantity' => [
-                'required'
+            'quantity'     => [
+                'required',
+                'regex:/^(([0-9]*)(\.([0-9]+))?)$/',
             ],
-            'edition' => [
-                'required'
+            'edition'     => [
+                'required',
+                'max:2',
+                'regex:/^(([0-9]*)(\.([0-9]+))?)$/',
+            ],
+            'price'     => [
+                'required',
+                'regex:/^(([0-9]*)(\.([0-9]+))?)$/',
             ],
             'description' => [
-                'required'
-            ],
-            'price' => [
                 'required'
             ],
             'date_published' => [

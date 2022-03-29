@@ -27,12 +27,17 @@ class StorePublisherRequest extends FormRequest
         return [
             'name'       => [
                 'required',
+                'min:5',
+                'max:50',
             ],
             'address'       => [
                 'required',
+                'min:5',
             ],
             'email' => [
                 'required',
+                'min:5',
+                'max:100',
                 Rule::unique('publishers', 'email')
             ],
         ];

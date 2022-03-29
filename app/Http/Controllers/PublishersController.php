@@ -9,42 +9,63 @@ use Illuminate\Validation\Rule;
 use DB;
 use App\Http\Requests\StorePublisherRequest;
 use App\Http\Requests\UpdatePublisherRequest;
-use App\Repositories\PublisherInterface;
+use App\Repositories\Publishers\PublisherRepository;
 
 class PublishersController extends Controller
 {
-    private $publisherInterface;
-    private $pagination;
-
-    public function __construct(PublisherInterface $publisherInterface)
+    protected $publisherRepository;
+ 
+    /**
+     * __contruct
+     * @return repo object
+     */
+    public function __construct(PublisherRepository $publisherRepository)
     {
-        $this->publisherInterface = $publisherInterface;
-        $this->pagination = config('constants.pagination_records');
+        $this->publisherRepository = $publisherRepository;
     }
 
+    /**
+     * Get all
+     * @return mixed
+     */
     public function index()
     {
-        $publishers = $this->publisherInterface->getAll();
-        return view('publishers.index', [
-            'index'      => 1,
-            'publishers' => $publishers
-        ]);
+        $publishers = $this->publisherRepository->getAll();
+        $index = 1;
+        return view('publishers.index', compact('publishers', 'index'));
+
     }
 
+    /**
+     * Show one
+     * @param $id
+     * @return mixed
+     */
     public function show( $id )
     {
-        $publisher = $this->publisherInterface->find($id);
-        return view('publishers.show', ['publisher' => $publisher]);
+        $publisher = $this->publisherRepository->find($id);
+        $index = 1;
+        return view('publishers.show', compact('publishers.show', 'index'));
     }
-    
+
+    /**
+     * Create
+     * @param array $attributes
+     * @return mixed
+     */
     public function create()
     {
         return view('publishers.create');
     }
 
+    /**
+     * Store
+     * @param array $attributes
+     * @return mixed
+     */
     public function store(StorePublisherRequest $request)
     {
-        $publisher = $this->publisherInterface->create($request->all());
+        $publisher = $this->publisherRepository->create($request->all());
         if( $publisher ){
             return redirect()->route('publishers.show');
         }else{
@@ -52,22 +73,39 @@ class PublishersController extends Controller
         }
     }
 
+    /**
+     * Edit
+     * @param array object
+     * @return mixed
+     */
     public function edit(Publishers $publisher)
     {
         return view('publishers.edit', compact('publisher'));
     }
 
+    /**
+     * Update
+     * @param $id
+     * @return mixed
+     */
     public function update(UpdatePublisherRequest $request, $id)
     {
-        $author = $this->publisherInterface->update($id, $request->all());
-
-        return view('publishers.show');
+        $publisher = $this->publisherRepository->update($id, $request->all());
+        return redirect()->route('publishers.show', $publisher)
+            ->with('success', 'Publisher updated successfully');
     }
 
-    public function destroy($id)
+    /**
+     * Destroy
+     * @param $id
+     * @return mixed
+     */
+    public function destroy(Publishers $publisher)
     {
-        $this->publisherInterface->delete($id);
-        
-        return view('publishers.index');
+        $publisher->delete();
+        return redirect()->route('publishers.index')->with([
+            'message' => 'Deleted successfully',
+            'alert-type' => 'success'
+        ]);
     }
 }
