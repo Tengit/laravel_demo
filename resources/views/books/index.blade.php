@@ -1,76 +1,164 @@
-<x-layout-book>
-    <x-setting-book heading="Manage Books">
-        <div class="flex flex-col">
-            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">Edit</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Copy</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Delete</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">No.</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Title</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Content</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Description</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Pages number</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Quantity</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Price</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Isbn</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Category</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Author</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Publisher</td>
-                                </tr>
-                                @foreach ($books as $book)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="{{ route('admin.books.edit', $book->id) }}" class="text-blue-500 hover:text-blue-600">Edit</a>
-                                        </td>
+@section('title', trans('cruds.book.title_singular'))
+@extends('commons.layouts.app')
 
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="{{ route('admin.books.create') }}?title={{ $book->title }}" class="text-blue-500 hover:text-blue-600">Copy</a>
-                                        </td>
+@section('content')
+<div class="card">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold text-primary">
+            {{ trans('global.list') }} {{ trans('cruds.book.title_singular') }}
+        </h6>
+    </div>
 
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <form method="POST" action="{{ route('admin.books.destroy', $book->id)}}">
-                                                @csrf
-                                                @method('DELETE')
-
-                                                <button class="text-xs text-gray-400">Delete</button>
-                                            </form>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $index++ }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    <a href="{{ route('admin.books.show', $book->id) }}">
-                                                        {{ $book->title }}
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $book->content }}</td>
-                                        
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $book->description }}</td>
-                                        
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $book->num_pages }}</td>
-                                        
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $book->quantity }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $book->price }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $book->isbn }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $book->category_id }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap"></td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $book->publisher_id }}</td>
-
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+    @if ($message = Session::get('message'))
+        <div class="row my-3">
+            <div class="col-12">
+                <div class="alert alert-success alert-block text-center">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $message }}</strong>
                 </div>
             </div>
         </div>
-    </x-setting-book>
-</x-layout-book>
+    @endif
+    <div class="card-body">
+        <div class="form-group">
+            <a href="{{ route('admin.books.create') }}" class="btn btn-primary">
+                <span class="icon text-white-50">
+                    <i class="fa fa-plus"></i>
+                </span>
+                <span class="text">Create new Book</span>
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class=" table table-bordered table-sbooked table-hover datatable">
+                <thead>
+                    <tr>
+                        <th width="10">
+                            No.
+                        </th>
+                        <th>
+                            {{ trans('cruds.book.fields.title') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.book.fields.isbn') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.book.fields.content') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.book.fields.description') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.book.fields.num_pages') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.book.fields.quantity') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.book.fields.price') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.book.fields.category') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.book.fields.publisher') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.book.fields.author') }}
+                        </th>
+                        <th>
+                            &nbsp;
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($books as $key => $book)
+                        <tr data-entry-id="{{ $book->id }}">
+                            <td>
+                                {{ ++$key }}
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.books.show', $book->id) }}">
+                                    {{ $book->title }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ $book->isbn ?? '' }}
+                            </td>
+                            <td>
+                                {{ $book->content ?? '' }}
+                            </td>
+                            <td>
+                                {{ $book->description ?? '' }}
+                            </td>
+                            <td>
+                                {{ number_format($book->num_pages) }}
+                            </td>
+                            </td>
+                            <td>
+                                {{ number_format($book->quantity) }}
+                            </td>
+                            </td>
+                            <td>
+                                {{ number_format($book->price) }}
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.categories.show', $book->category->id) }}" target="_blank">
+                                    {{ $book->category->name ?? '' }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.publishers.show', $book->publisher->id) }}" target="_blank">
+                                    {{ $book->publisher->name ?? '' }}
+                                </a>
+                            </td>
+                            <td>
+                                &nbsp;
+                            </td>
+                            <td nowrap align="center">
+                                <a href="{{ route('admin.books.show', $book->id) }}">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="{{ route('admin.books.edit', $book->id) }}">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('book.delete', $book->id) }}" title="Delete Book">
+                                    <i class="fas fa-trash text-danger fa-lg"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <!-- pagination -->
+            {{ $books->render('commons.layouts.pagination') }}
+            <!-- end pagination -->
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ trans('global.delete') }} {{ trans('cruds.book.title_singular') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-body" id="smallBody">
+            <div>
+                <!--  -->
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- end Modal -->
+
+@endsection
+
+@push('scripts')
+    <script src="{{ asset('js/validate/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('js/common/custom.js') }}"></script>
+@endpush

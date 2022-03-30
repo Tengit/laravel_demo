@@ -19,8 +19,4 @@ class Publishers extends Model
         'address',
         'email',
     ];
-    public function books()
-    {
-        return $this->hasMany(Books::class);
-    }
 }

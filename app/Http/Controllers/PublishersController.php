@@ -45,7 +45,7 @@ class PublishersController extends Controller
     {
         $publisher = $this->publisherRepository->find($id);
         $index = 1;
-        return view('publishers.show', compact('publishers.show', 'index'));
+        return view('publishers.show', compact('publisher', 'index'));
     }
 
     /**

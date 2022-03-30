@@ -49,11 +49,15 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('/', [AdminController::class,'index'])->name('home');
         Route::post('/logout',[AdminController::class,'logout'])->name('logout');
         Route::resource('books', BooksController::class);
+        Route::resource('categories', CategoriesController::class);
+        Route::resource('authors', AuthorsController::class);
+        Route::resource('publishers', PublishersController::class);
     });
 
 });
 
-Route::get('books/delete/{id}', [BooksController::class, 'delete'])->name('delete');
+Route::get('books/delete/{id}', [BooksController::class, 'delete'])->name('book.delete');
+Route::get('authors/delete/{id}', [AuthorsController::class, 'delete'])->name('author.delete');
 
 Route::prefix('user')->name('user.')->group(function(){
   
@@ -73,12 +77,6 @@ Route::prefix('user')->name('user.')->group(function(){
     });
 
 });
-// User Section 
-Route::middleware('web')->group(function () {
-    Route::resource('categories', CategoriesController::class);
-    Route::resource('authors', AuthorsController::class);
-    Route::resource('publishers', PublishersController::class);
-});
 
 /*
 // books
@@ -93,11 +91,6 @@ Route::get('publishers/create', [PublishersController::class, 'create'])->middle
 Route::get('publishers/{id}', [PublishersController::class, 'show']);
 Route::post('publishers', [PublishersController::class, 'store']);
 
-// authors
-Route::get('authors', [AuthorsController::class, 'index']);
-Route::get('authors/create', [AuthorsController::class, 'create'])->middleware('admin');
-Route::get('authors/{id}', [AuthorsController::class, 'show']);
-Route::post('authors', [AuthorsController::class, 'store']);
 
 // categories
 Route::get('categories', [CategoriesController::class, 'index']);

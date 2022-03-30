@@ -48,9 +48,11 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
      * Get all
      * @return mixed
      */
-    public function getAll()
+    public function getAll(array $relationship)
     {
-        return $this->model->all();
+        return $this->model->with($relationship)
+            ->orderBy( 'title', 'desc')
+            ->paginate( config('constants.pagination_records') ?? 10);
     }
 
     /**

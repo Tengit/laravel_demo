@@ -125,3 +125,8 @@ table.dataTable thead .sorting_desc {
     background: #fff;
     color: #f00;
 }
+
+table.datatable thead tr th {
+    text-align: center;
+    background: #ff0;
+}

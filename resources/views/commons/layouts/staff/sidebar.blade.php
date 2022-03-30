@@ -5,8 +5,42 @@
             <ul class="metismenu" id="side-menu">
                 <li>
                     <a href="{{route('user.home')}}" class="nav-link">
-                        <i class="mdi mdi-view-dashboard"></i>
-                        <span>{{trans('global.user.title') }}</span>
+                        <i class="nav-icon fas fa-fw fa-tachometer-alt">
+                        
+                        </i>
+                        <span class="text-primary">{{trans('global.user.title') }} Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('user.home')}}" class="nav-link">
+                        <i class="fa-fw fas fa-list nav-icon">
+
+                        </i>
+                        <span>List Book</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('authors.index')}}" class="nav-link">
+                        <i class="fa-fw fas fa-list nav-icon">
+
+                        </i>
+                        <span>List Author</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('categories.index')}}" class="nav-link">
+                        <i class="fa-fw fas fa-list nav-icon">
+
+                        </i>
+                        <span>List Category</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('publishers.index')}}" class="nav-link">
+                        <i class="fa-fw fas fa-list nav-icon">
+
+                        </i>
+                        <span>List Publisher</span>
                     </a>
                 </li>
             </ul>

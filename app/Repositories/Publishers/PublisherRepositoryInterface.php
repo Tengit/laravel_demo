@@ -9,7 +9,7 @@ interface PublisherRepositoryInterface
      * Get all
      * @return mixed
      */
-    public function getAll();
+    public function getAll(array $attributes);
 
     /**
      * Get one

@@ -1,14 +1,20 @@
+@section('title', trans('cruds.book.title_singular'))
 @extends('commons.layouts.app')
 @section('content')
 
 <div class="card">
     <div class="card-header">
-        Infomations: {{ $book->title }}
+        <h6 class="m-0 font-weight-bold text-primary">
+        {{ trans('global.show') }} {{ trans('cruds.book.title_singular') }}
+        </h6>
     </div>
 
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
+                <a class="btn btn-primary" href="{{ route('admin.books.edit', $book->id) }}">
+                    {{ trans('global.edit') }}
+                </a>
                 <a class="btn btn-success" href="{{ route('admin.home') }}">
                     Back to Books
                 </a>
@@ -25,14 +31,6 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.book.fields.content') }}
-                        </th>
-                        <td>
-                            {{ $book->content ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             {{ trans('cruds.book.fields.isbn') }}
                         </th>
                         <td>
@@ -41,18 +39,34 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.book.fields.quantity') }}
+                            {{ trans('cruds.book.fields.content') }}
                         </th>
                         <td>
-                            {{ $book->quantity }}
+                            {{ $book->content ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            Date Published
+                        {{ trans('cruds.book.fields.date_published') }}
                         </th>
                         <td>
                             {{ $book->date_published }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.quantity') }}
+                        </th>
+                        <td>
+                            {{ number_format($book->quantity) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.num_pages') }}
+                        </th>
+                        <td>
+                            {{ number_format($book->num_pages) }}
                         </td>
                     </tr>
                     <tr>
@@ -61,14 +75,6 @@
                         </th>
                         <td>
                             {{ number_format($book->price) }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.book.fields.num_pages') }}
-                        </th>
-                        <td>
-                            {{ $book->num_pages }}
                         </td>
                     </tr>
                     <tr>
@@ -92,7 +98,9 @@
                             {{ trans('cruds.book.fields.category') }}
                         </th>
                         <td>
-                            {{ $book->category->name ?? '' }}
+                            <a href="{{ route('admin.categories.show', $book->category->id) }}" target="_blank">
+                                {{ $book->category->name ?? '' }}
+                            </a>
                         </td>
                     </tr>
                     <tr>
@@ -100,7 +108,17 @@
                             {{ trans('cruds.book.fields.publisher') }}
                         </th>
                         <td>
-                            {{ $book->publisher->name ?? '' }}
+                            <a href="{{ route('admin.publishers.show', $book->publisher->id) }}" target="_blank">
+                                {{ $book->publisher->name ?? '' }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.author') }}
+                        </th>
+                        <td>
+                            &nbsp;
                         </td>
                     </tr>
                     <tr>
@@ -146,6 +164,9 @@
                 </tbody>
             </table>
             <div class="form-group">
+                <a class="btn btn-primary" href="{{ route('admin.books.edit', $book->id) }}">
+                    {{ trans('global.edit') }}
+                </a>
                 <a class="btn btn-success" href="{{ route('admin.home') }}">
                     Back to Books
                 </a>

@@ -1,17 +1,20 @@
+@section('title', trans('cruds.book.title_singular'))
 @extends('commons.layouts.app')
 @section('content')
 
 <div class="card">
     <div class="card-header">
-        Create a {{ trans('cruds.book.title_singular') }}
+        <h6 class="m-0 font-weight-bold text-primary">
+            {{ trans('global.create') }} {{ trans('cruds.book.title_singular') }}
+        </h6>
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.books.store") }}" enctype="multipart/form-data" id="crudsForm">
+        <form method="POST" action="{{ route("admin.books.store") }}" enctype="multipart/form-data" id="crudsBookForm">
             @csrf
             <div class="form-group">
                 <label class="required" for="title">{{ trans('cruds.book.fields.title') }}</label>
-                <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text" name="title" id="title" value="{{ old('title', '') }}" required>
+                <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text" name="title" id="title" value="{{ old('title', '') }}">
                 @if($errors->has('title'))
                     <div class="invalid-feedback">
                         {{ $errors->first('title') }}
@@ -22,7 +25,7 @@
 
             <div class="form-group">
                 <label class="required" for="isbn">{{ trans('cruds.book.fields.isbn') }}</label>
-                <input class="form-control {{ $errors->has('isbn') ? 'is-invalid' : '' }}" type="text" name="isbn" id="isbn" value="{{ old('isbn', '') }}" required>
+                <input class="form-control {{ $errors->has('isbn') ? 'is-invalid' : '' }}" type="text" name="isbn" id="isbn" value="{{ old('isbn', '') }}">
                 @if($errors->has('isbn'))
                     <div class="invalid-feedback">
                         {{ $errors->first('isbn') }}
@@ -33,7 +36,7 @@
 
             <div class="form-group">
                 <label class="required" for="num_pages">Page's number</label>
-                <input class="form-control {{ $errors->has('num_pages') ? 'is-invalid' : '' }}" type="text" name="num_pages" id="num_pages" value="{{ old('num_pages', '') }}" required>
+                <input class="form-control {{ $errors->has('num_pages') ? 'is-invalid' : '' }}" type="text" name="num_pages" id="num_pages" value="{{ old('num_pages', '') }}">
                 @if($errors->has('num_pages'))
                     <div class="invalid-feedback">
                         {{ $errors->first('num_pages') }}
@@ -44,7 +47,7 @@
             
             <div class="form-group">
                 <label class="required" for="quantity">Quantity</label>
-                <input class="form-control {{ $errors->has('quantity') ? 'is-invalid' : '' }}" type="text" name="quantity" id="quantity" value="{{ old('quantity', '') }}" required>
+                <input class="form-control {{ $errors->has('quantity') ? 'is-invalid' : '' }}" type="text" name="quantity" id="quantity" value="{{ old('quantity', '') }}">
                 @if($errors->has('quantity'))
                     <div class="invalid-feedback">
                         {{ $errors->first('quantity') }}
@@ -55,7 +58,7 @@
             
             <div class="form-group">
                 <label class="required" for="price">Price</label>
-                <input class="form-control {{ $errors->has('price') ? 'is-invalid' : '' }}" type="text" name="price" id="price" value="{{ old('price', '') }}" required>
+                <input class="form-control {{ $errors->has('price') ? 'is-invalid' : '' }}" type="text" name="price" id="price" value="{{ old('price', '') }}">
                 @if($errors->has('price'))
                     <div class="invalid-feedback">
                         {{ $errors->first('price') }}
@@ -66,7 +69,7 @@
             
             <div class="form-group">
                 <label class="required" for="edition">Edition</label>
-                <input class="form-control {{ $errors->has('edition') ? 'is-invalid' : '' }}" type="text" name="edition" id="edition" value="{{ old('edition', '') }}" required>
+                <input class="form-control {{ $errors->has('edition') ? 'is-invalid' : '' }}" type="text" name="edition" id="edition" value="{{ old('edition', '') }}">
                 @if($errors->has('edition'))
                     <div class="invalid-feedback">
                         {{ $errors->first('edition') }}
@@ -76,8 +79,8 @@
             </div>
 
             <div class="form-group">
-                <label class="required" for="date_published">Date published</label>
-                <input class="form-control date {{ $errors->has('date_published') ? 'is-invalid' : '' }}" type="date" name="date_published" id="date_published" value="{{ old('date_published') }}" required>
+                <label class="required" for="date_published">{{ trans('cruds.book.fields.date_published') }}</label>
+                <input class="form-control date {{ $errors->has('date_published') ? 'is-invalid' : '' }}" type="date" name="date_published" id="date_published" value="{{ old('date_published') }}">
                 @if($errors->has('date_published'))
                     <div class="invalid-feedback">
                         {{ $errors->first('date_published') }}
@@ -87,8 +90,8 @@
             </div>
 
             <div class="form-group">
-                <label class="required" for="content">Content</label>
-				<textarea class="form-control {{ $errors->has('content') ? 'is-invalid' : '' }}" name="content" rows="3">{{ old('content', '') }}</textarea>
+                <label class="required" for="content">{{ trans('cruds.book.fields.content') }}</label>
+                <textarea id="content" name="content" rows="3" class="form-control summernote {{ $errors->has('content') ? 'is-invalid' : '' }}">{{ old('content') }}</textarea>
                 @if($errors->has('content'))
                     <div class="invalid-feedback">
                         {{ $errors->first('content') }}
@@ -98,8 +101,8 @@
             </div>
 
             <div class="form-group">
-                <label class="required" for="description">{{ trans('cruds.book.fields.description') }}</label>
-				<textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" rows="3">{{ old('description', '') }}</textarea>
+                <label for="description">{{ trans('cruds.book.fields.description') }}</label>
+                <textarea name="description" rows="3" class="form-control summernote {{ $errors->has('description') ? 'is-invalid' : '' }}">{{ old('description') }}</textarea>
                 @if($errors->has('description'))
                     <div class="invalid-feedback">
                         {{ $errors->first('description') }}
@@ -109,12 +112,12 @@
             </div>
 
             <div class="form-group">
-                <label class="required" for="category">{{ trans('cruds.category.fields.category') }}</label>
-                <select class="form-control select2 {{ $errors->has('category_id') ? 'is-invalid' : '' }}" name="category_id" id="category_id" required>
+                <label class="required" for="category">{{ trans('cruds.book.fields.category') }}</label>
+                <select class="form-control select2 {{ $errors->has('category_id') ? 'is-invalid' : '' }}" name="category_id" id="category_id">
                         <option
                             value="">-Select Category-</option>
-                    @foreach($categories as $id => $category)
-                        <option value="{{ $id }}" {{ old('category_id') == $id ? 'selected' : '' }}>{{ $category->name }}</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('category_id'))
@@ -126,12 +129,12 @@
             </div>
 
             <div class="form-group">
-                <label class="required" for="publisher">Publisher</label>
-                <select class="form-control select2 {{ $errors->has('publisher_id') ? 'is-invalid' : '' }}" name="publisher_id" id="publisher_id" required>
+                <label class="required" for="publisher">{{ trans('cruds.author.fields.publisher') }}</label>
+                <select class="form-control select2 {{ $errors->has('publisher_id') ? 'is-invalid' : '' }}" name="publisher_id" id="publisher_id">
                         <option
-                            value="">-Select Category-</option>
-                    @foreach($publishers as $id => $publisher)
-                        <option value="{{ $id }}" {{ old('publisher_id') == $id ? 'selected' : '' }}>{{ $publisher->name }}</option>
+                            value="">-Select Publisher-</option>
+                    @foreach($publishers as $publisher)
+                        <option value="{{ $publisher->id }}" {{ old('publisher_id') == $publisher->id ? 'selected' : '' }}>{{ $publisher->name }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('publisher_id'))
@@ -144,13 +147,11 @@
 
             <div class="form-group">
                 <label class="required" for="condition">{{ trans('cruds.book.fields.condition') }}</label>
-                <select class="form-control select2 {{ $errors->has('condition') ? 'is-invalid' : '' }}" name="condition" id="condition" required>
+                <select class="form-control select2 {{ $errors->has('condition') ? 'is-invalid' : '' }}" name="condition" id="condition">
                         <option
                             value="">-Select Condition-</option>
-                        <option
-                            value="Old">Old</option>
-                        <option
-                            value="New">New</option>
+                        <option value="Old" {{ old('condition') == 'Old' ? 'selected' : '' }}>Old</option>
+                        <option value="New" {{ old('condition') == 'New' ? 'selected' : '' }}>New</option>
                 </select>
                 @if($errors->has('condition'))
                     <div class="invalid-feedback">
@@ -161,9 +162,12 @@
             </div>
 
             <div class="form-group">
-                <button class="btn btn-danger" type="submit">
+                <button class="btn btn-success" type="submit">
                     {{ trans('global.save') }}
                 </button>
+                <a class="btn btn-primary" href="{{ route('admin.home') }}">
+                    Back to Books
+                </a>
             </div>
         </form>
     </div>

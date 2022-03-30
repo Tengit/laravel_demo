@@ -21,9 +21,10 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $books = Books::all();
-        $index = 1;
-        return view('admin.auth.home', compact('books', 'index'));
+        $books = Books::with('category', 'publisher')
+            ->orderBy( 'title', 'desc')
+            ->paginate( config('constants.pagination_records') ?? 10);
+        return view('admin.auth.home', compact('books'));
     }
 
     /**

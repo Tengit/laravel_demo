@@ -33,8 +33,7 @@ class UpdateBookRequest extends FormRequest
             ],
             'isbn' => [
                 'required',
-                'min:5',
-                'max:20',
+                'regex:/^(([0-9]*)(\.([0-9]+))?)$/',
                 Rule::unique('books', 'isbn')->ignore($this->book)
             ],
             'category_id' => [

@@ -11,11 +11,9 @@
     <link href="{{ asset('dist_admin/assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('dist_admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('dist_admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('css/bootstrap-grid.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/admin/summernote/summernote-bs4.min.css') }}">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
     @stack('head_css')
 </head>

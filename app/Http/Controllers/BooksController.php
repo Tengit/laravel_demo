@@ -18,6 +18,7 @@ class BooksController extends Controller
     protected $bookRepository;
     protected $categories;
     protected $publishers;
+    protected $relationships;
  
     /**
      * __contruct
@@ -28,6 +29,7 @@ class BooksController extends Controller
         $this->bookRepository = $bookRepository;
         $this->categories = Categories::all();
         $this->publishers = Publishers::all();
+        $this->relationships = ['category', 'publisher'];
     }
 
     /**
@@ -36,9 +38,8 @@ class BooksController extends Controller
      */
     public function index()
     {
-        $books = $this->bookRepository->getAll();
-        $index = 1;
-        return view('admin.auth.home', compact('books', 'index'));
+        $books = $this->bookRepository->getAll($this->relationships);
+        return view('books.index', compact('books'));
     }
 
     /**

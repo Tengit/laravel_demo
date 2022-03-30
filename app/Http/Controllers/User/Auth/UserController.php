@@ -19,7 +19,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $books = Books::all();
+        $books = Books::with('category', 'publisher')
+            ->orderBy( 'title', 'desc')
+            ->paginate( config('constants.pagination_records') ?? 10);
         $index = 1;
         return view('auth.home', 
             compact(

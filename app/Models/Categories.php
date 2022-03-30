@@ -18,9 +18,4 @@ class Categories extends Model
         'abbreviation',
         'description',
     ];
-
-    public function books()
-    {
-        return $this->hasMany(Books::class);
-    }
 }

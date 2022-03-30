@@ -33,8 +33,7 @@ class StoreBookRequest extends FormRequest
             ],
             'isbn'         => [
                 'required',
-                'min:5',
-                'max:20',
+                'regex:/^(([0-9]*)(\.([0-9]+))?)$/',
                 Rule::unique('books', 'isbn')
             ],
             'category_id'          => [
