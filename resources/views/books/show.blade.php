@@ -42,7 +42,7 @@
                             {{ trans('cruds.book.fields.content') }}
                         </th>
                         <td>
-                            {{ $book->content ?? '' }}
+                            {!! $book->content ?? '' !!}
                         </td>
                     </tr>
                     <tr>
@@ -90,7 +90,7 @@
                             {{ trans('cruds.book.fields.description') }}
                         </th>
                         <td>
-                            {{ $book->description ?? '' }}
+                            {!! $book->description ?? '' !!}
                         </td>
                     </tr>
                     <tr>
@@ -118,7 +118,12 @@
                             {{ trans('cruds.book.fields.author') }}
                         </th>
                         <td>
-                            &nbsp;
+                            @foreach($book->authors as $author)
+                                <a href="{{ route('admin.authors.show', $author->id) }}" target="_blank">
+                                    {{ $author->name ?? '' }}
+                                </a>
+                                <br/>
+                            @endforeach
                         </td>
                     </tr>
                     <tr>
@@ -127,6 +132,19 @@
                         </th>
                         <td>
                             {{ $book->edition }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.book.fields.image') }}
+                        </th>
+                        <td>
+                            @if($book->image)
+                            <img src="{{ asset('images/books/' . $book->image) }}"
+                                width="60" height="60" alt="{{ $book->title }}">
+                            @else
+                                <!-- <img src="{{ asset('img/no-img.png') }}" width="60" height="60" alt="{{ $book->title }}"> -->
+                            @endif
                         </td>
                     </tr>
                     <tr>
@@ -174,7 +192,5 @@
         </div>
     </div>
 </div>
-
-
 
 @endsection

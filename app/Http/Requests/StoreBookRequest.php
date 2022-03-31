@@ -36,6 +36,11 @@ class StoreBookRequest extends FormRequest
                 'regex:/^(([0-9]*)(\.([0-9]+))?)$/',
                 Rule::unique('books', 'isbn')
             ],
+            'image' => [
+                'required',
+                'image',
+                'mimes:jpg,png,jpeg,gif,svg|max:2048'
+            ],
             'category_id'          => [
                 'required',
             ],

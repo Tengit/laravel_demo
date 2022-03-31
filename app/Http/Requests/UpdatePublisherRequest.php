@@ -37,7 +37,7 @@ class UpdatePublisherRequest extends FormRequest
             'email' => [
                 'required',
                 'min:5',
-                'max:100',
+                'max:50',
                 Rule::unique('publishers', 'email')->ignore($this->publishers)
             ],
         ];

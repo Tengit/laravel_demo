@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Models\Books;
 use App\Models\Categories;
 use App\Models\Publishers;
+use App\Models\Authors;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
@@ -13,12 +14,15 @@ use App\Repositories\Books\BookRepository;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 
-class BooksController extends Controller
+use App\Services\ImageService;
+
+class UserBooksController extends Controller
 {
+
     protected $bookRepository;
     protected $categories;
     protected $publishers;
-    protected $relationships;
+    protected $authors;
  
     /**
      * __contruct
@@ -29,7 +33,7 @@ class BooksController extends Controller
         $this->bookRepository = $bookRepository;
         $this->categories = Categories::all();
         $this->publishers = Publishers::all();
-        $this->relationships = ['category', 'publisher'];
+        $this->authors = Authors::all();
     }
 
     /**
@@ -38,7 +42,7 @@ class BooksController extends Controller
      */
     public function index()
     {
-        $books = $this->bookRepository->getAll($this->relationships);
+        $books = $this->bookRepository->getAll();
         return view('books.index', compact('books'));
     }
 
@@ -62,7 +66,8 @@ class BooksController extends Controller
     {
         $categories = $this->categories;
         $publishers = $this->publishers;
-        return view('books.create', compact('categories', 'publishers'));
+        $authors = $this->authors;
+        return view('books.create', compact('categories', 'publishers', 'authors'));
     }
 
     /**
@@ -72,7 +77,21 @@ class BooksController extends Controller
      */
     public function store(StoreBookRequest $request)
     {
-        $book = $this->bookRepository->create($request->all());
+        $input = $request->all();
+          if ($image = $request->file('image')) {
+            $destinationPath = 'images/books/';
+            $profileImage = $image->getClientOriginalName() . date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $input['image'] = "$profileImage";
+        }
+
+        $book = $this->bookRepository->create($input);
+        if( $book )
+        {
+            foreach ($request->authorlist as $author_id){
+                $this->bookRepository->createBookAuthor($author_id,  $book->id);
+            }
+        }
 
         if( $book ){
             return redirect()->route('admin.books.show', $book);
@@ -90,7 +109,8 @@ class BooksController extends Controller
     {
         $categories = $this->categories;
         $publishers = $this->publishers;
-        return view('books.edit', compact('book', 'categories', 'publishers'));
+        $authors = $this->authors;
+        return view('books.edit', compact('book', 'categories', 'publishers', 'authors'));
     }
 
     /**
@@ -101,7 +121,22 @@ class BooksController extends Controller
      */
     public function update(UpdateBookRequest $request, $id)
     {
-        $book = $this->bookRepository->update($id, $request->all());
+        $input = $request->all();
+
+        if ($image = $request->file('image'))
+        {
+            $destinationPath = 'images/books/';
+            $profileImage = $image->getClientOriginalName() . date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $input['image'] = "$profileImage";
+        }
+        else
+        {
+            unset($input['image']);
+        }
+        $book = $this->bookRepository->update($id, $input);
+
+        $book->authors()->sync($request->authorlist);
 
         return redirect()->route('admin.books.show', $book)
             ->with('success', 'Book updated successfully');

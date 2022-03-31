@@ -1,60 +1,110 @@
-<x-layout-category>
-    <x-setting-category heading="Manage Categories">
-        <div class="flex flex-col">
-            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">No.</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Name</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Abbreviation</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Description</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Edit</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Copy</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">Delete</td>
-                                </tr>
-                                @foreach ($categories as $category)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $index++ }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    <a href="{{ route('categories.show', $category->id) }}">
-                                                        {{ $category->name }}
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
+@section('title', trans('cruds.category.title_singular'))
+@extends('commons.layouts.app')
 
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $category->abbreviation }}</td>
-                                        
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $category->description }}</td>
+@section('content')
+<div class="card">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold text-primary">
+            {{ trans('global.list') }} {{ trans('cruds.category.title_singular') }}
+        </h6>
+    </div>
 
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="{{ route('categories.edit', $category->id) }}" class="text-blue-500 hover:text-blue-600">Edit</a>
-                                        </td>
-
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="{{ route('categories.create') }}?name={{$category->name}}&abbreviation={{$category->abbreviation}}&description={{$category->description}}" class="text-blue-500 hover:text-blue-600">Copy</a>
-                                        </td>
-
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <form method="POST" action="{{ route('categories.destroy', $category->id)}}">
-                                                @csrf
-                                                @method('DELETE')
-
-                                                <button class="text-xs text-gray-400">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+    @if ($message = Session::get('message'))
+        <div class="row my-3">
+            <div class="col-12">
+                <div class="alert alert-success alert-block text-center">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $message }}</strong>
                 </div>
             </div>
         </div>
-    </x-setting-category>
-</x-layout-category>
+    @endif
+    <div class="card-body">
+        <div class="form-group">
+            <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
+                <span class="icon text-white-50">
+                    <i class="fa fa-plus"></i>
+                </span>
+                <span class="text">Create new Category</span>
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class=" table table-bordered table-sbooked table-hover datatable">
+                <thead>
+                    <tr>
+                        <th width="10">
+                            No.
+                        </th>
+                        <th>
+                            {{ trans('cruds.category.fields.name') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.category.fields.abbreviation') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.category.fields.description') }}
+                        </th>
+                        <th>
+                            &nbsp;
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($categories as $key => $category)
+                        <tr data-entry-id="{{ $category->id }}">
+                            <td>
+                                {{ ++$key }}
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.categories.show', $category->id) }}">
+                                    {{ $category->name }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ $category->abbreviation ?? '' }}
+                            </td>
+                            <td>
+                                {{ $category->description ?? '' }}
+                            </td>
+                            <td nowrap align="center">
+                                <a href="{{ route('admin.categories.show', $category->id) }}">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="{{ route('admin.categories.edit', $category->id) }}">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('category.delete', $category->id) }}" title="Delete Category">
+                                    <i class="fas fa-trash text-danger fa-lg"></i>
+                                </a> 
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <!-- pagination -->
+            {{ $categories->render('commons.layouts.pagination') }}
+            <!-- end pagination -->
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ trans('global.delete') }} {{ trans('cruds.category.title_singular') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-body" id="smallBody">
+            <div>
+                <!--  -->
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- end Modal -->
+@endsection

@@ -20,7 +20,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('authors.index')}}" class="nav-link">
+                    <a href="{{route('user.authors.index')}}" class="nav-link">
                         <i class="fa-fw fas fa-list nav-icon">
 
                         </i>
@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('categories.index')}}" class="nav-link">
+                    <a href="{{route('user.categories.index')}}" class="nav-link">
                         <i class="fa-fw fas fa-list nav-icon">
 
                         </i>
@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('publishers.index')}}" class="nav-link">
+                    <a href="{{route('user.publishers.index')}}" class="nav-link">
                         <i class="fa-fw fas fa-list nav-icon">
 
                         </i>

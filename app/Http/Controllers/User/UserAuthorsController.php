@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Models\Authors;
@@ -12,10 +12,9 @@ use App\Repositories\Authors\AuthorRepository;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 
-class AuthorsController extends Controller
+class UserAuthorsController extends Controller
 {
     protected $authorRepository;
-    protected $relationships;
     
     /**
      * __contruct
@@ -24,7 +23,6 @@ class AuthorsController extends Controller
     public function __construct(AuthorRepository $authorRepository)
     {
         $this->authorRepository = $authorRepository;
-        $this->relationships = [];
     }
 
     /**
@@ -33,7 +31,7 @@ class AuthorsController extends Controller
      */
     public function index()
     {
-        $authors = $this->authorRepository->getAll($this->relationships);
+        $authors = $this->authorRepository->getAll();
         return view('authors.index', compact('authors'));
     }
 
@@ -77,7 +75,7 @@ class AuthorsController extends Controller
         $author = $this->authorRepository->create($request->all());
 
         if( $author ){
-            return redirect()->route('admin.authors.show');
+            return redirect()->route('admin.authors.show', $author);
         }else{
             return redirect()->route('admin.authors.create');
         }
@@ -102,7 +100,7 @@ class AuthorsController extends Controller
      * @param $id
      * @return mixed
      */
-    public function destroy(Authors $book)
+    public function destroy(Authors $author)
     {
         $author->delete();
         return redirect()->route('admin.authors.index')->with([

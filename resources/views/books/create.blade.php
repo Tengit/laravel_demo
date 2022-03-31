@@ -129,7 +129,27 @@
             </div>
 
             <div class="form-group">
-                <label class="required" for="publisher">{{ trans('cruds.author.fields.publisher') }}</label>
+                <label class="required" for="author">{{ trans('cruds.book.fields.author') }}</label>
+                <select name="authorlist[]" id="authorlist" class="form-control select2 selectpicker" multiple data-live-search="true">
+                    <option value="" disabled selected>-Select Author-</option>
+                    @foreach ($authors as $author)
+                        @if( old('authorlist') )
+                            <option value="{{ $author->id }}" {{ in_array($author->id, old('authorlist')) ? 'selected' : '' }}>{{ $author->name }}</option>   
+                        @else
+                            <option value="{{ $author->id }}">{{$author->name}}</option>
+                        @endif
+                    @endforeach
+                </select>
+                @if($errors->has('authorlist'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('authorlist') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.book.fields.name_helper') }}</span>
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="publisher">{{ trans('cruds.book.fields.publisher') }}</label>
                 <select class="form-control select2 {{ $errors->has('publisher_id') ? 'is-invalid' : '' }}" name="publisher_id" id="publisher_id">
                         <option
                             value="">-Select Publisher-</option>
@@ -162,6 +182,17 @@
             </div>
 
             <div class="form-group">
+                <label class="required" for="image">{{ trans('cruds.book.fields.image') }}</label>
+                <input type="file" name="image" class="form-control" placeholder="image">
+                @if($errors->has('images'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('images') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.book.fields.name_helper') }}</span>
+            </div>
+
+            <div class="form-group">
                 <button class="btn btn-success" type="submit">
                     {{ trans('global.save') }}
                 </button>
@@ -174,6 +205,5 @@
 </div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('js/validate/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('js/common/custom.js') }}"></script>
+    <script src="{{ asset('js/admin/books/book.js') }}"></script>
 @endpush

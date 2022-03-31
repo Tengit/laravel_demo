@@ -22,6 +22,7 @@ class Books extends Model
         'condition',
         'parent_id',
         'num_pages',
+        'image',
         'quantity',
         'content',
         'description',
@@ -33,18 +34,20 @@ class Books extends Model
 
     public function category()
     {
-        return $this->belongsTo(Categories::class, 'category_id');
+        return $this->belongsTo(Categories::class);
     }
 
     public function publisher()
     {
-        return $this->belongsTo(Publishers::class, 'publisher_id');
+        return $this->belongsTo(Publishers::class);
     }
 
-    public function author()
+    public function authors()
     {
-        return $this->belongsToMany(Authors::class)
-            ->as('author')
+        return $this->belongsToMany(Authors::class, 'books_authors', 'book_id', 'author_id')
+            ->as('authors')
             ->withTimestamps();
+            
+        // return $this->hasMany(Authors::class, 'id', 'book_id');
     }
 }

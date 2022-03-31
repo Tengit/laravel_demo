@@ -34,7 +34,7 @@
                             {{ trans('cruds.author.fields.biography') }}
                         </th>
                         <td>
-                            {{ $author->biography }}
+                            {!! $author->biography ?? '' !!}
                         </td>
                     </tr>
                     <tr>
@@ -42,7 +42,7 @@
                             {{ trans('cruds.author.fields.address') }}
                         </th>
                         <td>
-                            {{ $author->address ?? '' }}
+                            {!! $author->address ?? '' !!}
                         </td>
                     </tr>
                     <tr>

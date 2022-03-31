@@ -1,23 +1,26 @@
 <?php
 
 namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Models\Categories;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
 use App\Repositories\Categories\CategoryRepository;
 
-class CategoriesController extends Controller
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Controllers\Controller;
+
+class UserCategoriesController extends Controller
 {
     protected $categoryRepository;
- 
+    
     /**
      * __contruct
-     * @return repo object
+     * @return object
      */
     public function __construct(CategoryRepository $categoryRepository)
     {
@@ -31,24 +34,11 @@ class CategoriesController extends Controller
     public function index()
     {
         $categories = $this->categoryRepository->getAll();
-        $index = 1;
-        return view('categories.index', compact('categories', 'index'));
-    }
-
-    /**
-     * Show one
-     * @param $id
-     * @return mixed
-     */
-    public function show( $id )
-    {
-        $category = $this->categoryRepository->find($id);
-        return view('categories.show', ['category' => $category]);
+        return view('categories.index', compact('categories'));
     }
 
     /**
      * Create
-     * @param array $attributes
      * @return mixed
      */
     public function create()
@@ -57,18 +47,14 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Store
-     * @param array $attributes
+     * Show one
+     * @param $id
      * @return mixed
      */
-    public function store(StoreCategoryRequest $request)
+    public function show($id)
     {
-        $category = $this->categoryRepository->create($request->all());
-        if( $category ){
-            return redirect()->route('categories.show');
-        }else{
-            return redirect()->route('categories.create');
-        }
+        $category = $this->categoryRepository->find($id);
+        return view('categories.show', compact('category'));
     }
 
     /**
@@ -82,15 +68,32 @@ class CategoriesController extends Controller
     }
 
     /**
+     * Store
+     * @param array $attributes
+     * @return mixed
+     */
+    public function store(StoreCategoryRequest $request)
+    {
+        $category = $this->categoryRepository->create($request->all());
+
+        if( $category ){
+            return redirect()->route('admin.categories.show', $category);
+        }else{
+            return redirect()->route('admin.categories.create');
+        }
+    }
+
+    /**
      * Update
      * @param $id
-     * @param array $attributes
+     * @param array $request
      * @return mixed
      */
     public function update(UpdateCategoryRequest $request, $id)
     {
         $category = $this->categoryRepository->update($id, $request->all());
-        return redirect()->route('categories.show', $category)
+
+        return redirect()->route('admin.categories.show', $category)
             ->with('success', 'Category updated successfully');
     }
 
@@ -102,9 +105,21 @@ class CategoriesController extends Controller
     public function destroy(Categories $category)
     {
         $category->delete();
-        return redirect()->route('categories.index')->with([
+        return redirect()->route('admin.categories.index')->with([
             'message' => 'Deleted successfully',
             'alert-type' => 'success'
         ]);
+    }
+
+    /**
+     * Delete
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id)
+    {
+        $category = $this->categoryRepository->find($id);
+
+        return view('categories.delete', compact('category'));
     }
 }

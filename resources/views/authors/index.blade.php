@@ -68,10 +68,10 @@
                                 </a>
                             </td>
                             <td>
-                                {{ $author->biography ?? '' }}
+                                {!! $author->biography ?? '' !!}
                             </td>
                             <td>
-                                {{ $author->address ?? '' }}
+                                {!! $author->address ?? '' !!}
                             </td>
                             <td>
                                 {{ $author->birthday ?? '' }}
@@ -120,8 +120,3 @@
 </div>
 <!-- end Modal -->
 @endsection
-
-@push('scripts')
-    <script src="{{ asset('js/validate/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('js/common/custom.js') }}"></script>
-@endpush

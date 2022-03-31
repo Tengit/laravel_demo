@@ -26,7 +26,7 @@
 
             <div class="form-group">
                 <label class="required" for="biography">{{ trans('cruds.author.fields.biography') }}</label>
-                <textarea id="biography" name="biography" rows="3" class="form-control summernote {{ $errors->has('biography') ? 'is-invalid' : '' }}">{{ old('biography', $author->biography) }}</textarea>
+                <textarea id="biography" name="biography" rows="3" class="form-control {{ $errors->has('biography') ? 'is-invalid' : '' }}">{{ old('biography', $author->biography) }}</textarea>
                 @if($errors->has('biography'))
                     <div class="invalid-feedback">
                         {{ $errors->first('biography') }}
@@ -36,8 +36,8 @@
             </div>
 
             <div class="form-group">
-                <label  for="address">{{ trans('cruds.author.fields.address') }}</label>
-                <textarea id="address" name="address" rows="3" class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}">{{ old('address', $author->address) }}</textarea>
+                <label for="address">{{ trans('cruds.author.fields.address') }}</label>
+                <input class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" type="text" name="address" id="address" value="{{ old('address', $author->address) }}">
                 @if($errors->has('address'))
                     <div class="invalid-feedback">
                         {{ $errors->first('address') }}
@@ -81,6 +81,5 @@
 </div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('js/validate/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('js/common/custom.js') }}"></script>
+    <script src="{{ asset('js/admin/authors/author.js') }}"></script>
 @endpush

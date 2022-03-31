@@ -37,6 +37,9 @@
                             No.
                         </th>
                         <th>
+                            {{ trans('cruds.book.fields.image') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.book.fields.title') }}
                         </th>
                         <th>
@@ -78,6 +81,14 @@
                                 {{ ++$key }}
                             </td>
                             <td>
+                                @if( $book->image )
+                                <img src="{{ asset('images/books/' . $book->image) }}"
+                                    width="60" height="60" alt="{{ $book->title }}">
+                                @else
+                                    <!-- <img src="{{ asset('img/no-img.png') }}" width="60" height="60" alt="{{ $book->title }}"> -->
+                                @endif
+                            </td>
+                            <td>
                                 <a href="{{ route('admin.books.show', $book->id) }}">
                                     {{ $book->title }}
                                 </a>
@@ -86,10 +97,10 @@
                                 {{ $book->isbn ?? '' }}
                             </td>
                             <td>
-                                {{ $book->content ?? '' }}
+                                {!! $book->content ?? '' !!}
                             </td>
                             <td>
-                                {{ $book->description ?? '' }}
+                                {!! $book->description ?? '' !!}
                             </td>
                             <td>
                                 {{ number_format($book->num_pages) }}
@@ -102,18 +113,23 @@
                             <td>
                                 {{ number_format($book->price) }}
                             </td>
-                            <td>
+                            <td nowrap>
                                 <a href="{{ route('admin.categories.show', $book->category->id) }}" target="_blank">
                                     {{ $book->category->name ?? '' }}
                                 </a>
                             </td>
-                            <td>
+                            <td nowrap>
                                 <a href="{{ route('admin.publishers.show', $book->publisher->id) }}" target="_blank">
                                     {{ $book->publisher->name ?? '' }}
                                 </a>
                             </td>
-                            <td>
-                                &nbsp;
+                            <td nowrap>
+                                @foreach($book->authors as $author)
+                                    <a href="{{ route('admin.authors.show', $author->id) }}" target="_blank">
+                                        {{ $author->name ?? '' }}
+                                    </a>
+                                    <br/>
+                                @endforeach
                             </td>
                             <td nowrap align="center">
                                 <a href="{{ route('admin.books.show', $book->id) }}">

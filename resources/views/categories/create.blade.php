@@ -1,12 +1,62 @@
-<x-layout-category>
-    <x-setting-category heading="Add new Category">
-        <form method="POST" action="{{ route('categories.store') }}">
-            @csrf
+@section('title', trans('cruds.category.title_singular'))
+@extends('commons.layouts.app')
+@section('content')
 
-            <x-form.input name="name" required  />
-            <x-form.input name="abbreviation" required />
-            <x-form.textarea name="description"/>
-            <x-form.button>Save</x-form.button>
+<div class="card">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold text-primary">
+            {{ trans('global.create') }} {{ trans('cruds.category.title_singular') }}
+        </h6>
+    </div>
+
+    <div class="card-body">
+        <form method="POST" action="{{ route("admin.categories.store") }}" enctype="multipart/form-data" id="crudsCategoryForm">
+            @csrf
+            <div class="form-group">
+                <label class="required" for="name">{{ trans('cruds.category.fields.name') }}</label>
+                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}">
+                @if($errors->has('name'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('name') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.category.fields.name_helper') }}</span>
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="abbreviation">{{ trans('cruds.category.fields.abbreviation') }}</label>
+                <input class="form-control {{ $errors->has('abbreviation') ? 'is-invalid' : '' }}" type="text" name="abbreviation" id="abbreviation" value="{{ old('abbreviation', '') }}">
+                @if($errors->has('abbreviation'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('abbreviation') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.category.fields.name_helper') }}</span>
+            </div>
+
+            <div class="form-group">
+                <label for="description">{{ trans('cruds.category.fields.description') }}</label>
+                <textarea id="description" name="description" rows="3" class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}">{{ old('description') }}</textarea>
+                @if($errors->has('description'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('description') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.category.fields.name_helper') }}</span>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-success" type="submit">
+                    {{ trans('global.save') }}
+                </button>
+                <a class="btn btn-primary" href="{{ route('admin.categories.index') }}">
+                    Back to Catgories
+                </a>
+            </div>
         </form>
-    </x-setting-category>
-</x-layout-category>
+    </div>
+</div>
+@endsection
+@push('scripts')
+    <script src="{{ asset('js/admin/categories/category.js') }}"></script>
+@endpush

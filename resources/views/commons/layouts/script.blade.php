@@ -7,4 +7,10 @@
 <script type="text/javascript" src="{{ asset('js/bootstrap.bundle.js') }}"></script>
 <!-- summernote -->
 <script src="{{ asset('css/admin/summernote/summernote-bs4.min.js') }}"></script>
-<!-- Lay 1 version -->
+<script src="{{ asset('js/validate/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/common/custom.js') }}"></script>
+<!-- file input -->
+<script src="{{ asset('js/bootstrap-fileinput/js/plugins/piexif.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-fileinput/js/plugins/sortable.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-fileinput/js/fileinput.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-fileinput/themes/fas/theme.min.js') }}"></script>

@@ -22,10 +22,8 @@ class UserController extends Controller
         $books = Books::with('category', 'publisher')
             ->orderBy( 'title', 'desc')
             ->paginate( config('constants.pagination_records') ?? 10);
-        $index = 1;
         return view('auth.home', 
             compact(
-                'index',
                 'books'
             )
         );

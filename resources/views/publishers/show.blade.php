@@ -1,73 +1,102 @@
-<x-layout-publisher>
-    <main class="max-w-6xl mx-auto mt-10 lg:mt-20 space-y-6">
-        <article class="max-w-4xl mx-auto lg:grid lg:grid-cols-12 gap-x-10">
-            <div class="col-span-4 lg:text-center lg:pt-14 mb-10">
-                <p align="left" class="mt-4 block text-gray-400 text-xs">
-                    Infomations: {{ $publisher->name }}
-                </p>
-                <p align="left" class="mt-4 block text-gray-400 text-xs">
-                    Date created: <time>{{ $publisher->created_at }}</time>
-                </p>
-                <p align="left" class="mt-4 block text-gray-400 text-xs">
-                    Date modified: <time>{{ $publisher->updated_at }}</time>
-                </p>
-                <p align="left" class="mt-4 block text-gray-400 text-xs">
-                    Created by: {{ $publisher->created_by }}
-                </p>
-                <p align="left" class="mt-4 block text-gray-400 text-xs">
-                    Modified by: {{ $publisher->modified_by }}
-                </p>
+@section('title', trans('cruds.publisher.title_singular'))
+@extends('commons.layouts.app')
+@section('content')
+
+<div class="card">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold text-primary">
+        {{ trans('global.show') }} {{ trans('cruds.publisher.title_singular') }}
+        </h6>
+    </div>
+
+    <div class="card-body">
+        <div class="form-group">
+            <div class="form-group">
+                <a class="btn btn-primary" href="{{ route('admin.publishers.edit', $publisher->id) }}">
+                    {{ trans('global.edit') }}
+                </a>
+                <a class="btn btn-success" href="{{ route('admin.publishers.index') }}">
+                    Back to Publishers
+                </a>
             </div>
-
-            <div class="col-span-8">
-                <div class="hidden lg:flex justify-between mb-6">
-                    <a href="{{ route('publishers.index') }}"
-                       class="transition-colors duration-300 relative inline-flex items-center text-lg hover:text-blue-500">
-                        <svg width="22" height="22" viewBox="0 0 22 22" class="mr-2">
-                            <g fill="none" fill-rule="evenodd">
-                                <path stroke="#000" stroke-opacity=".012" stroke-width=".5" d="M21 1v20.16H.84V1z">
-                                </path>
-                                <path class="fill-current"
-                                      d="M13.854 7.224l-3.847 3.856 3.847 3.856-1.184 1.184-5.04-5.04 5.04-5.04z">
-                                </path>
-                            </g>
-                        </svg>
-
-                        Back to Publishers
-                    </a>
-                </div>
-
-                <x-form.label name="Name"/>
-
-                <h2 class="font-bold text-2xl lg:text-3xl mb-10">
-                    {{ $publisher->name }}
-                </h2>
-
-                <x-form.label name="Address"/>
-                <h4 class="text-1xl lg:text-2xl mb-10">
-                    {{ $publisher->address }}
-                </h4>
-
-                <x-form.label name="Email"/>
-                <div class="space-y-4 lg:text-lg leading-loose">{!! $publisher->email !!}</div>
-
-                <x-form.label name="Description"/>
-                <div class="space-y-4 lg:text-lg leading-loose">{!! $publisher->description !!}</div>
-
+            <table class="table table-bordered table-sbooked">
+                <tbody>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.publisher.fields.name') }}
+                        </th>
+                        <td>
+                            {{ $publisher->name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.publisher.fields.address') }}
+                        </th>
+                        <td>
+                            {{ $publisher->address ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.publisher.fields.description') }}
+                        </th>
+                        <td>
+                            {{ $publisher->biography }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.publisher.fields.email') }}
+                        </th>
+                        <td>
+                            {{ $publisher->email ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Date created:
+                        </th>
+                        <td>
+                            <time>{{ $publisher->created_at }} </time>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Date modified:
+                        </th>
+                        <td>
+                            <time>{{ $publisher->updated_at }} </time>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Created by:
+                        </th>
+                        <td>
+                            {{ $publisher->created_by }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Modified by:
+                        </th>
+                        <td>
+                            {{ $publisher->modified_by }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <a class="btn btn-primary" href="{{ route('admin.publishers.edit', $publisher->id) }}">
+                    {{ trans('global.edit') }}
+                </a>
+                <a class="btn btn-success" href="{{ route('admin.publishers.index') }}">
+                    Back to Publishers
+                </a>
             </div>
-            <div class="col-span-8 col-start-5 mt-10 space-y-6">
-                <form action="{{ route('publishers.destroy',$publisher->id) }}" method="POST">
+        </div>
+    </div>
+</div>
 
-                    <a href="{{ route('publishers.edit', $publisher->id) }}" class="text-blue-500 hover:text-blue-600">Edit</a>
-    
-                    <a href="{{ route('publishers.create') }}?name={{$publisher->name}}&abbreviation={{$publisher->abbreviation}}&description={{$publisher->description}}" class="text-blue-500 hover:text-blue-600">Copy</a>
-
-                    @csrf
-                    @method('DELETE')
-    
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-            </div> 
-        </article>
-    </main>
-</x-layout-publisher>
+@endsection

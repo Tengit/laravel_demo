@@ -10,7 +10,7 @@ interface BookRepositoryInterface
      * @param array $attributes
      * @return mixed
      */
-    public function getAll(array $attributes);
+    public function getAll();
 
     /**
      * Get one
@@ -25,6 +25,13 @@ interface BookRepositoryInterface
      * @return mixed
      */
     public function create(array $attributes);
+
+    /**
+     * Create
+     * @param array $attributes
+     * @return mixed
+     */
+    public function createBookAuthor($author_id,  $book_id);
 
     /**
      * Update

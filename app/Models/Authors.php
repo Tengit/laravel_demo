@@ -23,8 +23,7 @@ class Authors extends Model
 
     public function books()
     {
-        return $this->belongsToMany(Books::class)
-            ->as('book')
+        return $this->belongsToMany(Books::class, 'books_authors')
             ->withTimestamps();
     }
 }

@@ -28,6 +28,7 @@ class CreateBooksTable extends Migration
             $table->integer('edition');
             $table->float('price');
             $table->date('date_published');
+            $table->string('image');
             $table->integer('created_by')->nullable();
             $table->integer('modified_by')->nullable();
             $table->timestamps();

@@ -10,10 +10,16 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SessionsController;
-use App\Http\Controllers\BooksController;
-use App\Http\Controllers\AuthorsController;
-use App\Http\Controllers\PublishersController;
-use App\Http\Controllers\CategoriesController;
+// admin
+use App\Http\Controllers\Admin\BooksController;
+use App\Http\Controllers\Admin\AuthorsController;
+use App\Http\Controllers\Admin\PublishersController;
+use App\Http\Controllers\Admin\CategoriesController;
+// user
+use App\Http\Controllers\User\UserBooksController;
+use App\Http\Controllers\User\UserAuthorsController;
+use App\Http\Controllers\User\UserPublishersController;
+use App\Http\Controllers\User\UserCategoriesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,6 +64,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
 Route::get('books/delete/{id}', [BooksController::class, 'delete'])->name('book.delete');
 Route::get('authors/delete/{id}', [AuthorsController::class, 'delete'])->name('author.delete');
+Route::get('categories/delete/{id}', [CategoriesController::class, 'delete'])->name('category.delete');
+Route::get('publishers/delete/{id}', [PublishersController::class, 'delete'])->name('publisher.delete');
 
 Route::prefix('user')->name('user.')->group(function(){
   
@@ -74,8 +82,21 @@ Route::prefix('user')->name('user.')->group(function(){
         Route::get('/home', [UserController::class,'index'])->name('home');
         Route::get('/', [UserController::class,'index'])->name('home');
         Route::post('/logout',[UserController::class,'logout'])->name('logout');
+
+        Route::resource('categories', UserCategoriesController::class)->only('show', 'index');
+        Route::resource('authors', UserAuthorsController::class)->only('show', 'index');
+        Route::resource('publishers', UserPublishersController::class)->only('show', 'index');
+        Route::resource('books', UserBooksController::class)->only('show', 'index');
     });
 
+});
+
+/* User Section 
+Route::middleware('web')->group(function () {
+    Route::resource('categories', CategoriesController::class)->except('show', 'index');
+    Route::resource('authors', AuthorsController::class)->except('show', 'index');
+    Route::resource('publishers', PublishersController::class)->except('show', 'index');
+    Route::resource('books', BooksController::class)->except('show', 'index');
 });
 
 /*
@@ -108,12 +129,5 @@ Route::middleware('web')->group(function () {
     Route::resource('authors', AuthorsController::class);
     Route::resource('publishers', PublishersController::class);
     Route::resource('books', BooksController::class);
-});
-/* User Section 
-Route::middleware('web')->group(function () {
-    Route::resource('categories', CategoriesController::class)->except('edit', 'create', 'update');
-    Route::resource('authors', AuthorsController::class)->except('edit', 'create', 'update');
-    Route::resource('publishers', PublishersController::class)->except('edit', 'create', 'update');
-    Route::resource('books', BooksController::class)->except('edit', 'create', 'update');
 });
 */

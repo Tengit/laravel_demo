@@ -4,6 +4,7 @@ namespace App\Repositories\Books;
 
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 use App\Models\Books;
+use App\Models\BooksAuthors;
 
 /**
  * Class BookRepository.
@@ -48,9 +49,9 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
      * Get all
      * @return mixed
      */
-    public function getAll(array $relationship)
+    public function getAll()
     {
-        return $this->model->with($relationship)
+        return $this->model->with(['category', 'publisher', 'authors'])
             ->orderBy( 'title', 'desc')
             ->paginate( config('constants.pagination_records') ?? 10);
     }
@@ -60,9 +61,23 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
      * @param array $attributes
      * @return mixed
      */
-    public function create(array $attributes)
+    public function create($attributes)
     {
         return $this->model->create($attributes);
+    }
+
+    /**
+     * Create
+     * @param array $attributes
+     * @return mixed
+     */
+    public function createBookAuthor($author_id,  $book_id)
+    {
+        $data = [
+            'book_id' => $author_id,
+            'author_id' => $book_id
+        ];
+        return BooksAuthors::create($data);
     }
 
     /**
