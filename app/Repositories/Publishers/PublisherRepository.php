@@ -49,9 +49,9 @@ class PublisherRepository extends BaseRepository implements PublisherRepositoryI
      * Get all
      * @return mixed
      */
-    public function getAll(array $relationship)
+    public function getAll()
     {
-        return $this->model->with($relationship)
+        return $this->model
             ->orderBy( 'name', 'desc')
             ->paginate( config('constants.pagination_records') ?? 10);
     }

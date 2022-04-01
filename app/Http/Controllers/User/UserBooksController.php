@@ -13,6 +13,7 @@ use DB;
 use App\Repositories\Books\BookRepository;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Http\Controllers\Controller;
 
 use App\Services\ImageService;
 
@@ -40,10 +41,10 @@ class UserBooksController extends Controller
      * Get all
      * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = $this->bookRepository->getAll();
-        return view('books.index', compact('books'));
+        $books = $this->bookRepository->getAll($request);
+        return view('user.books.index', compact('books'));
     }
 
     /**
@@ -54,7 +55,7 @@ class UserBooksController extends Controller
     public function show( $id )
     {
         $book = $this->bookRepository->find($id);
-        return view('books.show', compact('book'));
+        return view('user.books.show', compact('book'));
     }
 
     /**

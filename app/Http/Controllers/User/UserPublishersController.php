@@ -1,6 +1,5 @@
 <?php
 
-namespace App\Http\Controllers;
 namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
@@ -34,16 +33,7 @@ class UserPublishersController extends Controller
     public function index()
     {
         $publishers = $this->publisherRepository->getAll();
-        return view('publishers.index', compact('publishers'));
-    }
-
-    /**
-     * Create
-     * @return mixed
-     */
-    public function create()
-    {
-        return view('publishers.create');
+        return view('user.publishers.index', compact('publishers'));
     }
 
     /**
@@ -54,7 +44,16 @@ class UserPublishersController extends Controller
     public function show($id)
     {
         $publisher = $this->publisherRepository->find($id);
-        return view('publishers.show', compact('publisher'));
+        return view('user.publishers.show', compact('publisher'));
+    }
+
+    /**
+     * Create
+     * @return mixed
+     */
+    public function create()
+    {
+        return view('publishers.create');
     }
 
     /**

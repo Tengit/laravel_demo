@@ -10,7 +10,7 @@ interface BookRepositoryInterface
      * @param array $attributes
      * @return mixed
      */
-    public function getAll();
+    public function getAll($attributes);
 
     /**
      * Get one

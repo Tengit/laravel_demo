@@ -4,7 +4,7 @@
         <div id="sidebar-menu">
             <ul class="metismenu" id="side-menu">
                 <li>
-                    <a href="{{route('admin.home')}}" class="nav-link">
+                    <a href="{{route('admin.books.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-fw fa-tachometer-alt">
 
                         </i>
@@ -12,35 +12,35 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('admin.books.create')}}" class="nav-link">
-                        <i class="fa-fw fas fa-plus nav-icon">
+                    <a href="{{route('admin.books.index')}}" class="nav-link">
+                        <i class="fa-fw fas fa-list nav-icon">
 
                         </i>
-                        <span>Create a Book</span>
+                        <span>List Book</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('admin.authors.create')}}" class="nav-link">
-                        <i class="fa-fw fas fa-plus nav-icon">
+                    <a href="{{route('admin.authors.index')}}" class="nav-link">
+                        <i class="fa-fw fas fa-list nav-icon">
 
                         </i>
-                        <span>Create an Author</span>
+                        <span>List Author</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('admin.categories.create')}}" class="nav-link">
-                        <i class="fa-fw fas fa-plus nav-icon">
+                    <a href="{{route('admin.categories.index')}}" class="nav-link">
+                        <i class="fa-fw fas fa-list nav-icon">
 
                         </i>
-                        <span>Create a Category</span>
+                        <span>List Category</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('admin.publishers.create')}}" class="nav-link">
-                        <i class="fa-fw fas fa-plus nav-icon">
+                    <a href="{{route('admin.publishers.index')}}" class="nav-link">
+                        <i class="fa-fw fas fa-list nav-icon">
 
                         </i>
-                        <span>Create a Publisher</span>
+                        <span>List Publisher</span>
                     </a>
                 </li>
             </ul>

@@ -62,6 +62,12 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
 });
 
+Route::get("search",[BooksController::class,'search']);
+Route::get('books/popup/{id}', [BooksController::class, 'popup'])->name('book.popup');
+Route::get('authors/popup/{id}', [AuthorsController::class, 'popup'])->name('author.popup');
+Route::get('categories/popup/{id}', [CategoriesController::class, 'popup'])->name('category.popup');
+Route::get('publishers/popup/{id}', [PublishersController::class, 'popup'])->name('publisher.popup');
+
 Route::get('books/delete/{id}', [BooksController::class, 'delete'])->name('book.delete');
 Route::get('authors/delete/{id}', [AuthorsController::class, 'delete'])->name('author.delete');
 Route::get('categories/delete/{id}', [CategoriesController::class, 'delete'])->name('category.delete');

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\Publishers;
@@ -11,11 +11,11 @@ use App\Repositories\Publishers\PublisherRepository;
 
 use App\Http\Requests\StorePublisherRequest;
 use App\Http\Requests\UpdatePublisherRequest;
+use App\Http\Controllers\Controller;
 
 class PublishersController extends Controller
 {
     protected $publisherRepository;
-    protected $relationships;
     
     /**
      * __contruct
@@ -24,7 +24,6 @@ class PublishersController extends Controller
     public function __construct(PublisherRepository $publisherRepository)
     {
         $this->publisherRepository = $publisherRepository;
-        $this->relationships = [];
     }
 
     /**
@@ -33,8 +32,8 @@ class PublishersController extends Controller
      */
     public function index()
     {
-        $publishers = $this->publisherRepository->getAll($this->relationships);
-        return view('publishers.index', compact('publishers'));
+        $publishers = $this->publisherRepository->getAll();
+        return view('admin.publishers.index', compact('publishers'));
     }
 
     /**
@@ -43,7 +42,7 @@ class PublishersController extends Controller
      */
     public function create()
     {
-        return view('publishers.create');
+        return view('admin.publishers.create');
     }
 
     /**
@@ -54,7 +53,18 @@ class PublishersController extends Controller
     public function show($id)
     {
         $publisher = $this->publisherRepository->find($id);
-        return view('publishers.show', compact('publisher'));
+        return view('admin.publishers.show', compact('publisher'));
+    }
+
+    /**
+     * Show one
+     * @param $id
+     * @return mixed
+     */
+    public function popup( $id )
+    {
+        $publisher = $this->publisherRepository->find($id);
+        return view('user.publishers.popup', compact('publisher'));
     }
 
     /**
@@ -64,7 +74,7 @@ class PublishersController extends Controller
      */
     public function edit(Publishers $publisher)
     {
-        return view('publishers.edit', compact('publisher'));
+        return view('admin.publishers.edit', compact('publisher'));
     }
 
     /**
@@ -120,6 +130,6 @@ class PublishersController extends Controller
     {
         $publisher = $this->publisherRepository->find($id);
 
-        return view('publishers.delete', compact('publisher'));
+        return view('admin.publishers.delete', compact('publisher'));
     }
 }

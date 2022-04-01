@@ -15,7 +15,7 @@
                 <a class="btn btn-primary" href="{{ route('admin.books.edit', $book->id) }}">
                     {{ trans('global.edit') }}
                 </a>
-                <a class="btn btn-success" href="{{ route('admin.home') }}">
+                <a class="btn btn-success" href="{{ route('admin.books.index') }}">
                     Back to Books
                 </a>
             </div>
@@ -139,7 +139,7 @@
                             {{ trans('cruds.book.fields.image') }}
                         </th>
                         <td>
-                            @if($book->image)
+                            @if( $book->image )
                             <img src="{{ asset('images/books/' . $book->image) }}"
                                 width="60" height="60" alt="{{ $book->title }}">
                             @else
@@ -185,7 +185,7 @@
                 <a class="btn btn-primary" href="{{ route('admin.books.edit', $book->id) }}">
                     {{ trans('global.edit') }}
                 </a>
-                <a class="btn btn-success" href="{{ route('admin.home') }}">
+                <a class="btn btn-success" href="{{ route('admin.books.index') }}">
                     Back to Books
                 </a>
             </div>

@@ -1,5 +1,5 @@
 @section('title', trans('cruds.book.title_singular'))
-@extends('commons.layouts.app')
+@extends('commons.layouts.staff.app')
 
 @section('content')
 <div class="card">
@@ -20,15 +20,28 @@
         </div>
     @endif
     <div class="card-body">
-        <div class="form-group">
-            <a href="{{ route('admin.books.create') }}" class="btn btn-primary">
-                <span class="icon text-white-50">
-                    <i class="fa fa-plus"></i>
-                </span>
-                <span class="text">Create new Book</span>
-            </a>
-        </div>
+        <div class="mx-auto pull-right">
+            <div class="">
+                <form action="{{ route('user.books.index') }}" method="GET" role="search">
 
+                    <div class="input-group">
+                        <span class="input-group-btn mr-2">
+                            <button class="btn btn-info" type="submit" title="Search books">
+                                <span class="fas fa-search"></span>
+                            </button>
+                        </span>
+                        <input type="text" name="search" id="search" placeholder="Enter search name" class="form-control">
+                        <a href="{{ route('user.books.index') }}">
+                        <span class="input-group-btn ml-2">
+                            <button class="btn btn-danger" type="button" title="Refresh page">
+                                <span class="fas fa-sync-alt"></span>
+                            </button>
+                        </span>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="table-responsive">
             <table class=" table table-bordered table-sbooked table-hover datatable">
                 <thead>
@@ -89,7 +102,7 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('admin.books.show', $book->id) }}">
+                                <a href="{{ route('user.books.show', $book->id) }}">
                                     {{ $book->title }}
                                 </a>
                             </td>
@@ -114,32 +127,27 @@
                                 {{ number_format($book->price) }}
                             </td>
                             <td nowrap>
-                                <a href="{{ route('admin.categories.show', $book->category->id) }}" target="_blank">
+                                <a href="{{ route('user.categories.show', $book->category->id) }}" target="_blank">
                                     {{ $book->category->name ?? '' }}
                                 </a>
                             </td>
                             <td nowrap>
-                                <a href="{{ route('admin.publishers.show', $book->publisher->id) }}" target="_blank">
+                                <a href="{{ route('user.publishers.show', $book->publisher->id) }}" target="_blank">
                                     {{ $book->publisher->name ?? '' }}
                                 </a>
                             </td>
                             <td nowrap>
                                 @foreach($book->authors as $author)
-                                    <a href="{{ route('admin.authors.show', $author->id) }}" target="_blank">
+                                    <a href="{{ route('user.authors.show', $author->id) }}" target="_blank">
                                         {{ $author->name ?? '' }}
                                     </a>
                                     <br/>
                                 @endforeach
                             </td>
                             <td nowrap align="center">
-                                <a href="{{ route('admin.books.show', $book->id) }}">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                                <a href="{{ route('admin.books.edit', $book->id) }}">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                <a data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('book.delete', $book->id) }}" title="Delete Book">
-                                    <i class="fas fa-trash text-danger fa-lg"></i>
+                                <a class="text-secondary" data-toggle="modal" id="showButton" data-target="#showModal"
+                                    data-attr="{{ route('book.popup', $book->id) }}" title="show">
+                                    <i class="fas fa-eye text-success  fa-lg"></i>
                                 </a>
                             </td>
                         </tr>
@@ -152,24 +160,24 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+<!-- show modal -->
+<div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="showModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">{{ trans('global.delete') }} {{ trans('cruds.book.title_singular') }}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ trans('global.show') }} {{ trans('cruds.book.title_singular') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-        <div class="modal-body" id="smallBody">
-            <div>
-                <!--  -->
+            <div class="modal-body" id="showBody">
+                <div>
+                    <!-- the result to be displayed apply here -->
+                </div>
             </div>
         </div>
     </div>
-  </div>
 </div>
-<!-- end Modal -->
-
 @endsection

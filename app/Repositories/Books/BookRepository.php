@@ -5,6 +5,7 @@ namespace App\Repositories\Books;
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 use App\Models\Books;
 use App\Models\BooksAuthors;
+use DB;
 
 /**
  * Class BookRepository.
@@ -49,11 +50,43 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
      * Get all
      * @return mixed
      */
-    public function getAll()
+    public function getAll($request)
     {
-        return $this->model->with(['category', 'publisher', 'authors'])
+        /*
+
+            if($request->search) {
+
+                return DB::table('books')
+                ->join('categories', 'categories.id', '=', 'books.category_id')
+                ->where('books.id','like','%'.$request->search.'%')
+                ->orwhere('books.title','like','%'.$request->search.'%')
+                ->orwhere('books.content','like','%'.$request->search.'%')
+                ->orwhere('books.isbn','like','%'.$request->search.'%')
+                ->orwhere('books.description','like','%'.$request->search.'%')
+                ->orwhere('categories.name','like','%'.$request->search.'%')
+                ->select('books.*', 'categories.* as category' )
+                ->orderBy( 'title', 'desc')
+                ->paginate( config('constants.pagination_records') ?? 10);
+            }
+        */
+        
+        return $this->model->where('id','like','%'.$request->search.'%')
+            ->orwhere('title','like','%'.$request->search.'%')
+            ->orwhere('content','like','%'.$request->search.'%')
+            ->orwhere('isbn','like','%'.$request->search.'%')
+            ->orwhere('description','like','%'.$request->search.'%')
+            ->with(['category', 'authors', 'publisher'])
             ->orderBy( 'title', 'desc')
             ->paginate( config('constants.pagination_records') ?? 10);
+            
+            // ->with(
+            //     ['authors' => function($query) use ($request)
+            //         {
+            //             $query->where('name', 'like', '%'.$request->search.'%');
+            //             $query->orWhere('biography', 'like', '%'.$request->search.'%');
+            //         }
+            //     ]
+            // )
     }
 
     /**

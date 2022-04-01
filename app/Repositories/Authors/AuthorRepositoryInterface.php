@@ -9,7 +9,7 @@ interface AuthorRepositoryInterface
      * Get all
      * @return mixed
      */
-    public function getAll(array $attributes);
+    public function getAll();
 
     /**
      * Get one

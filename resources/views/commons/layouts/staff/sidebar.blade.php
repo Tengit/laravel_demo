@@ -4,7 +4,7 @@
         <div id="sidebar-menu">
             <ul class="metismenu" id="side-menu">
                 <li>
-                    <a href="{{route('user.home')}}" class="nav-link">
+                    <a href="{{route('user.books.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-fw fa-tachometer-alt">
                         
                         </i>
@@ -12,7 +12,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('user.home')}}" class="nav-link">
+                    <a href="{{route('user.books.index')}}" class="nav-link">
                         <i class="fa-fw fas fa-list nav-icon">
 
                         </i>

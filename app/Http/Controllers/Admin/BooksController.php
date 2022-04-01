@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Models\Books;
@@ -13,6 +13,7 @@ use DB;
 use App\Repositories\Books\BookRepository;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Http\Controllers\Controller;
 
 use App\Services\ImageService;
 
@@ -32,7 +33,6 @@ class BooksController extends Controller
     public function __construct(BookRepository $bookRepository)
     {
         $this->bookRepository = $bookRepository;
-        $this->relationships = ['category', 'publisher', 'authors'];
         $this->categories = Categories::all();
         $this->publishers = Publishers::all();
         $this->authors = Authors::all();
@@ -42,10 +42,54 @@ class BooksController extends Controller
      * Get all
      * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = $this->bookRepository->getAll();
-        return view('books.index', compact('books'));
+        $books = $this->bookRepository->getAll($request);
+        return view('admin.books.index', compact('books'));
+    }
+
+    /**
+     * ajax search
+     * @return mixed
+     */
+    public function search(Request $request)
+    {
+
+        if($request->ajax()){
+
+            $data=Books::where('id','like','%'.$request->search.'%')
+                ->orwhere('title','like','%'.$request->search.'%')
+                ->orwhere('content','like','%'.$request->search.'%')->get();
+            $output='';
+            if( count($data) > 0 ){
+                $output ='
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+                            foreach($data as $row){
+                                $output .='
+                                <tr>
+                                    <th scope="row">'.$row->id.'</th>
+                                    <td>'.$row->title.'</td>
+                                    <td>'.$row->description.'</td>
+                                </tr>
+                                ';
+                            }
+                $output .= '
+                        </tbody>
+                    </table>';
+            }
+            else{
+                $output .='No results';
+            }
+            return $output;
+        }
     }
 
     /**
@@ -56,7 +100,18 @@ class BooksController extends Controller
     public function show( $id )
     {
         $book = $this->bookRepository->find($id);
-        return view('books.show', compact('book'));
+        return view('admin.books.show', compact('book'));
+    }
+
+    /**
+     * Show one
+     * @param $id
+     * @return mixed
+     */
+    public function popup( $id )
+    {
+        $book = $this->bookRepository->find($id);
+        return view('user.books.popup', compact('book'));
     }
 
     /**
@@ -69,7 +124,7 @@ class BooksController extends Controller
         $categories = $this->categories;
         $publishers = $this->publishers;
         $authors = $this->authors;
-        return view('books.create', compact('categories', 'publishers', 'authors'));
+        return view('admin.books.create', compact('categories', 'publishers', 'authors'));
     }
 
     /**
@@ -112,7 +167,20 @@ class BooksController extends Controller
         $categories = $this->categories;
         $publishers = $this->publishers;
         $authors = $this->authors;
-        return view('books.edit', compact('book', 'categories', 'publishers', 'authors'));
+        return view('admin.books.edit', compact('book', 'categories', 'publishers', 'authors'));
+    }
+
+    /**
+     * Edit
+     * @param array object
+     * @return mixed
+     */
+    public function editPopup(Books $book)
+    {
+        $categories = $this->categories;
+        $publishers = $this->publishers;
+        $authors = $this->authors;
+        return view('admin.books.editpopup', compact('book', 'categories', 'publishers', 'authors'));
     }
 
     /**
@@ -167,6 +235,6 @@ class BooksController extends Controller
     {
         $book = $this->bookRepository->find($id);
 
-        return view('books.delete', compact('book'));
+        return view('admin.books.delete', compact('book'));
     }
 }

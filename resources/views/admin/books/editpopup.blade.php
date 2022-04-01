@@ -1,6 +1,4 @@
 @section('title', trans('cruds.book.title_singular'))
-@extends('commons.layouts.app')
-@section('content')
 
 <div class="card">
     <div class="card-header">
@@ -10,12 +8,12 @@
     </div>
 
     <div class="card-header">
-        <a class="btn btn-success" href="{{ route('admin.home') }}">
+        <a class="btn btn-success" href="{{ route('admin.books.index') }}">
             Back to Books
         </a>
     </div>
     <div class="card-body">
-        <form method="POST" action="{{ route('admin.books.update', $book->id) }}" enctype="multipart/form-data" id="crudsBookForm">
+        <form method="POST" action="{{ route('book.update', $book->id) }}" enctype="multipart/form-data" id="crudsBookForm">
             @csrf
             @method('PUT')
             <div class="form-group">
@@ -210,7 +208,4 @@
         </form>
     </div>
 </div>
-@endsection
-@push('scripts')
-    <script src="{{ asset('js/admin/books/book.js') }}"></script>
-@endpush
+<script src="{{ asset('js/admin/books/book.js') }}"></script>

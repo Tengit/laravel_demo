@@ -1,21 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Models\Authors;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
+use App\Models\Authors;
 use App\Repositories\Authors\AuthorRepository;
-
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 
 class AuthorsController extends Controller
 {
     protected $authorRepository;
-    protected $relationships;
     
     /**
      * __contruct
@@ -24,7 +24,6 @@ class AuthorsController extends Controller
     public function __construct(AuthorRepository $authorRepository)
     {
         $this->authorRepository = $authorRepository;
-        $this->relationships = [];
     }
 
     /**
@@ -33,8 +32,8 @@ class AuthorsController extends Controller
      */
     public function index()
     {
-        $authors = $this->authorRepository->getAll($this->relationships);
-        return view('authors.index', compact('authors'));
+        $authors = $this->authorRepository->getAll();
+        return view('admin.authors.index', compact('authors'));
     }
 
     /**
@@ -43,7 +42,7 @@ class AuthorsController extends Controller
      */
     public function create()
     {
-        return view('authors.create');
+        return view('admin.authors.create');
     }
 
     /**
@@ -54,7 +53,18 @@ class AuthorsController extends Controller
     public function show($id)
     {
         $author = $this->authorRepository->find($id);
-        return view('authors.show', compact('author'));
+        return view('admin.authors.show', compact('author'));
+    }
+
+    /**
+     * Show one
+     * @param $id
+     * @return mixed
+     */
+    public function popup( $id )
+    {
+        $author = $this->authorRepository->find($id);
+        return view('user.authors.popup', compact('author'));
     }
 
     /**
@@ -64,7 +74,7 @@ class AuthorsController extends Controller
      */
     public function edit(Authors $author)
     {
-        return view('authors.edit', compact('author'));
+        return view('admin.authors.edit', compact('author'));
     }
 
     /**
@@ -120,6 +130,6 @@ class AuthorsController extends Controller
     {
         $author = $this->authorRepository->find($id);
 
-        return view('authors.delete', compact('author'));
+        return view('admin.authors.delete', compact('author'));
     }
 }

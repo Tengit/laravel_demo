@@ -38,4 +38,69 @@ $(function () {
             }
         })
     });
+
+    // display a modal (show modal)
+    $(document).on('click', '#showButton', function(event) {
+        event.preventDefault();
+        let href = $(this).attr('data-attr');
+        $.ajax({
+            url: href,
+            beforeSend: function() {
+                $('#loader').show();
+            },
+            // return the result
+            success: function(result) {
+                $('#showModal').modal("show");
+                $('#showBody').html(result).show();
+            },
+            complete: function() {
+                $('#loader').hide();
+            },
+            error: function(jqXHR, testStatus, error) {
+                alert("Page " + href + " cannot open. Error:" + error);
+                $('#loader').hide();
+            },
+            timeout: 8000
+        })
+    });
+
+    // display a modal (edit modal)
+    $(document).on('click', '#editButton', function(event) {
+        event.preventDefault();
+        let href = $(this).attr('data-attr');
+        $.ajax({
+            url: href,
+            beforeSend: function() {
+                $('#loader').show();
+            },
+            // return the result
+            success: function(result) {
+                $('#editModal').modal("show");
+                $('#editBody').html(result).show();
+            },
+            complete: function() {
+                $('#loader').hide();
+            },
+            error: function(jqXHR, testStatus, error) {
+                alert("Page " + href + " cannot open. Error:" + error);
+                $('#loader').hide();
+            },
+            timeout: 8000
+        })
+    });
+    $(document).ready(function()
+    {
+        $('#search').on('keyup',function(){
+            var query= $(this).val();
+            $.ajax({
+                url:"home",
+                type:"GET",
+                data:{'search':query},
+                success:function(data){
+                    $('#search_list').html(data);
+                }
+            });
+        //end of ajax call
+        });
+    });
 });

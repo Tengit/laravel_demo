@@ -1,6 +1,5 @@
 <?php
 
-namespace App\Http\Controllers;
 namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
@@ -34,16 +33,7 @@ class UserCategoriesController extends Controller
     public function index()
     {
         $categories = $this->categoryRepository->getAll();
-        return view('categories.index', compact('categories'));
-    }
-
-    /**
-     * Create
-     * @return mixed
-     */
-    public function create()
-    {
-        return view('categories.create');
+        return view('user.categories.index', compact('categories'));
     }
 
     /**
@@ -54,7 +44,16 @@ class UserCategoriesController extends Controller
     public function show($id)
     {
         $category = $this->categoryRepository->find($id);
-        return view('categories.show', compact('category'));
+        return view('user.categories.show', compact('category'));
+    }
+
+    /**
+     * Create
+     * @return mixed
+     */
+    public function create()
+    {
+        return view('categories.create');
     }
 
     /**
