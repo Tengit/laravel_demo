@@ -73,9 +73,7 @@ class AuthorRepository extends BaseRepository implements AuthorRepositoryInterfa
      */
     public function find($id)
     {
-		
         $result = $this->model->find($id);
-
         return $result;
     }
 

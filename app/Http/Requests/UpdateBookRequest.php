@@ -31,11 +31,6 @@ class UpdateBookRequest extends FormRequest
                 'max:100',
                 Rule::unique('books', 'title')->ignore($this->book)
             ],
-            'image' => [
-                'required',
-                'image',
-                'mimes:jpg,png,jpeg,gif,svg|max:2048'
-            ],
             'isbn' => [
                 'required',
                 'regex:/^(([0-9]*)(\.([0-9]+))?)$/',

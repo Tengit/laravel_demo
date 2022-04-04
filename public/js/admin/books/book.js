@@ -19,9 +19,6 @@ $(function () {
                     required: true,
                     number: true
                 },
-                image: {
-                    required: true,
-                },
                 price: {
                     required: true,
                     number: true
@@ -74,9 +71,6 @@ $(function () {
                 },
                 content: {
                     required: "Content is required",
-                },
-                image: {
-                    required: "Image is required",
                 },
                 condition: {
                     required: "Condition is required",

@@ -23,7 +23,23 @@ class Authors extends Model
 
     public function books()
     {
-        return $this->belongsToMany(Books::class, 'books_authors')
+        return $this->belongsToMany(Books::class, 'books_authors', 'author_id', 'book_id')
+            ->as('books')
             ->withTimestamps();
     }
+    
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::deleting(function($author) {
+    //         $relationMethods = ['books'];
+
+    //         foreach ($relationMethods as $relationMethod) {
+    //             if ($author->$relationMethod()->count() > 0) {
+    //                 return false;
+    //             }
+    //         }
+    //     });
+    // }
 }

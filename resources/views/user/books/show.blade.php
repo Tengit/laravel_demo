@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="card">
+@if( $book )
     <div class="card-header">
         <h6 class="m-0 font-weight-bold text-primary">
         {{ trans('global.show') }} {{ trans('cruds.book.title_singular') }}
@@ -185,6 +186,8 @@
             </div>
         </div>
     </div>
+@else <span>Do not find this record</span>
+@endif
 </div>
 
 @endsection

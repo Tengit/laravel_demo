@@ -53,10 +53,8 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $books = Books::with('category')->get();
-        dd($books);
         $category = $this->categoryRepository->find($id);
-        return view('admin.categories.show', compact('category', 'books'));
+        return view('admin.categories.show', compact('category'));
     }
 
     /**
@@ -111,13 +109,31 @@ class CategoriesController extends Controller
     }
 
     /**
+     * Mass Update
+     * @param array $request
+     * @return mixed
+     */
+    public function massupdate(UpdateCategoryRequest $request, $id)
+    {
+        $category = $this->categoryRepository->update($id, $request->all());
+
+        return redirect()->route('admin.categories.show', $category)
+            ->with('success', 'Category updated successfully');
+    }
+
+    /**
      * Destroy
      * @param $id
      * @return mixed
      */
     public function destroy(Categories $category)
     {
-        $category->delete();
+        $xxx = $category->delete();
+        if( !$xxx )
+        return redirect()->route('admin.categories.index')->with([
+            'message' => 'Cant delete this record',
+            'alert-type' => 'fail'
+        ]);
         return redirect()->route('admin.categories.index')->with([
             'message' => 'Deleted successfully',
             'alert-type' => 'success'

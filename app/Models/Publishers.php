@@ -22,6 +22,20 @@ class Publishers extends Model
 
     public function books()
     {
-        return $this->hasMany(Books::class);
+        return $this->hasMany(Books::class, 'publisher_id');
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($publisher) {
+            $relationMethods = ['books'];
+
+            foreach ($relationMethods as $relationMethod) {
+                if ($publisher->$relationMethod()->count() > 0) {
+                    return false;
+                }
+            }
+        });
     }
 }

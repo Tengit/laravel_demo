@@ -54,6 +54,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('/home', [AdminController::class,'index'])->name('home');
         Route::get('/', [AdminController::class,'index'])->name('home');
         Route::post('/logout',[AdminController::class,'logout'])->name('logout');
+        Route::get('/massupdate', [BooksController::class,'massupdate'])->name('massupdate');
         Route::resource('books', BooksController::class);
         Route::resource('categories', CategoriesController::class);
         Route::resource('authors', AuthorsController::class);

@@ -3,9 +3,10 @@
 @section('content')
 
 <div class="card">
+@if( $category )
     <div class="card-header">
         <h6 class="m-0 font-weight-bold text-primary">
-        {{ trans('global.show') }} {{ trans('cruds.category.title_singular') }}
+            {{ trans('global.show') }} {{ trans('cruds.category.title_singular') }}
         </h6>
     </div>
 
@@ -88,7 +89,117 @@
                 </a>
             </div>
         </div>
+        @if( $category->books )
+            <span class="d-none d-sm-inline-block ml-1 font-weight-medium">List Book(s) related</span>
+
+            <div class="table-responsive">
+                <table class=" table table-bordered table-sbooked table-hover datatable">
+                    <thead>
+                        <tr>
+                            <th width="10">
+                                No.
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.image') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.title') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.isbn') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.content') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.description') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.num_pages') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.quantity') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.price') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.category') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.publisher') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.author') }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($category->books as $key => $book)
+                            <tr data-entry-id="{{ $book->id }}">
+                                <td>
+                                    {{ ++$key }}
+                                </td>
+                                <td>
+                                    @if( $book->image )
+                                    <img src="{{ asset('images/books/' . $book->image) }}"
+                                        width="60" height="60" alt="{{ $book->title }}">
+                                    @else
+                                        <!-- <img src="{{ asset('img/no-img.png') }}" width="60" height="60" alt="{{ $book->title }}"> -->
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.books.show', $book->id) }}">
+                                        {{ $book->title }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ $book->isbn ?? '' }}
+                                </td>
+                                <td>
+                                    {!! $book->content ?? '' !!}
+                                </td>
+                                <td>
+                                    {!! $book->description ?? '' !!}
+                                </td>
+                                <td>
+                                    {{ number_format($book->num_pages) }}
+                                </td>
+                                </td>
+                                <td>
+                                    {{ number_format($book->quantity) }}
+                                </td>
+                                </td>
+                                <td>
+                                    {{ number_format($book->price) }}
+                                </td>
+                                <td nowrap>
+                                    <a href="{{ route('admin.categories.show', $book->category->id) }}" target="_blank">
+                                        {{ $book->category->name ?? '' }}
+                                    </a>
+                                </td>
+                                <td nowrap>
+                                    <a href="{{ route('admin.publishers.show', $book->publisher->id) }}" target="_blank">
+                                        {{ $book->publisher->name ?? '' }}
+                                    </a>
+                                </td>
+                                <td nowrap>
+                                    @foreach($book->authors as $author)
+                                        <a href="{{ route('admin.authors.show', $author->id) }}" target="_blank">
+                                            {{ $author->name ?? '' }}
+                                        </a>
+                                        <br/>
+                                    @endforeach
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
     </div>
+@else <span>Do not find this record</span>
+@endif
 </div>
 
 @endsection

@@ -7,6 +7,7 @@ use App\Models\Books;
 use App\Models\Categories;
 use App\Models\Publishers;
 use App\Models\Authors;
+use App\Models\BooksAuthors;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
@@ -135,7 +136,8 @@ class BooksController extends Controller
     public function store(StoreBookRequest $request)
     {
         $input = $request->all();
-          if ($image = $request->file('image')) {
+        if ($image = $request->file('image'))
+        {
             $destinationPath = 'images/books/';
             $profileImage = $image->getClientOriginalName() . date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $profileImage);
@@ -189,27 +191,51 @@ class BooksController extends Controller
      * @param array $attributes
      * @return mixed
      */
-    public function update(UpdateBookRequest $request, $id)
+    public function update(UpdateBookRequest $request, Books $book)
     {
         $input = $request->all();
+        $old_image = $book->image;
 
-        if ($image = $request->file('image'))
+        if( $image = $request->file('image') )
         {
             $destinationPath = 'images/books/';
             $profileImage = $image->getClientOriginalName() . date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $profileImage);
             $input['image'] = "$profileImage";
         }
-        else
-        {
-            unset($input['image']);
-        }
-        $book = $this->bookRepository->update($id, $input);
+        elseif( !$old_image ) return $this->edit($book);
 
+        $this->bookRepository->update($book->id, $input);
+        
         $book->authors()->sync($request->authorlist);
 
         return redirect()->route('admin.books.show', $book)
             ->with('success', 'Book updated successfully');
+    }
+
+    /**
+     * Mass Update
+     * @param array $request
+     * @return mixed
+     */
+    public function massupdate( Request $request )
+    {
+        if( isset($request->uids) && count($request->uids) > 0 )
+        {
+            foreach( $request->uids as $key => $id )
+            {
+                $this->bookRepository->update($id, $request->fields);
+            }
+            return redirect()->route('admin.books.index')->with([
+                'message' => 'Book updated successfully',
+                'alert-type' => 'success'
+            ]);
+        }
+        return redirect()->route('admin.books.index')->with([
+            'message' => 'Book updated failed',
+            'alert-type' => 'fail'
+        ]);
+
     }
 
     /**
@@ -220,6 +246,7 @@ class BooksController extends Controller
     public function destroy(Books $book)
     {
         $book->delete();
+        if( $book->delete() ) BooksAuthors::where('book_id',$book->id)->delete();
         return redirect()->route('admin.books.index')->with([
             'message' => 'Deleted successfully',
             'alert-type' => 'success'
@@ -236,5 +263,15 @@ class BooksController extends Controller
         $book = $this->bookRepository->find($id);
 
         return view('admin.books.delete', compact('book'));
+    }
+
+    public function checkDelete($relationships = [])
+    {
+        foreach ($relationships as $relationship) {
+            if ($this->$relationship()->count() > 0) {
+                return false;
+            }
+        }
+
     }
 }

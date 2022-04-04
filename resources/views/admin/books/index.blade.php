@@ -38,7 +38,7 @@
                                 <span class="fas fa-search"></span>
                             </button>
                         </span>
-                        <input type="text" name="search" id="search" placeholder="Enter search name" class="form-control">
+                        <input type="text" name="search" id="search" placeholder="Enter search name" class="form-control" value="{{ old('search', request()->search) }}">
                         <a href="{{ route('admin.books.index') }}">
                         <span class="input-group-btn ml-2">
                             <button class="btn btn-danger" type="button" title="Refresh page">
@@ -52,125 +52,144 @@
         </div>
 
         <div class="table-responsive">
-            <table class=" table table-bordered table-sbooked table-hover datatable">
-                <thead>
-                    <tr>
-                        <th width="10">
-                            No.
-                        </th>
-                        <th>
-                            {{ trans('cruds.book.fields.image') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.book.fields.title') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.book.fields.isbn') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.book.fields.content') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.book.fields.description') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.book.fields.num_pages') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.book.fields.quantity') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.book.fields.price') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.book.fields.category') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.book.fields.publisher') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.book.fields.author') }}
-                        </th>
-                        <th>
-                            &nbsp;
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($books as $key => $book)
-                        <tr data-entry-id="{{ $book->id }}">
-                            <td>
-                                {{ ++$key }}
-                            </td>
-                            <td>
-                                @if( $book->image )
-                                <img src="{{ asset('images/books/' . $book->image) }}"
-                                    width="60" height="60" alt="{{ $book->title }}">
-                                @else
-                                    <!-- <img src="{{ asset('img/no-img.png') }}" width="60" height="60" alt="{{ $book->title }}"> -->
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.books.show', $book->id) }}">
-                                    {{ $book->title }}
-                                </a>
-                            </td>
-                            <td>
-                                {{ $book->isbn ?? '' }}
-                            </td>
-                            <td>
-                                {!! $book->content ?? '' !!}
-                            </td>
-                            <td>
-                                {!! $book->description ?? '' !!}
-                            </td>
-                            <td>
-                                {{ number_format($book->num_pages) }}
-                            </td>
-                            </td>
-                            <td>
-                                {{ number_format($book->quantity) }}
-                            </td>
-                            </td>
-                            <td>
-                                {{ number_format($book->price) }}
-                            </td>
-                            <td nowrap>
-                                <a href="{{ route('admin.categories.show', $book->category->id) }}" target="_blank">
-                                    {{ $book->category->name ?? '' }}
-                                </a>
-                            </td>
-                            <td nowrap>
-                                <a href="{{ route('admin.publishers.show', $book->publisher->id) }}" target="_blank">
-                                    {{ $book->publisher->name ?? '' }}
-                                </a>
-                            </td>
-                            <td nowrap>
-                                @foreach($book->authors as $author)
-                                    <a href="{{ route('admin.authors.show', $author->id) }}" target="_blank">
-                                        {{ $author->name ?? '' }}
-                                    </a>
-                                    <br/>
-                                @endforeach
-                            </td>
-                            <td nowrap align="center">
-                                <a class="text-secondary" data-toggle="modal" id="showButton" data-target="#showModal"
-                                    data-attr="{{ route('book.popup', $book->id) }}" title="show">
-                                    <i class="fas fa-eye text-success  fa-lg"></i>
-                                </a>
-
-                                <a href="{{ route('admin.books.edit', $book->id) }}">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                
-                                <a data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('book.delete', $book->id) }}" title="Delete Book">
-                                    <i class="fas fa-trash text-danger fa-lg"></i>
-                                </a>
-                            </td>
+            <form action="{{ route('admin.massupdate') }}" method="GET" role="search">
+                <table class=" table table-bordered table-sbooked table-hover datatable">
+                    <thead>
+                        <tr>
+                            <th width="10">
+                                &nbsp;
+                            </th>
+                            <th width="10">
+                                No.
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.image') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.title') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.isbn') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.content') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.description') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.num_pages') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.quantity') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.price') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.category') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.publisher') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.book.fields.author') }}
+                            </th>
+                            <th>
+                                &nbsp;
+                            </th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach($books as $key => $book)
+                            <tr data-entry-id="{{ $book->id }}">
+                                <td width="10">
+                                    <input type="checkbox" name="uids[]" value="{{ $book->id }}">
+                                </td>
+                                <td>
+                                    {{ ++$key }}
+                                </td>
+                                <td>
+                                    @if( $book->image )
+                                    <img src="{{ asset('images/books/' . $book->image) }}"
+                                        width="60" height="60" alt="{{ $book->title }}">
+                                    @else
+                                        <!-- <img src="{{ asset('img/no-img.png') }}" width="60" height="60" alt="{{ $book->title }}"> -->
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.books.show', $book->id) }}">
+                                        {{ $book->title }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ $book->isbn ?? '' }}
+                                </td>
+                                <td>
+                                    {!! $book->content ?? '' !!}
+                                </td>
+                                <td>
+                                    {!! $book->description ?? '' !!}
+                                </td>
+                                <td>
+                                    {{ number_format($book->num_pages) }}
+                                </td>
+                                </td>
+                                <td>
+                                    {{ number_format($book->quantity) }}
+                                </td>
+                                </td>
+                                <td>
+                                    {{ number_format($book->price) }}
+                                </td>
+                                <td nowrap>
+                                    <a href="{{ route('admin.categories.show', $book->category->id) }}" target="_blank">
+                                        {{ $book->category->name ?? '' }}
+                                    </a>
+                                </td>
+                                <td nowrap>
+                                    <a href="{{ route('admin.publishers.show', $book->publisher->id) }}" target="_blank">
+                                        {{ $book->publisher->name ?? '' }}
+                                    </a>
+                                </td>
+                                <td nowrap>
+                                    @foreach($book->authors as $author)
+                                        <a href="{{ route('admin.authors.show', $author->id) }}" target="_blank">
+                                            {{ $author->name ?? '' }}
+                                        </a>
+                                        <br/>
+                                    @endforeach
+                                </td>
+                                <td nowrap align="center">
+                                    <a class="text-secondary" data-toggle="modal" id="showButton" data-target="#showModal"
+                                        data-attr="{{ route('book.popup', $book->id) }}" title="show">
+                                        <i class="fas fa-eye text-success  fa-lg"></i>
+                                    </a>
+
+                                    <a href="{{ route('admin.books.edit', $book->id) }}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    
+                                    <a data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('book.delete', $book->id) }}" title="Delete Book">
+                                        <i class="fas fa-trash text-danger fa-lg"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div id="toggle-button" style="background-color: lightblue; margin-bottom:10px;">
+                    <a href="#">Mass update</a>
+                </div>
+                <div class="form-group">
+                    <label for="title">{{ trans('cruds.book.fields.content') }}</label>
+                    <input type="text" name="fields[content]" id="content" value="">
+
+                    <label for="title">{{ trans('cruds.book.fields.description') }}</label>
+                    <input type="text" name="fields[description]" id="description" value="">
+                </div>
+                <button class="btn btn-success" type="submit">Update</button>
+            </form>
             <!-- pagination -->
             {{ $books->render('commons.layouts.pagination') }}
             <!-- end pagination -->

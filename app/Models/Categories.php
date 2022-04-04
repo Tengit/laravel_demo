@@ -21,6 +21,20 @@ class Categories extends Model
 
     public function books()
     {
-        return $this->hasMany(Books::class);
+        return $this->hasMany(Books::class, 'category_id');
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($category) {
+            $relationMethods = ['books'];
+
+            foreach ($relationMethods as $relationMethod) {
+                if ($category->$relationMethod()->count() > 0) {
+                    return false;
+                }
+            }
+        });
     }
 }

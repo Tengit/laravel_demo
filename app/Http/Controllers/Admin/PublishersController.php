@@ -114,7 +114,12 @@ class PublishersController extends Controller
      */
     public function destroy(Publishers $publisher)
     {
-        $publisher->delete();
+        $xxx = $publisher->delete();
+        if( !$xxx )
+        return redirect()->route('admin.publishers.index')->with([
+            'message' => 'Cant delete this record',
+            'alert-type' => 'fail'
+        ]);
         return redirect()->route('admin.publishers.index')->with([
             'message' => 'Deleted successfully',
             'alert-type' => 'success'

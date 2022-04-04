@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use DB;
 use App\Models\Authors;
+use App\Models\Books;
 use App\Repositories\Authors\AuthorRepository;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
+use App\Http\Controllers\Admin\BooksController;
 
 class AuthorsController extends Controller
 {
@@ -114,10 +116,19 @@ class AuthorsController extends Controller
      */
     public function destroy(Authors $author)
     {
-        $author->delete();
+        $book = new Books;
+        dd( $book::checkDelete('authors') );
+        if( $book->checkDelete('authors') )
+        {
+            $author->delete();
+            return redirect()->route('admin.authors.index')->with([
+                'message' => 'Deleted successfully',
+                'alert-type' => 'success'
+            ]);
+        }
         return redirect()->route('admin.authors.index')->with([
-            'message' => 'Deleted successfully',
-            'alert-type' => 'success'
+            'message' => 'Cant delete this record',
+            'alert-type' => 'fail'
         ]);
     }
 

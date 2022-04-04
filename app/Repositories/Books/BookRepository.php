@@ -124,18 +124,22 @@ class BookRepository extends BaseRepository implements BookRepositoryInterface
 
         return $result;
     }
-
+    
     /**
      * Update
      * @param $id
      * @param array $attributes
      * @return mixed
      */
-    public function update($id, array $attributes)
+    public function update($id, $attributes)
     {
+
         $result = $this->find($id);
         if ($result) {
-            $result->update($attributes);
+            foreach( $attributes as $field => $value )
+            {
+                if( $value ) $result->update([$field => $value]);
+            }
             return $result;
         }
 

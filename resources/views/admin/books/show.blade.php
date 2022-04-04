@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="card">
+@if( $book )
     <div class="card-header">
         <h6 class="m-0 font-weight-bold text-primary">
         {{ trans('global.show') }} {{ trans('cruds.book.title_singular') }}
@@ -15,6 +16,11 @@
                 <a class="btn btn-primary" href="{{ route('admin.books.edit', $book->id) }}">
                     {{ trans('global.edit') }}
                 </a>
+                                    
+                <a class="btn btn-danger" data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('book.delete', $book->id) }}" title="Delete Book">
+                    {{ trans('global.delete') }}
+                </a>
+
                 <a class="btn btn-success" href="{{ route('admin.books.index') }}">
                     Back to Books
                 </a>
@@ -185,12 +191,38 @@
                 <a class="btn btn-primary" href="{{ route('admin.books.edit', $book->id) }}">
                     {{ trans('global.edit') }}
                 </a>
+                                    
+                <a class="btn btn-danger" data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('book.delete', $book->id) }}" title="Delete Book">
+                    {{ trans('global.delete') }}
+                </a>
+                
                 <a class="btn btn-success" href="{{ route('admin.books.index') }}">
                     Back to Books
                 </a>
             </div>
         </div>
     </div>
+@else <span>Do not find this record</span>
+@endif
 </div>
 
+<!-- delete Modal -->
+<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ trans('global.delete') }} {{ trans('cruds.book.title_singular') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-body" id="smallBody">
+            <div>
+                <!--  -->
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- end delete Modal -->
 @endsection

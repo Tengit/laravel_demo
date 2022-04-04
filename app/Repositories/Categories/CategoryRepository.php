@@ -73,7 +73,7 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     public function find($id)
     {
 		
-        $result = $this->model->find($id);
+        $result = $this->model->with('books')->find($id);
 
         return $result;
     }
