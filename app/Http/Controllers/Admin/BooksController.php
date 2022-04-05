@@ -15,6 +15,7 @@ use App\Repositories\Books\BookRepository;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 use App\Services\ImageService;
 
@@ -45,8 +46,12 @@ class BooksController extends Controller
      */
     public function index(Request $request)
     {
+        // dd(Auth::guard('admin')->user()->id);
+        $categories = $this->categories;
+        $publishers = $this->publishers;
+        $authors = $this->authors;
         $books = $this->bookRepository->getAll($request);
-        return view('admin.books.index', compact('books'));
+        return view('admin.books.index', compact('books', 'categories', 'authors', 'publishers'));
     }
 
     /**
@@ -143,6 +148,11 @@ class BooksController extends Controller
             $image->move($destinationPath, $profileImage);
             $input['image'] = "$profileImage";
         }
+        if( Auth::guard('admin') )
+        {
+            $input['created_by'] = Auth::guard('admin')->user()->id;
+            $input['modified_by'] = Auth::guard('admin')->user()->id;
+        }
 
         $book = $this->bookRepository->create($input);
         if( $book )
@@ -205,6 +215,11 @@ class BooksController extends Controller
         }
         elseif( !$old_image ) return $this->edit($book);
 
+        if( Auth::guard('admin') )
+        {
+            $input['modified_by'] = Auth::guard('admin')->user()->id;
+        }
+
         $this->bookRepository->update($book->id, $input);
         
         $book->authors()->sync($request->authorlist);
@@ -222,6 +237,7 @@ class BooksController extends Controller
     {
         if( isset($request->uids) && count($request->uids) > 0 )
         {
+            $request->fields = array_merge($request->fields, ['modified_by' => Auth::guard('admin')->user()->id]);
             foreach( $request->uids as $key => $id )
             {
                 $this->bookRepository->update($id, $request->fields);

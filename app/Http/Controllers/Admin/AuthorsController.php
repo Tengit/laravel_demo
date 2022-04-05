@@ -116,16 +116,12 @@ class AuthorsController extends Controller
      */
     public function destroy(Authors $author)
     {
-        $book = new Books;
-        dd( $book::checkDelete('authors') );
-        if( $book->checkDelete('authors') )
-        {
-            $author->delete();
+        $xxx = $author->delete();
+        if( $xxx ) 
             return redirect()->route('admin.authors.index')->with([
                 'message' => 'Deleted successfully',
                 'alert-type' => 'success'
             ]);
-        }
         return redirect()->route('admin.authors.index')->with([
             'message' => 'Cant delete this record',
             'alert-type' => 'fail'

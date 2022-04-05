@@ -16,6 +16,11 @@
                 <a class="btn btn-primary" href="{{ route('admin.categories.edit', $category->id) }}">
                     {{ trans('global.edit') }}
                 </a>
+                                    
+                <a class="btn btn-danger" data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('category.delete', $category->id) }}" title="Delete Book">
+                    {{ trans('global.delete') }}
+                </a>
+               
                 <a class="btn btn-success" href="{{ route('admin.categories.index') }}">
                     Back to Categories
                 </a>
@@ -84,15 +89,21 @@
                 <a class="btn btn-primary" href="{{ route('admin.categories.edit', $category->id) }}">
                     {{ trans('global.edit') }}
                 </a>
+                                    
+                <a class="btn btn-danger" data-toggle="modal" id="smallButton" data-target="#smallModal" data-attr="{{ route('category.delete', $category->id) }}" title="Delete Book">
+                    {{ trans('global.delete') }}
+                </a>
+               
                 <a class="btn btn-success" href="{{ route('admin.categories.index') }}">
                     Back to Categories
                 </a>
             </div>
         </div>
         @if( $category->books )
-            <span class="d-none d-sm-inline-block ml-1 font-weight-medium">List Book(s) related</span>
-
-            <div class="table-responsive">
+            <div id="toggle-button">
+                <a href="#" class="btn btn-primary">List Book(s) related</a>
+            </div>
+            <div class="target" style="display:none;">
                 <table class=" table table-bordered table-sbooked table-hover datatable">
                     <thead>
                         <tr>
@@ -200,6 +211,32 @@
     </div>
 @else <span>Do not find this record</span>
 @endif
+
+<!-- delete Modal -->
+<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ trans('global.delete') }} {{ trans('cruds.book.title_singular') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-body" id="smallBody">
+            <div>
+                <!--  -->
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- end delete Modal -->
+
+<script type="text/javascript">
+    document.getElementById('toggle-button').addEventListener('click', function () {
+        toggle(document.querySelectorAll('.target'));
+    });
+</script>
 </div>
 
 @endsection

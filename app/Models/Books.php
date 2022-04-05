@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Categories;
 use App\Models\Publishers;
 use App\Models\Authors;
+use App\Models\Admin;
 
 class Books extends Model
 {
@@ -30,6 +31,8 @@ class Books extends Model
         'price',
         'date_published',
         'publisher_id',
+        'created_by',
+        'modified_by',
     ];
 
     public function category()
@@ -42,10 +45,16 @@ class Books extends Model
         return $this->belongsTo(Publishers::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(Admin::class);
+    }
+
     public function authors()
     {
         return $this->belongsToMany(Authors::class, 'books_authors', 'book_id', 'author_id')
             ->as('authors')
+            ->wherePivot('deleted_at', null)
             ->withTimestamps();
             
         // return $this->hasMany(Authors::class, 'id', 'book_id');

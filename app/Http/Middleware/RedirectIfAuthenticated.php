@@ -25,9 +25,9 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
 
                 if($guard === 'admin'){
-                    return redirect()->route('admin.home');
+                    return redirect()->route('admin.books.index');
                 }
-                return redirect()->route('user.home');
+                return redirect()->route('user.books.index');
                 // return redirect(RouteServiceProvider::HOME);
             }
         }

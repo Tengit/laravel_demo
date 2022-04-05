@@ -182,11 +182,38 @@
                     <a href="#">Mass update</a>
                 </div>
                 <div class="form-group">
-                    <label for="title">{{ trans('cruds.book.fields.content') }}</label>
+                    <label for="content">{{ trans('cruds.book.fields.content') }}</label>
                     <input type="text" name="fields[content]" id="content" value="">
 
-                    <label for="title">{{ trans('cruds.book.fields.description') }}</label>
+                    <label for="description">{{ trans('cruds.book.fields.description') }}</label>
                     <input type="text" name="fields[description]" id="description" value="">
+
+                    <label for="isbn">{{ trans('cruds.book.fields.isbn') }}</label>
+                    <input type="text" name="fields[isbn]" id="isbn" value="">
+
+                    <label for="price">{{ trans('cruds.book.fields.price') }}</label>
+                    <input type="text" name="fields[price]" id="price" value="">
+
+                    <label for="num_pages">{{ trans('cruds.book.fields.num_pages') }}</label>
+                    <input type="text" name="fields[num_pages]" id="num_pages" value="">
+                </div>
+                <div class="form-group">
+                    <label for="category">{{ trans('cruds.book.fields.category') }}</label>
+                    <select name="fields[category_id]" id="category_id">
+                        <option
+                            value="">-Select Category-</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    <label for="publisher">{{ trans('cruds.book.fields.publisher') }}</label>
+                    <select name="fields[publisher_id]" id="publisher_id">
+                        <option
+                            value="">-Select Publisher-</option>
+                        @foreach($publishers as $publisher)
+                            <option value="{{ $publisher->id }}" {{ old('publisher_id') == $publisher->id ? 'selected' : '' }}>{{ $publisher->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <button class="btn btn-success" type="submit">Update</button>
             </form>
@@ -258,3 +285,6 @@
 <!-- end delete Modal -->
 
 @endsection
+@push('scripts')
+    <script src="{{ asset('js/admin/books/book.js') }}"></script>
+@endpush

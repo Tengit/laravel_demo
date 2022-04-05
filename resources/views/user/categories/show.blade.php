@@ -84,9 +84,10 @@
             </div>
         </div>
         @if( $category->books )
-            <span class="d-none d-sm-inline-block ml-1 font-weight-medium">List Book(s) related</span>
-
-            <div class="table-responsive">
+        <div id="toggle-button">
+            <a href="#" class="btn btn-primary">List Book(s) related</a>
+        </div>
+        <div class="target" style="display:none;">
             <table class=" table table-bordered table-sbooked table-hover datatable">
                 <thead>
                     <tr>
@@ -194,6 +195,11 @@
     </div>
 @else <span>Do not find this record</span>
 @endif
+<script type="text/javascript">
+    document.getElementById('toggle-button').addEventListener('click', function () {
+        toggle(document.querySelectorAll('.target'));
+    });
+</script>
 </div>
 
 @endsection
