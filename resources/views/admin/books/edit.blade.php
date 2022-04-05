@@ -195,7 +195,7 @@
             
             <div class="form-group">
                 <label for="image">{{ trans('cruds.book.fields.image') }}</label>
-                <input type="file" name="image" class="form-control" placeholder="image">
+                <input type="file" name="image" class="form-control" placeholder="image" value="{{ old('image', $book->image) }}">
                 @if( $book->image )
                     <img src="/images/books/{{ old('image', $book->image) }}" width="300px">
                 @endif

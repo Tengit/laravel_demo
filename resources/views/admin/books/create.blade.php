@@ -183,7 +183,7 @@
 
             <div class="form-group">
                 <label class="required" for="image">{{ trans('cruds.book.fields.image') }}</label>
-                <input type="file" name="image" class="form-control" placeholder="image">
+                <input type="file" name="image" class="form-control" placeholder="image" value="{{ old('image') }}">
                 @if($errors->has('images'))
                     <div class="invalid-feedback">
                         {{ $errors->first('images') }}
